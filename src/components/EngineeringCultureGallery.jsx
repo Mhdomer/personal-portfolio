@@ -79,7 +79,7 @@ export default function EngineeringCultureGallery({ onSelectImage }) {
         {/* Section Header with Sakura Branch Adornment */}
         <div className="mb-14">
           <SectionSakuraHeader category="Real Developer Reality" />
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight uppercase leading-none display">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight uppercase leading-[1.18] display">
             In The Trenches<br />
             <span style={{ color: 'var(--brand-coral)' }}>Culture & Memes.</span>
           </h2>

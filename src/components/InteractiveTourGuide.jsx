@@ -204,7 +204,7 @@ export default function InteractiveTourGuide({ isOpen, onClose }) {
       },
       {
         selector: '#work',
-        caption: 'Production cloud systems: Amazon Bedrock guardrails, EventBridge auto-remediation, and clinical network topologies.',
+        caption: 'Production cloud systems: Aegis-2B Bedrock guardrail, A2 compliance engine, SECRH healthcare PDMS, and MindCraft CI/CD.',
         action: 'visit',
         hold: 2400,
       },

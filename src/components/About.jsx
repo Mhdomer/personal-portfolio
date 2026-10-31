@@ -42,7 +42,7 @@ export default function About({ onSelectImage }) {
           <div className="lg:col-span-7 space-y-8">
             <div>
               <SectionSakuraHeader category="Proven Track Record" />
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight uppercase leading-none display">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight uppercase leading-[1.18] display">
                 Experience &<br />
                 <span style={{ color: 'var(--brand-coral)' }}>Achievements.</span>
               </h2>

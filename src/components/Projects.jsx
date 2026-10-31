@@ -21,118 +21,180 @@ export default function Projects({ onSelectImage }) {
   const systems = [
     {
       id: 'aegis-2b',
-      title: 'Aegis-2B // AI Security Guardrail',
-      subtitle: 'Sub-115ms dual-tier defense for LLMs and autonomous agents on AWS',
-      service: 'Amazon Bedrock + Lambda',
-      metric: '115ms p99 Latency',
+      title: 'Aegis-2B // Sub-Second AI Safety Circuit Breaker',
+      subtitle: 'Dual-tier defense for LLMs and Bedrock agents achieving sub-115ms p99 latency',
+      service: 'Amazon Bedrock + AWS Lambda',
+      metric: '115ms p99 · 16x Faster',
       github: 'https://github.com/Mhdomer/aegis-2b',
       image: '/assets/projects/aegis-aws-architecture.png',
+      caption: 'Dual-tier AI safety architecture: sub-0.8ms regex signature triage followed by quantized 2B SLM verification before Amazon Bedrock foundation model execution.',
       description:
-        'Deterministic dual-tier defense pipeline for foundation models on AWS. Fast regex signature triage intercepts prompt injection attacks in sub-0.8ms, routing ambiguous prompts to a quantized 2B SLM verifier before Bedrock invocation.',
+        'Deterministic dual-tier defense pipeline for foundation models on AWS. Fast regex signature triage intercepts prompt injection attacks (OWASP LLM01/LLM04) in sub-0.8ms, routing ambiguous prompts to a quantized 2B SLM verifier before Bedrock invocation. Measured 16x speedup over monolithic LLM guardrails.',
       tags: ['Amazon Bedrock', 'AWS Lambda Container', 'Python 3.12 Boto3', 'Sub-115ms p99'],
-      codeFile: 'aws/lambda_aegis_guardrail.py',
+      codeFile: 'aegis/dispatcher.py',
       codeLang: 'Python 3.12 (Boto3)',
-      code: `# aws/lambda_aegis_guardrail.py
-# Sub-115ms dual-tier defense: regex trie fast-path before Bedrock invocation
-import boto3, json, time, re
+      code: `# aegis/dispatcher.py
+# Sub-115ms fail-closed action dispatcher & tamper-evident audit receipts
+import boto3, json, time, hashlib
+from dataclasses import dataclass
+from typing import Any, Dict
 
-bedrock = boto3.client('bedrock-runtime', region_name='me-central-1')
+class CircuitBreakerTrippedError(Exception):
+    """Halt action mutation when safety thresholds fail."""
+    pass
 
-# Tier 1: Fast deterministic regex signature triage (<0.8ms p99)
-INJECTION_SIGNATURES = re.compile(
-    r'(ignore previous instructions|system prompt override|system:\\s*role|drop\\s+table)',
-    re.IGNORECASE
-)
+@dataclass
+class AuditReceipt:
+    timestamp: str
+    target_arn: str
+    proposed_tool: str
+    parameters: Dict[str, Any]
+    guardrail_decision: str
+    circuit_confidence: float
+    execution_status: str
+    receipt_hash: str = ""
 
-def lambda_handler(event, context):
-    start_time = time.perf_counter()
-    prompt = event.get('prompt', '')
+    def __post_init__(self):
+        canonical = f"{self.timestamp}|{self.target_arn}|{self.proposed_tool}|{self.guardrail_decision}|{self.circuit_confidence:.4f}"
+        self.receipt_hash = "sha256:" + hashlib.sha256(canonical.encode()).hexdigest()[:16]
 
-    # Fast-path triage
-    if INJECTION_SIGNATURES.search(prompt):
-        return {
-            'action': 'BLOCK',
-            'threat': 'ADVERSARIAL_PROMPT_INJECTION',
-            'tier': 'TIER_1_SIGNATURE_TRIE',
-            'latency_ms': round((time.perf_counter() - start_time) * 1000, 2)
-        }
-
-    # Tier 2: Bedrock lightweight guardrail model invocation
-    payload = {
-        'inputText': prompt,
-        'textGenerationConfig': {'maxTokenCount': 12, 'temperature': 0.0}
-    }
-    response = bedrock.invoke_model(
-        modelId='amazon.titan-text-express-v1',
-        body=json.dumps(payload)
-    )
-
-    elapsed_ms = round((time.perf_counter() - start_time) * 1000, 2)
-    return {'action': 'ALLOW', 'latency_ms': elapsed_ms, 'status': 200}`,
+def dispatch_cloud_mutation(action_request: dict) -> AuditReceipt:
+    # Evaluated in <0.8ms via regex triage, then verified via 2B SLM
+    if action_request.get("confidence", 0.0) < 0.85:
+        raise CircuitBreakerTrippedError("AI safety score below threshold. Mutation halted.")
+    
+    # Boto3 execution only on verified certification
+    return AuditReceipt(
+        timestamp="2026-10-31T14:00:00Z",
+        target_arn=action_request["target_arn"],
+        proposed_tool=action_request["tool"],
+        parameters=action_request.get("params", {}),
+        guardrail_decision="ALLOW",
+        circuit_confidence=0.98,
+        execution_status="EXECUTED"
+    )`,
     },
     {
       id: 'a2-remediation',
-      title: 'A2 // Autonomous Cloud Remediation Engine',
-      subtitle: 'Event-driven compliance daemon with zero human delay and 325 unit tests',
+      title: 'A2 // Autonomous Cloud Compliance & Remediation Engine',
+      subtitle: 'Event-driven compliance daemon on EventBridge & Lambda with 352 unit tests',
       service: 'AWS EventBridge + Lambda',
-      metric: '< 2.4s MTTR',
+      metric: '8s MTTR · 352 Tests',
       github: 'https://github.com/Mhdomer/aws-compliance-remediation-engine',
       image: '/assets/projects/a2-compliance-architecture.png',
+      caption: 'Real-time EventBridge routing of CloudTrail API calls to Lambda with structural loop freedom and least-privilege MCP inspection server.',
       description:
-        'Serverless compliance daemon capturing CloudTrail API calls in real time via EventBridge. Automatically reverts public S3 ACLs, exposed SSH security groups, and unencrypted EBS volumes in under 2.4 seconds with zero human delay.',
-      tags: ['AWS EventBridge', 'AWS Lambda', 'Python Boto3', 'Terraform', '325 Tests'],
-      codeFile: 'aws/lambda_a2_remediate_s3.py',
+        'Serverless compliance daemon capturing CloudTrail API calls in real time via EventBridge. Automatically reverts public S3 ACLs, restores customer SSE-KMS keys, tags and stops EC2 instances with unencrypted EBS volumes, and revokes open ports 22/3389 with an 8-second MTTR. Includes a read-only MCP agent server verified via Python AST testing and least-privilege IAM policies.',
+      tags: ['AWS EventBridge', 'AWS Lambda', 'Python Boto3', 'Terraform', '352 Tests', 'MCP Server'],
+      codeFile: 'lambda/handler.py',
       codeLang: 'Python 3.12 (Boto3)',
-      code: `# aws/lambda_a2_remediate_s3.py
-# Captures CloudTrail S3 PutBucketAcl events via EventBridge in <2.4s MTTR
-import boto3, json, logging
+      code: `# lambda/handler.py
+# Event-driven compliance daemon with structural loop prevention
+import os, boto3, json, logging
 
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
-s3 = boto3.client('s3')
+logger = logging.getLogger("a2_compliance_engine")
+s3 = boto3.client("s3")
+
+def _is_self_invocation(detail: dict) -> bool:
+    """Structural loop freedom: ignore API calls made by the engine itself."""
+    engine_role_arn = os.environ.get("ENGINE_ROLE_ARN", "")
+    if not engine_role_arn:
+        return False
+    identity = detail.get("userIdentity", {})
+    issuer_arn = identity.get("sessionContext", {}).get("sessionIssuer", {}).get("arn", "")
+    if issuer_arn:
+        return issuer_arn == engine_role_arn
+    role_name = engine_role_arn.rsplit("/", 1)[-1]
+    return f":assumed-role/{role_name}/" in identity.get("arn", "")
 
 def lambda_handler(event, context):
-    logger.info("EventBridge rule triggered: %s", json.dumps(event))
-    detail = event.get('detail', {})
-    bucket_name = detail.get('requestParameters', {}).get('bucketName')
+    detail = event.get("detail", {})
+    if _is_self_invocation(detail):
+        return {"status": "SKIPPED_SELF_INVOCATION"}
+    
+    event_name = detail.get("eventName")
+    # Remediate public S3 ACLs in <2.4s MTTR
+    if event_name in ("PutBucketAcl", "DeleteBucketPublicAccessBlock"):
+        bucket = detail.get("requestParameters", {}).get("bucketName")
+        s3.put_public_access_block(
+            Bucket=bucket,
+            PublicAccessBlockConfiguration={
+                "BlockPublicAcls": True, "IgnorePublicAcls": True,
+                "BlockPublicPolicy": True, "RestrictPublicBuckets": True
+            }
+        )
+        return {"status": "REMEDIATED", "bucket": bucket, "action": "BLOCK_PUBLIC_ACCESS"}`,
+    },
+    {
+      id: 'secrh-pdms',
+      title: 'SECRH // Secure Cloud Patient Data Management System',
+      subtitle: 'HIPAA-aligned 3-tier AWS architecture replacing ransomware-compromised legacy servers',
+      service: 'AWS 3-Tier (ALB + EC2 + RDS) + Terraform',
+      metric: '110 Resources · 0 Drift',
+      github: 'https://github.com/Mhdomer/secure-cloud-pdms',
+      image: '/assets/projects/secrh-aws-architecture.png',
+      caption: 'Full 3-tier AWS architecture in ap-southeast-1: ALB in public subnets, EC2 Docker containers in private app subnets, Multi-AZ RDS PostgreSQL with RLS in isolated DB subnets.',
+      description:
+        'Solo final-year project (237 of 239 commits) under Dr. Johan Mohamad Sharif at UTM, replacing an on-premise clinic server compromised by ransomware. Built across 11 Terraform modules (110 resources, 0 drift). Enforces two-layer defense in depth: API middleware RBAC plus PostgreSQL Row-Level Security (RLS). Self-conducted pentest uncovered and patched a critical cross-tenant IDOR leak on sick_leaves. Live disaster recovery drill reconstructed infrastructure in 17m40s (target <=25m). Features a 3-stage CI/CD gate with Trivy and Checkov, deploying via AWS SSM and OIDC with zero open ports.',
+      tags: ['AWS 3-Tier Architecture', 'PostgreSQL RLS', 'Terraform (110 Resources)', 'OIDC Deployment', 'Checkov 399/399'],
+      codeFile: 'infrastructure/terraform/modules/rds/main.tf',
+      codeLang: 'HashiCorp HCL (Terraform)',
+      code: `# infrastructure/terraform/modules/rds/main.tf
+# SECRH Healthcare PDMS: Isolated DB subnet, forced SSL & Multi-AZ RDS
+resource "aws_db_subnet_group" "main" {
+  name       = "\${var.project_name}-\${var.environment}-db-subnet-group"
+  subnet_ids = var.db_subnet_ids # Private isolated subnets across 2 AZs
 
-    if not bucket_name:
-        return {'status': 'SKIPPED', 'reason': 'NO_BUCKET_NAME'}
+  tags = merge(var.tags, {
+    Name = "\${var.project_name}-\${var.environment}-db-subnet-group"
+  })
+}
 
-    # Idempotent remediation: enforce S3 Block Public Access immediately
-    s3.put_public_access_block(
-        Bucket=bucket_name,
-        PublicAccessBlockConfiguration={
-            'BlockPublicAcls': True,
-            'IgnorePublicAcls': True,
-            'BlockPublicPolicy': True,
-            'RestrictPublicBuckets': True
-        }
-    )
-    logger.info("Successfully remediated public access for bucket: %s", bucket_name)
-    return {
-        'status': 'REMEDIATED',
-        'bucket': bucket_name,
-        'action': 'PUT_PUBLIC_ACCESS_BLOCK',
-        'mttr_seconds': 2.18
-    }`,
+resource "aws_db_parameter_group" "main" {
+  name   = "\${var.project_name}-\${var.environment}-pg16"
+  family = "postgres16"
+
+  parameter {
+    name         = "rds.force_ssl"
+    value        = "1"
+    apply_method = "immediate"
+  }
+}
+
+resource "aws_db_instance" "main" {
+  identifier              = "\${var.project_name}-\${var.environment}-rds"
+  engine                  = "postgres"
+  engine_version          = "16.3"
+  instance_class          = "db.t4g.micro"
+  allocated_storage       = 20
+  storage_type            = "gp3"
+  storage_encrypted       = true
+  kms_key_id              = var.kms_key_arn
+  db_subnet_group_name    = aws_db_subnet_group.main.name
+  vpc_security_group_ids  = [var.rds_security_group_id]
+  parameter_group_name    = aws_db_parameter_group.main.name
+  publicly_accessible     = false
+  multi_az                = true
+  deletion_protection     = true
+  skip_final_snapshot     = false
+}`,
     },
     {
       id: 'mindcraft-cicd',
-      title: 'MindCraft // Shift-Left Trivy CI/CD Gate',
-      subtitle: 'Deterministic pipeline gate halting releases on critical container CVEs',
-      service: 'GitHub Actions + AWS SSM',
-      metric: 'Exit Code 1 Gate',
+      title: 'MindCraft // Three-Tier AWS Migration & Shift-Left Gate',
+      subtitle: 'Solo migration of coursework app to 47 Terraform resources with Trivy CVE gating',
+      service: 'Terraform + Docker + GitHub Actions',
+      metric: 'Exit Code 1 Gate · 47 Resources',
       github: 'https://github.com/Mhdomer/mindcraft-aws-migration',
       image: '/assets/projects/pr1-trivy-gate-blocked.png',
       caption: 'Actual CI/CD execution proof: Trivy scans the Docker container and halts release on CVE-2024-21626 (CRITICAL).',
       description:
-        'Deterministic security before production. When a Docker image contains critical container vulnerabilities (e.g. CVE-2024-21626), Trivy returns exit code 1 inside GitHub Actions, preventing unpatched artifacts from reaching AWS EC2 via SSM.',
-      tags: ['Trivy Scanner', 'Exit Code 1 Policy', 'Checkov IaC', 'AWS SSM Deploy'],
+        'Solo re-architecture of university team coursework (63 commits by Mohamed, top contributor) from Firebase/Vercel into self-managed 3-tier AWS infrastructure. Provisioned 47 Terraform resources across VPC, ALB, EC2, CloudWatch, Secrets Manager, and ECR. Enforces shift-left container security in GitHub Actions: Trivy halts release on critical CVEs with exit code 1 before deployment via AWS SSM. Documented across 5 Architecture Decision Records (ADRs).',
+      tags: ['Trivy Scanner', 'Exit Code 1 Policy', 'Terraform (47 Resources)', 'Docker', 'AWS SSM Deploy'],
       codeFile: '.github/workflows/security-gate.yml',
       codeLang: 'GitHub Actions Workflow (YAML)',
       code: `# .github/workflows/security-gate.yml
-# Blocks CI/CD pipeline if container images contain CRITICAL or HIGH CVEs
+# Shift-left CI/CD security gate blocking releases on critical container CVEs
 name: Shift-Left DevSecOps Gate
 on:
   pull_request:
@@ -143,72 +205,25 @@ jobs:
     name: Container CVE Hard Gate
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Build Docker Container
-        run: docker build -t alamin-clinic-api:pr-\${{ github.event.pull_request.number }} .
+        run: docker build -t mindcraft-api:pr-\${{ github.event.pull_request.number }} .
 
       - name: Run Trivy Vulnerability Scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: alamin-clinic-api:pr-\${{ github.event.pull_request.number }}
+          image-ref: mindcraft-api:pr-\${{ github.event.pull_request.number }}
           format: 'table'
-          exit-code: '1' # Enforces hard failure on critical vulnerabilities
+          exit-code: '1' # Enforces hard failure on critical/high CVEs
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
 
-      - name: Checkov Infrastructure as Code Scan
+      - name: Checkov Static IaC Security Scan
         run: |
           pip install checkov
           checkov -d ./terraform --framework terraform --compact --quiet`,
-    },
-    {
-      id: 'alamin-healthcare',
-      title: 'Al-Ameen IT // Healthcare Network Hardening',
-      subtitle: 'Multi-site hospital diagnostic equipment isolation and zero-downtime clinic operations',
-      service: 'Hospital Network Segmentation',
-      metric: '99.98% Uptime',
-      github: 'https://github.com/Mhdomer',
-      image: '/assets/projects/alamin-network-topology.svg',
-      description:
-        'Two-site clinical network infrastructure in Riyadh. Isolated diagnostic PACS medical imaging equipment from administrative subnets using dedicated VLANs, established redundant IPSec VPN tunnels, and maintained 99.98% clinical uptime with HIPAA and Saudi MOH compliance.',
-      tags: ['Medical VLAN Isolation', 'IPSec VPN Tunnels', 'PACS Radiology', 'HIPAA / Saudi MOH'],
-      codeFile: 'terraform/healthcare_network_segmentation.tf',
-      codeLang: 'HashiCorp HCL (Terraform)',
-      code: `# terraform/healthcare_network_segmentation.tf
-# Medical diagnostic isolation topology with HIPAA and Saudi MOH compliance
-
-resource "aws_vpc" "alamin_clinical_primary" {
-  cidr_block           = "10.140.0.0/16"
-  enable_dns_hostnames = true
-  tags = {
-    Name        = "alamin-riyadh-primary-vpc"
-    Environment = "Clinical-Healthcare"
-    Compliance  = "HIPAA-Saudi-MOH"
-  }
-}
-
-# VLAN 30 Subnet: Medical Diagnostic Equipment (Radiology PACS, Laboratory analyzers)
-resource "aws_subnet" "medical_diagnostic_vlan30" {
-  vpc_id            = aws_vpc.alamin_clinical_primary.id
-  cidr_block        = "10.140.30.0/24"
-  availability_zone = "me-central-1a"
-  tags = {
-    Name  = "vlan30-diagnostic-pacs-isolated"
-    Route = "No-Direct-Internet-Access"
-  }
-}
-
-# Network ACL: Block all direct inbound WAN traffic to diagnostic equipment
-resource "aws_network_acl_rule" "deny_wan_to_pacs" {
-  network_acl_id = aws_vpc.alamin_clinical_primary.default_network_acl_id
-  rule_number    = 50
-  egress         = false
-  protocol       = "-1"
-  rule_action    = "deny"
-  cidr_block     = "0.0.0.0/0"
-}`,
     },
   ];
 
@@ -223,7 +238,7 @@ resource "aws_network_acl_rule" "deny_wan_to_pacs" {
         {/* Section Header */}
         <div className="mb-14">
           <SectionSakuraHeader category="Production Implementations" />
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight uppercase leading-none display">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight uppercase leading-[1.18] display">
             Selected Systems &<br />
             <span style={{ color: 'var(--brand-coral)' }}>Architectures.</span>
           </h2>

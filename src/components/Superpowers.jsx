@@ -6,11 +6,11 @@ export default function Superpowers() {
     {
       category: 'Cloud DevSecOps',
       skills: [
-        { name: 'AWS EventBridge', note: 'Drift Routing' },
-        { name: 'AWS Lambda (Python 3.12 Boto3)', note: 'Auto-Remediation' },
-        { name: 'AWS IAM', note: 'Least-Privilege & SCP' },
-        { name: 'Terraform', note: 'Immutable IaC' },
-        { name: 'Amazon S3 & CloudWatch', note: 'Encrypted Audits' },
+        { name: 'AWS EventBridge & Lambda', note: 'Sub-Second Auto-Remediation' },
+        { name: 'Terraform (IaC)', note: '110 Resources · 0 Drift' },
+        { name: 'AWS IAM & SCPs', note: 'Least-Privilege Design' },
+        { name: 'Amazon RDS PostgreSQL', note: 'Row-Level Security (RLS)' },
+        { name: 'CloudTrail & CloudWatch', note: 'Centralized Audit Logs' },
       ],
     },
     {
@@ -18,27 +18,27 @@ export default function Superpowers() {
       skills: [
         { name: 'Aegis-2B Engine', note: 'Sub-115ms p99 Latency' },
         { name: 'Amazon Bedrock', note: 'Runtime Interception' },
-        { name: 'Hugging Face SLMs', note: 'Quantized 2B Models' },
+        { name: 'Quantized 2B SLMs', note: 'Decider Guardrail Model' },
         { name: 'Regex Trie Signatures', note: 'OWASP LLM01 & LLM04' },
       ],
     },
     {
       category: 'Shift-Left CI/CD & Gating',
       skills: [
-        { name: 'Trivy', note: 'Container CVE Blocker' },
-        { name: 'Checkov', note: 'Static IaC Scans' },
-        { name: 'GitHub Actions', note: 'Exit Code 1 Gates' },
-        { name: 'Docker', note: 'Alpine Hardening' },
-        { name: 'AWS Systems Manager (SSM)', note: 'Fleet Deploy' },
+        { name: 'Trivy Vulnerability Scanner', note: 'Exit Code 1 CVE Blocker' },
+        { name: 'Checkov Static Analysis', note: '399 Passed / 0 Failed' },
+        { name: 'GitHub Actions (OIDC)', note: 'Zero Stored AWS Keys' },
+        { name: 'Docker Multi-Stage', note: 'Non-Root Alpine Hardening' },
+        { name: 'AWS Systems Manager (SSM)', note: 'Zero Open Port 22' },
       ],
     },
     {
-      category: 'Systems & Workstation',
+      category: 'Systems & Networking',
       skills: [
         { name: 'CachyOS Linux (Kernel 6.13+)', note: 'Tuned Workstation' },
-        { name: 'Niri Wayland', note: 'Scrollable Tiling' },
-        { name: 'POSIX Shell (Bash, Sed, Awk)', note: 'Automation' },
-        { name: 'Wireshark & Packet Forensics', note: 'CTF Finals' },
+        { name: 'Niri Wayland Compositor', note: 'Scrollable Tiling' },
+        { name: 'Cisco Networking & VLANs', note: 'CCNA & CCST Certified' },
+        { name: 'Wireshark & Packet Forensics', note: 'ASEAN CTF Podium' },
       ],
     },
   ];
@@ -54,7 +54,7 @@ export default function Superpowers() {
         <div className="mb-14 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <SectionSakuraHeader category="Technical Arsenal" />
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight uppercase leading-none display">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight uppercase leading-[1.18] display">
               Tech Stack<br />
               <span style={{ color: 'var(--brand-coral)' }}>I Work With.</span>
             </h2>

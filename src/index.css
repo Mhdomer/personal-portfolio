@@ -98,9 +98,9 @@ html.dark .paper-noise:before {
    ========================================================================== */
 
 .display {
-  font-family: 'Syne', sans-serif;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   text-transform: uppercase;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
 }
 
 .mono {
@@ -395,9 +395,9 @@ html.dark .theme-toggle-thumb {
 .editorial-hero .hero-copy {
   z-index: 1;
   position: relative;
-  font-size: clamp(2.25rem, 5vw, 4.4rem) !important;
-  line-height: 0.9 !important;
-  letter-spacing: -0.03em;
+  font-size: clamp(2.4rem, 5.2vw, 4.4rem) !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.01em;
 }
 
 .editorial-hero .hero-copy:after {
