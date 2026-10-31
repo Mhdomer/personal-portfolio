@@ -27,10 +27,10 @@ export default function Hero({ onStartTour }) {
             className="mono block text-[12px] uppercase tracking-[0.18em]"
             style={{ color: 'var(--brand-coral)' }}
           >
-            Cloud DevSecOps & AI Security Engineer
+            Cloud Security & DevSecOps Engineer
           </strong>
           <span className="mt-4 block font-sans" id="hero-description">
-            I build self-healing cloud infrastructure and sub-115ms AI security guardrails on AWS. Senior CS student at <strong style={{ color: 'var(--ink)' }}>Universiti Teknologi Malaysia (UTM)</strong> and running clinical IT operations at <strong style={{ color: 'var(--ink)' }}>Al-Ameen Medical Complex in Riyadh</strong>: turning manual compliance drift and adversarial prompt injections into automated, sub-second security.
+            Final-year Computer Science student at <strong style={{ color: 'var(--ink)' }}>Universiti Teknologi Malaysia (UTM)</strong> specializing in Networks and Security, currently running clinical IT operations at <strong style={{ color: 'var(--ink)' }}>Al-Ameen Medical Complex in Riyadh</strong>. I build self-healing cloud infrastructure on AWS, event-driven incident remediation in sub-8s MTTR, and sub-115ms AI security guardrails.
           </span>
         </div>
 

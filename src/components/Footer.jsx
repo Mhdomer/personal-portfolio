@@ -141,7 +141,7 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <span>© {new Date().getFullYear()} Mohamed Makhlouf (Mhdomar)</span>
             <span>•</span>
-            <span style={{ color: 'var(--brand-coral)' }}>Cloud DevSecOps & AI Security</span>
+            <span style={{ color: 'var(--brand-coral)' }}>Cloud Security & DevSecOps</span>
           </div>
 
           <div className="flex items-center gap-4">

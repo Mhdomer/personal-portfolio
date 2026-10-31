@@ -128,7 +128,7 @@ export default function AtsResumeModal({ isOpen, onClose }) {
                 </span>
               </div>
               <p className="text-[11px] font-mono opacity-70">
-                Cloud DevSecOps & AI Security Engineer • Senior CS (UTM) • Al-Ameen IT
+                Cloud Security & DevSecOps Engineer • Senior CS (UTM) • Al-Ameen IT
               </p>
             </div>
           </div>
