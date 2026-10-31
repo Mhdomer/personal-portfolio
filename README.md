@@ -106,10 +106,9 @@ personal-portfolio/
 │   └── components/
 │       ├── Navbar.jsx                # Sticky header with navigation links, theme toggle, and resume link
 │       ├── Hero.jsx                  # Value proposition, credentials, telemetry badges, and CTAs
-│       ├── CloudSystemsArchitecture.jsx # Production cloud architecture and code specs
+│       ├── Projects.jsx              # Unified systems showcase with architecture diagrams & code spec toggles
 │       ├── About.jsx                 # Journey, systems craft, sustainability, tutoring, and ATS resume preview
 │       ├── Superpowers.jsx           # Core superpowers, tools, and verified metrics
-│       ├── Projects.jsx              # Featured projects with stats and AWS tags
 │       ├── EngineeringCultureGallery.jsx # Live snapshots, homelab setups, and dev culture
 │       ├── InteractiveTourGuide.jsx  # Interactive virtual cursor portfolio tour
 │       ├── ImageModal.jsx            # High-resolution screenshot inspection lightbox

@@ -203,34 +203,28 @@ export default function InteractiveTourGuide({ isOpen, onClose }) {
         silent: true,
       },
       {
-        selector: '#aws-architecture',
-        caption: 'Production cloud architectures: Amazon Bedrock guardrails, EventBridge remediation, and clinical network topology.',
+        selector: '#work',
+        caption: 'Production cloud systems: Amazon Bedrock guardrails, EventBridge auto-remediation, and clinical network topologies.',
         action: 'visit',
         hold: 2400,
       },
       {
-        selector: '#skills',
-        caption: 'Core engineering capabilities: Cloud DevSecOps, AI Security, and Linux systems.',
-        action: 'visit',
-        hold: 2200,
-      },
-      {
-        selector: '#projects',
-        caption: 'Aegis-2B AI Guardrail: sub-115ms p99 latency passing 6/6 deterministic tests.',
-        action: 'visit',
-        hold: 2200,
-      },
-      {
         selector: '#experience',
-        caption: "A few wins worth pinning up: UTM Dean's List and 3rd Place ASEAN Cyber Race CTF.",
+        caption: "Field experience and credentials: Al-Ameen IT in Riyadh, UTM Dean's List, and ASEAN Cyber Race podium.",
         action: 'visit',
-        hold: 2000,
+        hold: 2200,
       },
       {
         selector: '[data-testid="card-resume-preview"]',
         caption: 'Click here to inspect or download my 1-page ATS-verified LaTeX resume.',
         action: 'hover',
-        hold: 2200,
+        hold: 2000,
+      },
+      {
+        selector: '#skills',
+        caption: 'Core technical stack: Cloud DevSecOps, AI Security, CI/CD gates, and CachyOS Linux.',
+        action: 'visit',
+        hold: 2000,
       },
     ];
 

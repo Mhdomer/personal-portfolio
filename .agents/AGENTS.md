@@ -55,10 +55,9 @@ personal-portfolio/
 │   └── components/
 │       ├── Navbar.jsx         # Sticky header with navigation links, theme toggle, and resume link
 │       ├── Hero.jsx           # Value proposition, credentials, photo frame, and CTAs
-│       ├── CloudSystemsArchitecture.jsx # 4 architecture diagrams with interactive code specs
+│       ├── Projects.jsx       # 4 unified production systems with diagram & code spec toggles
 │       ├── About.jsx          # Section: Journey, systems craft, sustainability, peer tutoring, and ATS resume
 │       ├── Superpowers.jsx    # Section: 4 core superpower cards with verified telemetry metrics
-│       ├── Projects.jsx       # Section: Filterable project showcase (Aegis-2B, A2, MindCraft, SECRH)
 │       ├── EngineeringCultureGallery.jsx # Section: DevSecOps reality, lab setups, and culture
 │       ├── InteractiveTourGuide.jsx # Virtual mouse animated site tour guide
 │       ├── ImageModal.jsx     # High-resolution lightbox for diagrams and terminal screenshots

@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import CloudSystemsArchitecture from './components/CloudSystemsArchitecture';
+import Projects from './components/Projects';
 import About from './components/About';
 import Superpowers from './components/Superpowers';
-import Projects from './components/Projects';
 import EngineeringCultureGallery from './components/EngineeringCultureGallery';
 import Footer from './components/Footer';
 import ImageModal from './components/ImageModal';
@@ -38,10 +37,10 @@ export default function App() {
         onClose={() => setBootIntroOpen(false)}
       />
 
-      {/* Decorative Japanese Ink Sakura Branches (sharara.me exact layout) */}
+      {/* Decorative Japanese Ink Sakura Branches */}
       <DecorativeBranches />
 
-      {/* Falling Sakura / Terracotta Leaves (sharara.me exact 14-leaf CSS animation) */}
+      {/* Falling Sakura / Terracotta Leaves */}
       <FallingSakuraLeaves />
 
       {/* Interactive Cursor Sword Slashes Layer */}
@@ -58,19 +57,16 @@ export default function App() {
           onSelectImage={handleOpenImage}
         />
 
-        {/* Section 2: Production Cloud Infrastructure & Defense Systems */}
-        <CloudSystemsArchitecture onSelectImage={handleOpenImage} />
-
-        {/* Section 3: Grounded Student Engineer Journey & Experience */}
-        <About onSelectImage={handleOpenImage} />
-
-        {/* Section 4: Verified Tech Superpowers & Telemetry */}
-        <Superpowers />
-
-        {/* Section 5: Real Program Evidence & Implementation Gallery */}
+        {/* Section 2: Selected Production Systems & Architecture Blueprints */}
         <Projects onSelectImage={handleOpenImage} />
 
-        {/* Section 6: In The Trenches - DevSecOps Reality & Culture */}
+        {/* Section 3: Grounded Student Engineer Journey, Podiums & ATS Resume */}
+        <About onSelectImage={handleOpenImage} />
+
+        {/* Section 4: Technical Arsenal & System Tooling */}
+        <Superpowers />
+
+        {/* Section 5: In The Trenches - DevSecOps Reality & Culture */}
         <EngineeringCultureGallery onSelectImage={handleOpenImage} />
       </main>
 
