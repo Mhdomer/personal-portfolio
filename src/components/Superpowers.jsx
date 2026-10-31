@@ -1,8 +1,7 @@
 import React from 'react';
-import { ShieldCheck } from 'lucide-react';
 import { SectionSakuraHeader } from './DecorativeBranches';
 
-export default function Superpowers({ onOpenConsole }) {
+export default function Superpowers() {
   const stackCategories = [
     {
       category: 'Cloud DevSecOps',
@@ -63,23 +62,6 @@ export default function Superpowers({ onOpenConsole }) {
               Daily engineering runtimes, cloud platforms, and security tools tested in production and university laboratories.
             </p>
           </div>
-
-          <button
-            onClick={onOpenConsole}
-            className="self-start md:self-auto px-5 py-2.5 rounded-full border text-xs font-mono flex items-center gap-2 transition-all shadow-sm hover:scale-105 group"
-            style={{
-              background: 'var(--surface-soft)',
-              borderColor: 'var(--line)',
-              color: 'var(--ink)',
-            }}
-          >
-            <ShieldCheck
-              className="w-4 h-4 group-hover:scale-110 transition-transform"
-              style={{ color: 'var(--brand-coral)' }}
-            />
-            <span>Launch Interactive Security Lab</span>
-            <span style={{ color: 'var(--brand-coral)' }}>→</span>
-          </button>
         </div>
 
         {/* Tech Stack Horizontal Table (sharara.me rows) */}

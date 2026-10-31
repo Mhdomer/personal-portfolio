@@ -9,10 +9,10 @@ Every modification made to this repository must preserve the engineering craft, 
 
 ---
 
-## 1. Interactive Systems Demonstration
-- **Interactive Security Sandbox:** An in-browser security tool suite featuring a client-side IAM AST policy linter, cloud crisis simulator, and Shannon entropy benchmark.
-- **Interactivity & Tactile Feedback:** All interactive elements (sandbox modals, virtual cursor tour, theme toggle, katana slash) must be responsive, keyboard accessible (ESC to close), and performant.
-- **Zero AI Gimmicks:** The interactive tools evaluate actual syntax, benchmark actual mathematical entropy, and model real cloud incidents.
+## 1. Verified Architecture & Systems Craft
+- **Production Cloud Architectures:** Interactive inspection of real cloud systems (Aegis-2B Bedrock/Lambda guardrails, A2 EventBridge remediation, Trivy CI/CD security gate, Al-Ameen Healthcare network topology) with clickable high-res diagrams and copyable code specs.
+- **Interactivity & Tactile Feedback:** All interactive elements (virtual cursor tour, theme toggle, katana slash, screenshot lightboxes) must be responsive, keyboard accessible (ESC to close), and performant.
+- **Zero AI Gimmicks:** Every metric, diagram, and code spec is grounded in real benchmarks and production implementations.
 
 ---
 

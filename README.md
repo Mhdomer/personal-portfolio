@@ -46,16 +46,7 @@ My technical focus centers on Cloud DevSecOps, sub-120ms AI security guardrails,
 
 ---
 
-## 3. Interactive Cloud Security Sandbox & Policy Linter
-
-The portfolio features an in-browser cybersecurity workbench:
-- **Tool 1 (Live AWS IAM Policy AST Security Linter):** An interactive code editor where visitors can inspect or edit IAM JSON policies. A client-side AST engine evaluates 5 CIS AWS Foundations Benchmark rules (unrestricted admin access, anonymous public access, privilege escalation vectors, missing in-transit TLS, and un-MFA destructive APIs). Computes a dynamic risk score (0 to 100) and includes an "Auto-Remediate to Least-Privilege" routine that algorithmically transforms the policy into compliant least-privilege code.
-- **Tool 2 (Cloud Incident Crisis Decision Simulator):** A playable scenario engine based on real incidents (Al-Ameen patient audit bucket exposure, compromised CI/CD access key spawning miners, and clinical LLM prompt injection). Choose architectural mitigations and observe real-time MTTR, cost impact, and compliance scores.
-- **Tool 3 (Aegis-2B AI Guardrail & Shannon Entropy Benchmark):** Live client-side Shannon Entropy calculation and regex signature trie evaluation benchmarked against OWASP LLM01 and LLM04, displaying microsecond execution timing with browser performance timers.
-
----
-
-## 4. Architecture & AWS Services Used
+## 3. Architecture & AWS Services Used
 
 ```
 [ Visitor Browser ]
@@ -75,7 +66,7 @@ The portfolio features an in-browser cybersecurity workbench:
 
 ---
 
-## 5. Local Development
+## 4. Local Development
 
 Prerequisites: Node.js 18+ (tested on Node v20/v22/v26) and npm.
 
@@ -98,7 +89,7 @@ npm run preview
 
 ---
 
-## 6. Project Structure
+## 5. Project Structure
 
 ```
 personal-portfolio/
@@ -113,15 +104,13 @@ personal-portfolio/
 │   ├── App.jsx                       # Application layout and modal state management
 │   ├── index.css                     # Custom scrollbars, scanlines, paper textures
 │   └── components/
-│       ├── Navbar.jsx                # Sticky header with navigation links and theme toggle
-│       ├── Hero.jsx                  # Value proposition, credentials, telemetry badges
-│       ├── AwsCloudHealthBar.jsx     # Live AWS telemetry ticker
+│       ├── Navbar.jsx                # Sticky header with navigation links, theme toggle, and resume link
+│       ├── Hero.jsx                  # Value proposition, credentials, telemetry badges, and CTAs
 │       ├── CloudSystemsArchitecture.jsx # Production cloud architecture and code specs
-│       ├── About.jsx                 # Journey, systems craft, sustainability, tutoring
+│       ├── About.jsx                 # Journey, systems craft, sustainability, tutoring, and ATS resume preview
 │       ├── Superpowers.jsx           # Core superpowers, tools, and verified metrics
 │       ├── Projects.jsx              # Featured projects with stats and AWS tags
 │       ├── EngineeringCultureGallery.jsx # Live snapshots, homelab setups, and dev culture
-│       ├── InteractiveSecurityLabModal.jsx # Real client-side IAM AST linter and crisis simulator
 │       ├── InteractiveTourGuide.jsx  # Interactive virtual cursor portfolio tour
 │       ├── ImageModal.jsx            # High-resolution screenshot inspection lightbox
 │       ├── DecorativeBranches.jsx    # Japanese ink sakura branches
@@ -136,6 +125,6 @@ personal-portfolio/
 
 ---
 
-## 7. License
+## 6. License
 
 Distributed under the MIT License. See [LICENSE](LICENSE) for details.

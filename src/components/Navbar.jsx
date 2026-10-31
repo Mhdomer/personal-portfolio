@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Menu, X } from 'lucide-react';
+import { Menu, X, FileText } from 'lucide-react';
 import { GithubIcon } from './Icons';
 import ThemeToggle from './ThemeToggle';
 
-export default function Navbar({ onOpenConsole, onStartTour }) {
+export default function Navbar({ onStartTour }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [katanaSrc, setKatanaSrc] = useState('/assets/decorations/katana-hang.webp');
 
@@ -80,7 +80,7 @@ export default function Navbar({ onOpenConsole, onStartTour }) {
             </a>
           </div>
 
-          {/* Right: Security Lab + Theme Toggle + Tour */}
+          {/* Right: Theme Toggle + Tour + Resume */}
           <div className="hidden sm:flex items-center gap-2.5">
             <ThemeToggle />
 
@@ -98,32 +98,31 @@ export default function Navbar({ onOpenConsole, onStartTour }) {
               <span style={{ color: 'var(--brand-coral)' }}>⚡</span>
             </button>
 
-            <button
-              onClick={onOpenConsole}
-              className="px-4 py-2 rounded-full font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-md flex items-center gap-2 group border"
+            <a
+              href="/assets/resume/Mohamed_Makhlouf_Resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="px-3.5 py-2 rounded-full font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-sm flex items-center gap-1.5 border hover:opacity-90 active:scale-95"
               style={{
                 background: 'var(--button-bg)',
                 color: 'var(--button-fg)',
                 borderColor: 'var(--line)',
               }}
+              title="Inspect or download ATS Resume PDF"
             >
-              <ShieldCheck className="w-4 h-4 group-hover:scale-110 transition-transform" style={{ color: 'var(--brand-coral)' }} />
-              <span>Security Lab</span>
-              <span
-                className="text-[10px] text-white px-1.5 py-0.5 rounded-full font-mono uppercase font-semibold"
-                style={{ background: 'var(--brand-coral)' }}
-              >
-                live
-              </span>
-            </button>
+              <FileText className="w-3.5 h-3.5" style={{ color: 'var(--brand-coral)' }} />
+              <span>Resume</span>
+            </a>
           </div>
 
           {/* Mobile Menu & Theme Toggle */}
           <div className="flex sm:hidden items-center gap-2">
             <ThemeToggle />
 
-            <button
-              onClick={onOpenConsole}
+            <a
+              href="/assets/resume/Mohamed_Makhlouf_Resume.pdf"
+              target="_blank"
+              rel="noreferrer"
               className="px-2.5 py-1.5 rounded-full text-xs font-mono font-bold flex items-center gap-1 border"
               style={{
                 background: 'var(--button-bg)',
@@ -131,9 +130,9 @@ export default function Navbar({ onOpenConsole, onStartTour }) {
                 borderColor: 'var(--line)',
               }}
             >
-              <ShieldCheck className="w-3.5 h-3.5" style={{ color: 'var(--brand-coral)' }} />
-              <span>Lab</span>
-            </button>
+              <FileText className="w-3 h-3" style={{ color: 'var(--brand-coral)' }} />
+              <span>CV</span>
+            </a>
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

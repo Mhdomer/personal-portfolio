@@ -1,7 +1,7 @@
 import React from 'react';
-import { ExternalLink, ShieldCheck, Shield } from 'lucide-react';
+import { ExternalLink, Shield } from 'lucide-react';
 
-export default function Footer({ onOpenConsole }) {
+export default function Footer() {
   return (
     <footer
       className="border-t py-16 relative z-20 transition-colors duration-300"
@@ -34,14 +34,16 @@ export default function Footer({ onOpenConsole }) {
               Mohamed Makhlouf. Senior Computer Science student at Universiti Teknologi Malaysia (UTM) undergoing Industrial Training at Al-Ameen Medical Complex IT Dept, Riyadh. Dedicated to Cloud DevSecOps, AI Security, shift-left gating, and peer mentorship.
             </p>
             <div className="pt-2">
-              <button
-                onClick={onOpenConsole}
+              <a
+                href="/assets/resume/Mohamed_Makhlouf_Resume.pdf"
+                target="_blank"
+                rel="noreferrer"
                 className="text-xs font-mono underline underline-offset-4 flex items-center gap-1.5 hover:opacity-80 transition-opacity"
                 style={{ color: 'var(--brand-coral)' }}
               >
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Launch Interactive Security Sandbox</span>
-              </button>
+                <span>Download ATS Resume (PDF)</span>
+                <span>→</span>
+              </a>
             </div>
           </div>
 

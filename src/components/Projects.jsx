@@ -2,7 +2,7 @@ import React from 'react';
 import { Maximize2, ArrowUpRight } from 'lucide-react';
 import { SectionSakuraHeader } from './DecorativeBranches';
 
-export default function Projects({ onSelectImage, onOpenConsole }) {
+export default function Projects({ onSelectImage }) {
   const projects = [
     {
       id: 'aegis-2b',

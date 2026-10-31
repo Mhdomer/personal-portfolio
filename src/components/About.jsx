@@ -2,7 +2,7 @@ import React from 'react';
 import { Download, ExternalLink } from 'lucide-react';
 import { SectionSakuraHeader } from './DecorativeBranches';
 
-export default function About({ onOpenConsole, onSelectImage }) {
+export default function About({ onSelectImage }) {
   const achievements = [
     {
       title: "UTM DEAN'S LIST // CGPA 3.43",

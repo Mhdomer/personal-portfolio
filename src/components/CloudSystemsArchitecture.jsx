@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Shield, ArrowRight, Maximize2, Code2, Image as ImageIcon, Copy, Check } from 'lucide-react';
 import { SectionSakuraHeader } from './DecorativeBranches';
 
-export default function CloudSystemsArchitecture({ onSelectImage, onOpenConsole }) {
+export default function CloudSystemsArchitecture({ onSelectImage }) {
   const [cardViews, setCardViews] = useState({});
   const [copiedId, setCopiedId] = useState(null);
 
@@ -280,42 +280,6 @@ resource "aws_network_acl_rule" "deny_wan_to_pacs" {
               </p>
             </div>
           </div>
-        </div>
-
-        {/* Interactive Console Sandbox Launch Banner */}
-        <div
-          className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-xl border mb-10 text-xs font-mono transition-all"
-          style={{
-            background: 'var(--surface)',
-            borderColor: 'var(--line)',
-          }}
-        >
-          <div className="flex items-center gap-3">
-            <div
-              className="p-2.5 rounded-lg border"
-              style={{
-                background: 'var(--surface-soft)',
-                borderColor: 'var(--line)',
-                color: 'var(--brand-coral)',
-              }}
-            >
-              <Shield className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="font-bold block text-sm">Interactive Cloud Security Defense Sandbox</span>
-              <span className="opacity-70">
-                Run live IAM AST policy linting, play incident response crises, and benchmark prompt injection entropy in real time.
-              </span>
-            </div>
-          </div>
-          <button
-            onClick={onOpenConsole}
-            className="px-4 py-2.5 rounded-lg font-bold flex items-center gap-2 transition-all shadow-md whitespace-nowrap active:scale-95 text-white"
-            style={{ background: 'var(--brand-coral)' }}
-          >
-            <span>Launch Security Sandbox</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
         </div>
 
         {/* 4 Architecture Cards with Diagram & Code Spec Toggles */}

@@ -203,12 +203,6 @@ export default function InteractiveTourGuide({ isOpen, onClose }) {
         silent: true,
       },
       {
-        selector: '[data-testid="button-hero-hint"]',
-        caption: 'Interactive Cloud Security Sandbox: live IAM AST linter, incident simulator, and Shannon entropy benchmark.',
-        action: 'click',
-        hold: 1800,
-      },
-      {
         selector: '#aws-architecture',
         caption: 'Production cloud architectures: Amazon Bedrock guardrails, EventBridge remediation, and clinical network topology.',
         action: 'visit',

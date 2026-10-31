@@ -1,7 +1,7 @@
 import React from 'react';
 import { MousePointerClick, ArrowRight } from 'lucide-react';
 
-export default function Hero({ onOpenConsole, onStartTour }) {
+export default function Hero({ onStartTour }) {
   return (
     <section
       id="top"
@@ -34,12 +34,12 @@ export default function Hero({ onOpenConsole, onStartTour }) {
           </span>
         </div>
 
-        {/* Action Buttons: Tour CTA, View Projects, and Security Sandbox */}
+        {/* Action Buttons: Tour CTA, View Projects, and Resume PDF */}
         <div className="mt-9 flex flex-wrap items-center gap-3">
           {/* 1. Interactive Tour CTA */}
           <button
             type="button"
-            onClick={onStartTour || onOpenConsole}
+            onClick={onStartTour}
             className="tour-cta button-primary inline-flex items-center gap-2.5 px-6 py-3.5 text-[12px] font-bold uppercase tracking-[0.18em] rounded-full shadow-md active:scale-95 transition-all hover:scale-105"
             data-testid="button-hero-tour"
           >
@@ -62,24 +62,21 @@ export default function Hero({ onOpenConsole, onStartTour }) {
             <ArrowRight className="w-3.5 h-3.5" />
           </a>
 
-          {/* 3. Cloud Security Sandbox */}
-          <button
-            type="button"
-            onClick={onOpenConsole}
-            className="inline-flex items-center gap-2 px-4 py-3 text-[11px] font-mono font-bold tracking-wider uppercase rounded-full border transition-transform hover:scale-105 shadow-sm"
+          {/* 3. Resume PDF */}
+          <a
+            href="/assets/resume/Mohamed_Makhlouf_Resume.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-3.5 text-[12px] font-mono font-bold uppercase tracking-[0.16em] rounded-full border transition-all hover:scale-105 shadow-sm"
             style={{
               background: 'var(--surface-soft)',
               borderColor: 'var(--line)',
               color: 'var(--brand-coral)',
             }}
-            data-testid="button-hero-hint"
+            data-testid="button-hero-resume"
           >
-            <span
-              className="w-2 h-2 rounded-full animate-ping"
-              style={{ background: 'var(--brand-coral)' }}
-            />
-            <span>Security Sandbox</span>
-          </button>
+            <span>Resume [PDF]</span>
+          </a>
         </div>
       </div>
 
