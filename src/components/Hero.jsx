@@ -1,5 +1,5 @@
 import React from 'react';
-import { MousePointerClick, ArrowRight } from 'lucide-react';
+import { Mouse, ArrowRight } from 'lucide-react';
 
 export default function Hero({ onStartTour }) {
   return (
@@ -40,11 +40,15 @@ export default function Hero({ onStartTour }) {
           <button
             type="button"
             onClick={onStartTour}
-            className="tour-cta button-primary inline-flex items-center gap-2.5 px-6 py-3.5 text-[12px] font-bold uppercase tracking-[0.18em] rounded-full shadow-md active:scale-95 transition-all hover:scale-105"
+            className="tour-cta tour-cta-glow button-primary group relative inline-flex items-center gap-2.5 px-6 py-3.5 text-[12px] font-bold uppercase tracking-[0.18em] rounded-full active:scale-95 transition-all hover:scale-105 overflow-hidden shadow-lg"
             data-testid="button-hero-tour"
           >
-            <span>Interactive Tour</span>
-            <MousePointerClick className="w-4 h-4 ml-0.5" />
+            <span className="relative z-10">Give Me a Tour</span>
+            <span className="animate-mouse-bob relative z-10" style={{ color: 'var(--brand-coral)' }}>
+              <Mouse className="w-4 h-4" />
+            </span>
+            {/* Interactive light sheen on hover */}
+            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/15 to-transparent pointer-events-none" />
           </button>
 
           {/* 2. View Projects */}
