@@ -228,7 +228,7 @@ export default function InteractiveTourGuide({ isOpen, onClose }) {
       },
       {
         selector: '#skills',
-        caption: 'Core technical stack: Cloud DevSecOps, AI Security, CI/CD gates, and CachyOS Linux.',
+        caption: 'Core technical stack: Cloud Security, DevSecOps, and Linux systems.',
         action: 'visit',
         hold: 2000,
       },
@@ -241,19 +241,75 @@ export default function InteractiveTourGuide({ isOpen, onClose }) {
         const el = document.querySelector(step.selector);
         if (!el) continue;
 
-        // Auto-scroll target into viewport if offscreen
+        // Auto-scroll target into viewport so element and its contents are fully in view
         const rect = el.getBoundingClientRect();
         const absTop = window.scrollY + rect.top;
-        const targetScrollY = Math.max(0, absTop - (window.innerHeight / 3));
+        const navHeight = 72;
+        const vh = window.innerHeight;
+        const elemHeight = rect.height;
 
-        if (Math.abs(window.scrollY - targetScrollY) > 80) {
-          await animateScrollTo(targetScrollY, 650);
+        let targetScrollY;
+
+        // 1. Top navbar items or hero top
+        if (absTop < 150) {
+          targetScrollY = 0;
+        }
+        // 2. Resume preview card: scroll down enough so the download button is completely visible above bottom edge
+        else if (step.selector === '[data-testid="card-resume-preview"]') {
+          if (elemHeight < vh - navHeight - 30) {
+            targetScrollY = absTop - navHeight - ((vh - navHeight - elemHeight) / 2);
+          } else {
+            // Ensure the entire card down to the download bar is fully visible
+            targetScrollY = absTop + elemHeight - vh + 50;
+          }
+        }
+        // 3. Major sections (#work, #experience, #skills): scroll past top section padding so content fills the page
+        else if (step.action === 'visit' || elemHeight > vh * 0.8) {
+          targetScrollY = absTop - navHeight + 32;
+        }
+        // 4. Default: center element in the visible viewport
+        else {
+          targetScrollY = absTop - navHeight - Math.max(0, (vh - navHeight - elemHeight) / 2);
         }
 
-        // Move cursor to element
+        targetScrollY = Math.max(0, Math.round(targetScrollY));
+
+        if (Math.abs(window.scrollY - targetScrollY) > 16) {
+          await animateScrollTo(targetScrollY, 700);
+        }
+
+        // Move cursor to element with smart contextual target coordinates
         const updatedRect = el.getBoundingClientRect();
-        const destX = updatedRect.left + (updatedRect.width * 0.45);
-        const destY = updatedRect.top + (updatedRect.height * 0.45);
+        let destX, destY;
+
+        if (step.selector === '#work') {
+          const tabsEl = el.querySelector('.display') || el.querySelector('h2');
+          if (tabsEl) {
+            const tabsRect = tabsEl.getBoundingClientRect();
+            destX = tabsRect.left + (tabsRect.width * 0.45);
+            destY = tabsRect.top + (tabsRect.height * 0.5);
+          } else {
+            destX = updatedRect.left + (updatedRect.width * 0.5);
+            destY = updatedRect.top + Math.min(180, updatedRect.height * 0.2);
+          }
+        } else if (step.selector === '#experience') {
+          const headEl = el.querySelector('h3') || el.querySelector('h2');
+          if (headEl) {
+            const headRect = headEl.getBoundingClientRect();
+            destX = headRect.left + (headRect.width * 0.35);
+            destY = headRect.top + (headRect.height * 0.5);
+          } else {
+            destX = updatedRect.left + (updatedRect.width * 0.35);
+            destY = updatedRect.top + Math.min(160, updatedRect.height * 0.2);
+          }
+        } else if (step.selector === '[data-testid="card-resume-preview"]') {
+          destX = updatedRect.left + (updatedRect.width * 0.5);
+          destY = updatedRect.top + Math.min(220, updatedRect.height * 0.3);
+        } else {
+          destX = updatedRect.left + (updatedRect.width * 0.45);
+          destY = updatedRect.top + (updatedRect.height * 0.45);
+        }
+
         await animateCursorTo(destX, destY, 600);
 
         // Show caption bubble if not silent and caption text is provided
