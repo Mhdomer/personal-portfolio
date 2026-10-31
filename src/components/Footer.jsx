@@ -1,7 +1,7 @@
 import React from 'react';
-import { ExternalLink, Shield } from 'lucide-react';
+import { ExternalLink, Shield, FileText, BookOpen, Mail, Phone, ArrowUpRight } from 'lucide-react';
 
-export default function Footer() {
+export default function Footer({ onOpenResume }) {
   return (
     <footer
       className="border-t py-16 relative z-20 transition-colors duration-300"
@@ -31,18 +31,34 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-sm leading-relaxed max-w-sm opacity-75">
-              Mohamed Makhlouf. Senior Computer Science student at Universiti Teknologi Malaysia (UTM) undergoing Industrial Training at Al-Ameen Medical Complex IT Dept, Riyadh. Dedicated to Cloud DevSecOps, AI Security, shift-left gating, and peer mentorship.
+              Mohamed Makhlouf. Senior Computer Science student at Universiti Teknologi Malaysia (UTM) undergoing Industrial Training at Al-Ameen Medical Complex IT Dept, Riyadh. Focused on Cloud Security, DevSecOps pipelines, AI guardrails, and Linux systems.
             </p>
-            <div className="pt-2">
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              {onOpenResume && (
+                <button
+                  type="button"
+                  onClick={onOpenResume}
+                  className="text-xs font-mono px-3 py-1.5 rounded border flex items-center gap-1.5 transition-all hover:brightness-110 cursor-pointer"
+                  style={{
+                    background: 'var(--surface)',
+                    borderColor: 'var(--line)',
+                    color: 'var(--brand-coral)',
+                  }}
+                >
+                  <FileText className="w-3.5 h-3.5" />
+                  <span>View ATS Resume</span>
+                </button>
+              )}
               <a
                 href="/assets/resume/Mohamed_Makhlouf_Resume.pdf"
                 target="_blank"
                 rel="noreferrer"
-                className="text-xs font-mono underline underline-offset-4 flex items-center gap-1.5 hover:opacity-80 transition-opacity"
-                style={{ color: 'var(--brand-coral)' }}
+                download="Mohamed_Makhlouf_Resume.pdf"
+                className="text-xs font-mono underline underline-offset-4 flex items-center gap-1 hover:opacity-80 transition-opacity opacity-70"
+                style={{ color: 'var(--ink)' }}
               >
-                <span>Download ATS Resume (PDF)</span>
-                <span>→</span>
+                <span>Download PDF</span>
+                <ArrowUpRight className="w-3 h-3" />
               </a>
             </div>
           </div>
@@ -53,12 +69,7 @@ export default function Footer() {
             <ul className="space-y-2 text-sm opacity-80">
               <li>
                 <a href="#work" className="hover:opacity-100 transition-opacity text-xs font-mono">
-                  Work & Projects
-                </a>
-              </li>
-              <li>
-                <a href="#skills" className="hover:opacity-100 transition-opacity text-xs font-mono">
-                  Tech Superpowers
+                  Selected Systems
                 </a>
               </li>
               <li>
@@ -67,15 +78,32 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <a href="#skills" className="hover:opacity-100 transition-opacity text-xs font-mono">
+                  Technical Arsenal
+                </a>
+              </li>
+              <li>
                 <a
-                  href="https://github.com/Mhdomer/aegis-2b"
+                  href="https://mhdomer.github.io"
                   target="_blank"
                   rel="noreferrer"
                   className="hover:opacity-100 transition-opacity flex items-center gap-1 text-xs font-mono"
                   style={{ color: 'var(--brand-coral)' }}
                 >
-                  <span>Aegis-2B Guardrail Repo</span>
-                  <ExternalLink className="w-3 h-3" />
+                  <BookOpen className="w-3 h-3" />
+                  <span>Technical Blog</span>
+                  <ExternalLink className="w-2.5 h-2.5 opacity-60" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/Mhdomer/aegis-2b"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:opacity-100 transition-opacity flex items-center gap-1 text-xs font-mono opacity-80 hover:opacity-100"
+                >
+                  <span>Aegis-2B Guardrails</span>
+                  <ExternalLink className="w-2.5 h-2.5 opacity-60" />
                 </a>
               </li>
             </ul>
@@ -106,6 +134,26 @@ export default function Footer() {
                 </a>
               </div>
               <div>
+                <span className="opacity-60">Saudi Mobile: </span>
+                <a
+                  href="tel:+966533741162"
+                  className="hover:underline"
+                  style={{ color: 'var(--brand-coral)' }}
+                >
+                  +966 53 374 1162
+                </a>
+              </div>
+              <div>
+                <span className="opacity-60">Malaysian Mobile: </span>
+                <a
+                  href="tel:+601111383171"
+                  className="hover:underline"
+                  style={{ color: 'var(--brand-coral)' }}
+                >
+                  +60 11-1138 3171
+                </a>
+              </div>
+              <div>
                 <span className="opacity-60">LinkedIn: </span>
                 <a
                   href="https://linkedin.com/in/mhd3omar"
@@ -133,7 +181,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Credits & Security Badge */}
+        {/* Bottom Credits & Verification */}
         <div
           className="pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono opacity-70"
           style={{ borderColor: 'var(--line)' }}
@@ -141,7 +189,7 @@ export default function Footer() {
           <div className="flex items-center gap-2">
             <span>© {new Date().getFullYear()} Mohamed Makhlouf (Mhdomar)</span>
             <span>•</span>
-            <span style={{ color: 'var(--brand-coral)' }}>Cloud Security & DevSecOps</span>
+            <span style={{ color: 'var(--brand-coral)' }}>Cloud Security & DevSecOps Engineer</span>
           </div>
 
           <div className="flex items-center gap-4">
@@ -162,3 +210,4 @@ export default function Footer() {
     </footer>
   );
 }
+

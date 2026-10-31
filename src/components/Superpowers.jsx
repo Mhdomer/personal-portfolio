@@ -46,8 +46,7 @@ export default function Superpowers() {
   return (
     <section
       id="skills"
-      className="py-24 border-t transition-colors duration-300"
-      style={{ borderColor: 'var(--line)' }}
+      className="py-24 transition-colors duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header with Sakura Branch Adornment */}

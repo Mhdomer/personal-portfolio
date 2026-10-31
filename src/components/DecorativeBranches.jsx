@@ -104,3 +104,39 @@ export function SectionSakuraHeader({ title, category, className = '' }) {
     </div>
   );
 }
+
+/**
+ * Section Sakura Divider Flourish (bridges horizontal section borders)
+ */
+export function SectionSakuraDivider({ flip = false, className = '' }) {
+  return (
+    <div
+      className={`relative w-full overflow-hidden py-4 pointer-events-none select-none flex items-center justify-center ${className}`}
+      aria-hidden="true"
+    >
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-4 opacity-40">
+        <div className="h-px flex-1" style={{ background: 'var(--line)' }} />
+        <div
+          className="w-16 h-8 shrink-0 transition-colors"
+          style={{
+            color: 'var(--ink)',
+            transform: flip ? 'scaleX(-1)' : 'none',
+          }}
+        >
+          <svg viewBox="0 0 120 40" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M5,22 C35,18 70,20 115,12" />
+            <path d="M45,20 C60,14 75,10 85,6" />
+            <path d="M25,21 C35,26 48,28 58,32" />
+            <ellipse cx="60" cy="14" rx="4.5" ry="2.6" fill="currentColor" transform="rotate(-18 60 14)" />
+            <ellipse cx="66" cy="16" rx="3.8" ry="2.2" fill="currentColor" transform="rotate(22 66 16)" />
+            <ellipse cx="88" cy="8" rx="4.2" ry="2.4" fill="currentColor" transform="rotate(-15 88 8)" />
+            <ellipse cx="40" cy="24" rx="3.8" ry="2.2" fill="currentColor" transform="rotate(25 40 24)" />
+            <circle cx="55" cy="16" r="1.5" fill="currentColor" />
+            <circle cx="82" cy="10" r="1.5" fill="currentColor" />
+          </svg>
+        </div>
+        <div className="h-px flex-1" style={{ background: 'var(--line)' }} />
+      </div>
+    </div>
+  );
+}

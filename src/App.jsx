@@ -10,7 +10,7 @@ import AtsResumeModal from './components/AtsResumeModal';
 import LinuxBootKatanaIntro from './components/LinuxBootKatanaIntro';
 import FallingSakuraLeaves from './components/FallingSakuraLeaves';
 import CursorSwordSlash from './components/CursorSwordSlash';
-import DecorativeBranches from './components/DecorativeBranches';
+import DecorativeBranches, { SectionSakuraDivider } from './components/DecorativeBranches';
 import InteractiveTourGuide from './components/InteractiveTourGuide';
 
 export default function App() {
@@ -61,8 +61,14 @@ export default function App() {
           onSelectImage={handleOpenImage}
         />
 
+        {/* Sakura Section Divider Flourish */}
+        <SectionSakuraDivider />
+
         {/* Section 2: Selected Production Systems & Architecture Blueprints */}
         <Projects onSelectImage={handleOpenImage} />
+
+        {/* Sakura Section Divider Flourish (Flipped) */}
+        <SectionSakuraDivider flip />
 
         {/* Section 3: Grounded Student Engineer Journey, Podiums & ATS Resume */}
         <About
@@ -70,12 +76,15 @@ export default function App() {
           onOpenResume={() => setResumeModalOpen(true)}
         />
 
+        {/* Sakura Section Divider Flourish */}
+        <SectionSakuraDivider />
+
         {/* Section 4: Technical Arsenal & System Tooling */}
         <Superpowers />
       </main>
 
       {/* Global Footer */}
-      <Footer />
+      <Footer onOpenResume={() => setResumeModalOpen(true)} />
 
       {/* Interactive Portfolio Tour */}
       <InteractiveTourGuide

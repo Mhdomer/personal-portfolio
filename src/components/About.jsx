@@ -33,8 +33,7 @@ export default function About({ onSelectImage, onOpenResume }) {
   return (
     <section
       id="experience"
-      className="py-20 border-t transition-colors duration-300 relative"
-      style={{ borderColor: 'var(--line)' }}
+      className="py-20 transition-colors duration-300 relative"
     >
       <div id="about" className="absolute -top-24 pointer-events-none" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

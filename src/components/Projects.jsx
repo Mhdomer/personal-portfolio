@@ -258,8 +258,7 @@ jobs:
   return (
     <section
       id="work"
-      className="py-24 border-t transition-colors duration-300 relative"
-      style={{ borderColor: 'var(--line)' }}
+      className="py-24 transition-colors duration-300 relative"
     >
       <div id="projects" className="absolute -top-20" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
