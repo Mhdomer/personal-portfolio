@@ -137,7 +137,7 @@ def lambda_handler(event, context):
       service: 'Amazon Bedrock + AWS Lambda',
       metric: '115ms p99 · 16x Faster',
       github: 'https://github.com/Mhdomer/aegis-2b',
-      previewImage: '/assets/projects/aegis-web-dashboard.png',
+      previewImage: '/assets/projects/aegis-hero-banner.png',
       diagramImage: '/assets/projects/aegis-aws-architecture.png',
       videoSrc: '', // Ready for video clip upload
       problem:
@@ -199,8 +199,8 @@ def dispatch_cloud_mutation(action_request: dict) -> AuditReceipt:
       service: 'Terraform + Docker + GitHub Actions',
       metric: 'Exit Code 1 Gate · 47 Resources',
       github: 'https://github.com/Mhdomer/mindcraft-aws-migration',
-      previewImage: '/assets/projects/pr1-trivy-gate-blocked.png',
-      diagramImage: '/assets/projects/pr1-trivy-gate-blocked.png',
+      previewImage: '/assets/projects/mindcraft-preview.png',
+      diagramImage: '/assets/projects/mindcraft-aws-architecture.png',
       videoSrc: '', // Ready for video clip upload
       problem:
         'Firebase hides everything below the application layer, giving zero control over database networking, subnets, and container vulnerabilities. Vulnerable dependencies and container CVEs slip into production environments without shift-left security enforcement.',
@@ -382,7 +382,7 @@ jobs:
                     <img
                       src={currentSystem.previewImage}
                       alt={currentSystem.title}
-                      className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.02]"
+                      className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
                     />
                   )}
 
