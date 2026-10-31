@@ -6,6 +6,7 @@ import About from './components/About';
 import Superpowers from './components/Superpowers';
 import Footer from './components/Footer';
 import ImageModal from './components/ImageModal';
+import AtsResumeModal from './components/AtsResumeModal';
 import LinuxBootKatanaIntro from './components/LinuxBootKatanaIntro';
 import FallingSakuraLeaves from './components/FallingSakuraLeaves';
 import CursorSwordSlash from './components/CursorSwordSlash';
@@ -14,6 +15,7 @@ import InteractiveTourGuide from './components/InteractiveTourGuide';
 
 export default function App() {
   const [tourOpen, setTourOpen] = useState(false);
+  const [resumeModalOpen, setResumeModalOpen] = useState(false);
   const [bootIntroOpen, setBootIntroOpen] = useState(() => {
     if (typeof window === 'undefined') return true;
     return !window.location.search.includes('noboot');
@@ -46,7 +48,10 @@ export default function App() {
       <CursorSwordSlash />
 
       {/* Top Sticky Navbar with Theme Toggle, Lower Hanging Katana, and Tour */}
-      <Navbar onStartTour={() => setTourOpen(true)} />
+      <Navbar
+        onStartTour={() => setTourOpen(true)}
+        onOpenResume={() => setResumeModalOpen(true)}
+      />
 
       {/* Main Content Sections */}
       <main className="relative z-10">
@@ -60,7 +65,10 @@ export default function App() {
         <Projects onSelectImage={handleOpenImage} />
 
         {/* Section 3: Grounded Student Engineer Journey, Podiums & ATS Resume */}
-        <About onSelectImage={handleOpenImage} />
+        <About
+          onSelectImage={handleOpenImage}
+          onOpenResume={() => setResumeModalOpen(true)}
+        />
 
         {/* Section 4: Technical Arsenal & System Tooling */}
         <Superpowers />
@@ -73,6 +81,12 @@ export default function App() {
       <InteractiveTourGuide
         isOpen={tourOpen}
         onClose={() => setTourOpen(false)}
+      />
+
+      {/* Direct ATS Resume Inspection Modal */}
+      <AtsResumeModal
+        isOpen={resumeModalOpen}
+        onClose={() => setResumeModalOpen(false)}
       />
 
       {/* High-Resolution Screenshot Inspection Modal */}

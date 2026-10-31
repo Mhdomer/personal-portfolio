@@ -1,8 +1,8 @@
 import React from 'react';
-import { Download, ExternalLink } from 'lucide-react';
+import { Download, ExternalLink, Maximize2 } from 'lucide-react';
 import { SectionSakuraHeader } from './DecorativeBranches';
 
-export default function About({ onSelectImage }) {
+export default function About({ onSelectImage, onOpenResume }) {
   const achievements = [
     {
       title: "UTM DEAN'S LIST // CGPA 3.43",
@@ -42,7 +42,7 @@ export default function About({ onSelectImage }) {
           <div className="lg:col-span-7 space-y-8">
             <div>
               <SectionSakuraHeader category="Proven Track Record" />
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight uppercase leading-[1.18] display">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight uppercase leading-[1.12] display">
                 Experience &<br />
                 <span style={{ color: 'var(--brand-coral)' }}>Achievements.</span>
               </h2>
@@ -78,40 +78,45 @@ export default function About({ onSelectImage }) {
             </div>
           </div>
 
-          {/* Right Column: Clean Framed Resume Card (sharara.me editorial style) */}
+          {/* Right Column: Clean Framed Resume Card (Exact match to screenshot) */}
           <div className="lg:col-span-5 flex flex-col">
             <div className="text-xs font-mono font-bold uppercase tracking-widest mb-4 opacity-60">
               RESUME
             </div>
 
             <div
-              className="rounded-2xl overflow-hidden shadow-2xl border flex flex-col group transition-all"
+              className="rounded-3xl overflow-hidden shadow-2xl border flex flex-col group transition-all"
               style={{
                 background: 'var(--surface)',
                 borderColor: 'var(--line)',
               }}
               data-testid="card-resume-preview"
             >
-              {/* Document Image Container with Click-to-Zoom */}
+              {/* Document Image Container with rounded top white paper sheet */}
               <div
-                className="relative overflow-hidden cursor-pointer max-h-[460px] sm:max-h-[500px]"
-                style={{ background: 'var(--surface-soft)' }}
+                className="relative overflow-hidden cursor-pointer bg-white transition-transform duration-300 group-hover:scale-[1.01]"
+                style={{
+                  borderTopLeftRadius: '22px',
+                  borderTopRightRadius: '22px',
+                }}
                 onClick={() =>
-                  onSelectImage &&
-                  onSelectImage(
-                    '/assets/resume/resume-preview.png',
-                    'Mohamed Makhlouf // Cloud DevSecOps & AI Security Resume'
-                  )
+                  onOpenResume
+                    ? onOpenResume()
+                    : onSelectImage &&
+                      onSelectImage(
+                        '/assets/resume/resume-preview.png',
+                        'Mohamed Makhlouf // Cloud DevSecOps & AI Security Resume'
+                      )
                 }
               >
                 <img
                   src="/assets/resume/resume-preview.png"
                   alt="Mohamed Makhlouf Resume"
-                  className="w-full object-top object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                  className="w-full h-auto object-top object-contain block select-text"
                 />
 
                 {/* Inspect Overlay on Hover */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
+                <div className="absolute inset-0 bg-black/35 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                   <span
                     className="px-3.5 py-1.5 rounded-full font-mono text-xs font-semibold border shadow-xl flex items-center gap-1.5 backdrop-blur-md"
                     style={{
@@ -120,44 +125,47 @@ export default function About({ onSelectImage }) {
                       borderColor: 'var(--line)',
                     }}
                   >
-                    <ExternalLink className="w-3.5 h-3.5" style={{ color: 'var(--brand-coral)' }} />
-                    <span>Click to Inspect High-Res</span>
+                    <Maximize2 className="w-3.5 h-3.5" style={{ color: 'var(--brand-coral)' }} />
+                    <span>Click to View Interactive ATS Resume</span>
                   </span>
                 </div>
               </div>
 
               {/* Bottom Action Footer Bar */}
               <div
-                className="p-3 sm:p-4 border-t flex items-center gap-2"
+                className="p-3 sm:p-4 border-t flex items-center gap-2.5"
                 style={{
-                  background: 'var(--surface-sheet)',
+                  background: 'var(--surface)',
                   borderColor: 'var(--line)',
                 }}
               >
                 <a
                   href="/assets/resume/Mohamed_Makhlouf_Resume.pdf"
                   download="Mohamed_Makhlouf_Resume.pdf"
-                  className="flex-1 py-3 px-4 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md active:scale-95 text-white"
+                  className="flex-1 py-3 px-4 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md active:scale-95 text-white hover:opacity-90"
                   style={{ background: 'var(--brand-coral)' }}
                 >
                   <Download className="w-4 h-4" />
-                  <span>Download Resume</span>
+                  <span>DOWNLOAD RESUME</span>
                 </a>
-                <a
-                  href="/assets/resume/Mohamed_Makhlouf_Resume.pdf"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="py-3 px-4 rounded-xl border font-mono text-xs font-semibold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 hover:opacity-80"
+                <button
+                  type="button"
+                  onClick={() =>
+                    onOpenResume
+                      ? onOpenResume()
+                      : window.open('/assets/resume/Mohamed_Makhlouf_Resume.pdf', '_blank')
+                  }
+                  className="py-3 px-4 rounded-xl border font-mono text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 hover:opacity-80 active:scale-95"
                   style={{
-                    background: 'var(--surface)',
+                    background: 'var(--surface-soft)',
                     borderColor: 'var(--line)',
                     color: 'var(--ink)',
                   }}
-                  title="Open PDF in new tab"
+                  title="Open interactive 1-page PDF modal"
                 >
                   <ExternalLink className="w-4 h-4" style={{ color: 'var(--brand-coral)' }} />
                   <span>PDF</span>
-                </a>
+                </button>
               </div>
             </div>
           </div>

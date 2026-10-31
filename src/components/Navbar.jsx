@@ -3,7 +3,7 @@ import { Menu, X, FileText, BookOpen } from 'lucide-react';
 import { GithubIcon } from './Icons';
 import ThemeToggle from './ThemeToggle';
 
-export default function Navbar({ onStartTour }) {
+export default function Navbar({ onStartTour, onOpenResume }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [katanaSrc, setKatanaSrc] = useState('/assets/decorations/katana-hang.webp');
 
@@ -98,7 +98,13 @@ export default function Navbar({ onStartTour }) {
               href="/assets/resume/Mohamed_Makhlouf_Resume.pdf"
               target="_blank"
               rel="noreferrer"
-              className="px-3.5 py-2 rounded-full font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-sm flex items-center gap-1.5 border hover:opacity-90 active:scale-95"
+              onClick={(e) => {
+                if (onOpenResume) {
+                  e.preventDefault();
+                  onOpenResume();
+                }
+              }}
+              className="px-3.5 py-2 rounded-full font-mono text-xs font-bold tracking-wider uppercase transition-all shadow-sm flex items-center gap-1.5 border hover:opacity-90 active:scale-95 cursor-pointer"
               style={{
                 background: 'var(--button-bg)',
                 color: 'var(--button-fg)',
@@ -119,7 +125,13 @@ export default function Navbar({ onStartTour }) {
               href="/assets/resume/Mohamed_Makhlouf_Resume.pdf"
               target="_blank"
               rel="noreferrer"
-              className="px-2.5 py-1.5 rounded-full text-xs font-mono font-bold flex items-center gap-1 border"
+              onClick={(e) => {
+                if (onOpenResume) {
+                  e.preventDefault();
+                  onOpenResume();
+                }
+              }}
+              className="px-2.5 py-1.5 rounded-full text-xs font-mono font-bold flex items-center gap-1 border cursor-pointer"
               style={{
                 background: 'var(--button-bg)',
                 color: 'var(--button-fg)',
