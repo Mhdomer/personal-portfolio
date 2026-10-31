@@ -5,7 +5,7 @@ description: Step-by-step guide for deploying and maintaining the portfolio webs
 
 # AWS Amplify Hosting Deployment Guide
 
-This skill guides the deployment of the portfolio to AWS Amplify Hosting per the AWS Student Builder Challenge requirements.
+This skill guides the deployment of the portfolio to AWS Amplify Hosting with continuous deployment from GitHub.
 
 ---
 

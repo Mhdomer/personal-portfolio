@@ -80,7 +80,7 @@ export default function Navbar({ onOpenConsole, onStartTour }) {
             </a>
           </div>
 
-          {/* Right: The Visible Hint Creative Feature Button + Theme Toggle + Tour */}
+          {/* Right: Security Lab + Theme Toggle + Tour */}
           <div className="hidden sm:flex items-center gap-2.5">
             <ThemeToggle />
 
@@ -92,7 +92,7 @@ export default function Navbar({ onOpenConsole, onStartTour }) {
                 borderColor: 'var(--line)',
                 color: 'var(--ink)',
               }}
-              title="Launch AWS Hackathon Guided Tour"
+              title="Launch Interactive Site Tour"
             >
               <span>Tour</span>
               <span style={{ color: 'var(--brand-coral)' }}>⚡</span>
@@ -110,10 +110,10 @@ export default function Navbar({ onOpenConsole, onStartTour }) {
               <ShieldCheck className="w-4 h-4 group-hover:scale-110 transition-transform" style={{ color: 'var(--brand-coral)' }} />
               <span>Security Lab</span>
               <span
-                className="text-[10px] text-white px-1.5 py-0.5 rounded-full font-sans lowercase"
+                className="text-[10px] text-white px-1.5 py-0.5 rounded-full font-mono uppercase font-semibold"
                 style={{ background: 'var(--brand-coral)' }}
               >
-                hint!
+                live
               </span>
             </button>
           </div>

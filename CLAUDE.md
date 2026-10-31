@@ -1,15 +1,15 @@
 # CLAUDE.md - Development & Contribution Guide
 
 ## Project Overview
-Tech Superpower Portfolio website and interactive systems engineering console built by Mohamed Makhlouf (Omar) for the **AWS Student Builder Challenge: Build Your Tech Superpower** (October 2026).
+Personal portfolio website and interactive cloud security defense workbench built by Mohamed Makhlouf (Omar / Mhdomar), Cloud DevSecOps & AI Security Engineer and Computer Science student at Universiti Teknologi Malaysia (UTM).
 
 Deployed live via **AWS Amplify Hosting** with global CloudFront distribution.
 
 ## Tech Stack
 - Framework: React 19 + Vite 6
-- Styling: Tailwind CSS 3.4 (custom charcoal, sakura, and engine color tokens)
+- Styling: Tailwind CSS 3.4 (custom charcoal, terracotta, and cyber color tokens)
 - Icons: Lucide React + custom SVG icons (`src/components/Icons.jsx`)
-- Effects: Canvas Confetti (sakura bursts) + HTML5 2D Canvas (falling sakura petals)
+- Effects: Canvas Confetti + HTML5 2D Canvas + Interactive Katana Slice
 - Hosting: AWS Amplify Hosting (`amplify.yml`)
 
 ## Invariants & Rules

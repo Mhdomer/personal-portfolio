@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import AwsCloudHealthBar from './components/AwsCloudHealthBar';
-import AwsChallengeArchitecture from './components/AwsChallengeArchitecture';
+import CloudSystemsArchitecture from './components/CloudSystemsArchitecture';
 import About from './components/About';
 import Superpowers from './components/Superpowers';
 import Projects from './components/Projects';
@@ -14,7 +14,7 @@ import LinuxBootKatanaIntro from './components/LinuxBootKatanaIntro';
 import FallingSakuraLeaves from './components/FallingSakuraLeaves';
 import CursorSwordSlash from './components/CursorSwordSlash';
 import DecorativeBranches from './components/DecorativeBranches';
-import HackathonTourGuide from './components/HackathonTourGuide';
+import InteractiveTourGuide from './components/InteractiveTourGuide';
 
 export default function App() {
   const [labOpen, setLabOpen] = useState(false);
@@ -68,8 +68,8 @@ export default function App() {
         {/* Live Cloud Architecture Telemetry Status Ticker */}
         <AwsCloudHealthBar onOpenConsole={() => setLabOpen(true)} />
 
-        {/* Section 2: Dedicated AWS Student Builder Challenge Architecture */}
-        <AwsChallengeArchitecture
+        {/* Section 2: Production Cloud Infrastructure & Defense Systems */}
+        <CloudSystemsArchitecture
           onSelectImage={handleOpenImage}
           onOpenConsole={() => setLabOpen(true)}
         />
@@ -96,14 +96,14 @@ export default function App() {
       {/* Global Footer */}
       <Footer onOpenConsole={() => setLabOpen(true)} />
 
-      {/* The Creative Feature: Interactive Cloud Security Defense Sandbox & Linter Modal */}
+      {/* Interactive Cloud Security Defense Sandbox & Linter Modal */}
       <InteractiveSecurityLabModal
         isOpen={labOpen}
         onClose={() => setLabOpen(false)}
       />
 
-      {/* Interactive AWS Hackathon Guided Tour for Judges and Visitors */}
-      <HackathonTourGuide
+      {/* Interactive Portfolio Tour */}
+      <InteractiveTourGuide
         isOpen={tourOpen}
         onClose={() => setTourOpen(false)}
         onOpenLab={() => {

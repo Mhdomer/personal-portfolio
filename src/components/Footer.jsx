@@ -131,7 +131,7 @@ export default function Footer({ onOpenConsole }) {
           </div>
         </div>
 
-        {/* Bottom Credits & Rubric Badge */}
+        {/* Bottom Credits & Security Badge */}
         <div
           className="pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono opacity-70"
           style={{ borderColor: 'var(--line)' }}
@@ -139,12 +139,12 @@ export default function Footer({ onOpenConsole }) {
           <div className="flex items-center gap-2">
             <span>© {new Date().getFullYear()} Mohamed Makhlouf (Mhdomar)</span>
             <span>•</span>
-            <span style={{ color: 'var(--brand-coral)' }}>AWS Student Builder Challenge</span>
+            <span style={{ color: 'var(--brand-coral)' }}>Cloud DevSecOps & AI Security</span>
           </div>
 
           <div className="flex items-center gap-4">
             <a
-              href="https://github.com/Mhdomer/tech-superpower-portfolio"
+              href="https://github.com/Mhdomer/personal-portfolio"
               target="_blank"
               rel="noreferrer"
               className="hover:opacity-100 transition-opacity flex items-center gap-1"

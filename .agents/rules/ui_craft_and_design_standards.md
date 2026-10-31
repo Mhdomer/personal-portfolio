@@ -43,10 +43,10 @@ Do not invent random hex codes. Stick to the curated Tailwind design system defi
 
 ## 3. Micro-Interactions & Usability
 
-1. **Visible Hint Invariant:** The `[ Superpower Engine ]` button with its pulsing badge in `Navbar.jsx` and `Hero.jsx` is an AWS Hackathon rubric requirement. It must NEVER be removed, hidden, or obscured.
-2. **Keyboard Accessibility:** Any modal or overlay (like `CreativeEngineModal.jsx`) must close when the user presses `ESC`, and must trap or restore focus cleanly.
+1. **Interactive Discoverability:** Interactive workbench buttons (like the Security Sandbox in Navbar and Hero) should remain cleanly accessible with tactile feedback.
+2. **Keyboard Accessibility:** Any modal or overlay (like `InteractiveSecurityLabModal.jsx`) must close when the user presses `ESC`, and must trap or restore focus cleanly.
 3. **Smooth State Transitions:** Use `transition-all duration-200 ease-out` on buttons and cards. Avoid abrupt or jarring layout shifts.
-4. **Canvas Performance:** `SakuraCanvas.jsx` must always stay behind interactive elements (`z-0` or `z-10` with `pointer-events-none`). Its loop must use `requestAnimationFrame` and cleanly call `cancelAnimationFrame` in the `useEffect` cleanup return.
+4. **Canvas Performance:** Ambient canvas elements must always stay behind interactive elements (`z-0` or `z-10` with `pointer-events-none`). Animation loops must use `requestAnimationFrame` and cleanly call `cancelAnimationFrame` in the `useEffect` cleanup return.
 
 ---
 

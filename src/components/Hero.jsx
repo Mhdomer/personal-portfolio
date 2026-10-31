@@ -34,16 +34,16 @@ export default function Hero({ onOpenConsole, onStartTour }) {
           </span>
         </div>
 
-        {/* Action Buttons: Tour CTA, View Projects, and Visible Rubric Hint */}
+        {/* Action Buttons: Tour CTA, View Projects, and Security Sandbox */}
         <div className="mt-9 flex flex-wrap items-center gap-3">
-          {/* 1. Take Me To Tour CTA (with mouse-pointer-click icon) */}
+          {/* 1. Interactive Tour CTA */}
           <button
             type="button"
             onClick={onStartTour || onOpenConsole}
             className="tour-cta button-primary inline-flex items-center gap-2.5 px-6 py-3.5 text-[12px] font-bold uppercase tracking-[0.18em] rounded-full shadow-md active:scale-95 transition-all hover:scale-105"
             data-testid="button-hero-tour"
           >
-            <span>Give me tour !!</span>
+            <span>Interactive Tour</span>
             <MousePointerClick className="w-4 h-4 ml-0.5" />
           </button>
 
@@ -62,7 +62,7 @@ export default function Hero({ onOpenConsole, onStartTour }) {
             <ArrowRight className="w-3.5 h-3.5" />
           </a>
 
-          {/* 3. AWS Security Lab Hint (Hackathon Rubric Invariant) */}
+          {/* 3. Cloud Security Sandbox */}
           <button
             type="button"
             onClick={onOpenConsole}
@@ -78,7 +78,7 @@ export default function Hero({ onOpenConsole, onStartTour }) {
               className="w-2 h-2 rounded-full animate-ping"
               style={{ background: 'var(--brand-coral)' }}
             />
-            <span>AWS Security Lab (Hint!)</span>
+            <span>Security Sandbox</span>
           </button>
         </div>
       </div>

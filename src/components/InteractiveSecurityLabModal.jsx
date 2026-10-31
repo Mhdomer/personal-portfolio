@@ -622,7 +622,7 @@ export default function InteractiveSecurityLabModal({ isOpen, onClose }) {
               </span>
             </div>
             <span className="hidden md:inline-block px-2 py-0.5 rounded bg-charcoal-750 text-terracotta-400 text-[11px] font-mono border border-white/5">
-              AWS Student Builder Challenge
+              Cloud DevSecOps Sandbox
             </span>
           </div>
 

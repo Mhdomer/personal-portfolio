@@ -33,7 +33,7 @@ function getTextWordBoundaries(element) {
 const easeInOutCubic = (t) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
-export default function HackathonTourGuide({ isOpen, onClose }) {
+export default function InteractiveTourGuide({ isOpen, onClose }) {
   const [active, setActive] = useState(false);
   const [caption, setCaption] = useState('');
   const [captionOn, setCaptionOn] = useState(false);
@@ -204,13 +204,13 @@ export default function HackathonTourGuide({ isOpen, onClose }) {
       },
       {
         selector: '[data-testid="button-hero-hint"]',
-        caption: 'Interactive Cloud Security Sandbox: live IAM AST linter and incident simulator.',
+        caption: 'Interactive Cloud Security Sandbox: live IAM AST linter, incident simulator, and Shannon entropy benchmark.',
         action: 'click',
         hold: 1800,
       },
       {
         selector: '#aws-architecture',
-        caption: 'Production AWS architecture: Amazon Bedrock guardrails and EventBridge remediation.',
+        caption: 'Production cloud architectures: Amazon Bedrock guardrails, EventBridge remediation, and clinical network topology.',
         action: 'visit',
         hold: 2400,
       },
