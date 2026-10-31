@@ -4,7 +4,6 @@ import Hero from './components/Hero';
 import Projects from './components/Projects';
 import About from './components/About';
 import Superpowers from './components/Superpowers';
-import EngineeringCultureGallery from './components/EngineeringCultureGallery';
 import Footer from './components/Footer';
 import ImageModal from './components/ImageModal';
 import LinuxBootKatanaIntro from './components/LinuxBootKatanaIntro';
@@ -65,9 +64,6 @@ export default function App() {
 
         {/* Section 4: Technical Arsenal & System Tooling */}
         <Superpowers />
-
-        {/* Section 5: In The Trenches - DevSecOps Reality & Culture */}
-        <EngineeringCultureGallery onSelectImage={handleOpenImage} />
       </main>
 
       {/* Global Footer */}

@@ -190,6 +190,12 @@ export default function InteractiveTourGuide({ isOpen, onClose }) {
         hold: 1600,
       },
       {
+        selector: '[data-testid="link-nav-blog"]',
+        caption: 'Technical blog. Systems walkthroughs, Linux setups, and cloud security deep-dives.',
+        action: 'hover',
+        hold: 1500,
+      },
+      {
         selector: '[data-testid="link-nav-linkedin"]',
         caption: "Pick your platform and let's connect.",
         action: 'hover',

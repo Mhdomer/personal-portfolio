@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, FileText } from 'lucide-react';
+import { Menu, X, FileText, BookOpen } from 'lucide-react';
 import { GithubIcon } from './Icons';
 import ThemeToggle from './ThemeToggle';
 
@@ -19,33 +19,50 @@ export default function Navbar({ onStartTour }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Left: Social Icons & Identity (Ziad Sharara layout) */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <a
               href="https://github.com/Mhdomer"
               target="_blank"
               rel="noreferrer"
-              className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors border"
+              className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors border hover:scale-105 active:scale-95 shadow-sm"
               style={{
                 background: 'var(--surface)',
                 borderColor: 'var(--line)',
                 color: 'var(--ink)',
               }}
-              title="GitHub"
+              title="GitHub Profile (github.com/Mhdomer)"
               data-testid="link-nav-github"
             >
               <GithubIcon className="w-4 h-4 fill-current" />
             </a>
+
             <a
-              href="https://linkedin.com/in/mhd3omar"
+              href="https://mhdomer.github.io"
               target="_blank"
               rel="noreferrer"
-              className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors border text-xs font-bold font-mono"
+              className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors border hover:scale-105 active:scale-95 shadow-sm"
               style={{
                 background: 'var(--surface)',
                 borderColor: 'var(--line)',
                 color: 'var(--ink)',
               }}
-              title="LinkedIn"
+              title="Technical Blog (mhdomer.github.io)"
+              data-testid="link-nav-blog"
+            >
+              <BookOpen className="w-4 h-4" style={{ color: 'var(--brand-coral)' }} />
+            </a>
+
+            <a
+              href="https://linkedin.com/in/mhd3omar"
+              target="_blank"
+              rel="noreferrer"
+              className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors border text-xs font-bold font-mono hover:scale-105 active:scale-95 shadow-sm"
+              style={{
+                background: 'var(--surface)',
+                borderColor: 'var(--line)',
+                color: 'var(--ink)',
+              }}
+              title="LinkedIn Profile"
               data-testid="link-nav-linkedin"
             >
               in
@@ -65,18 +82,11 @@ export default function Navbar({ onStartTour }) {
             <a href="#work" className="hover:opacity-100 transition-opacity">
               Work
             </a>
-            <a href="#skills" className="hover:opacity-100 transition-opacity">
-              Skills
-            </a>
             <a href="#experience" className="hover:opacity-100 transition-opacity">
               Experience
             </a>
-            <a
-              href="#culture"
-              className="hover:opacity-100 transition-opacity"
-              style={{ color: 'var(--brand-coral)' }}
-            >
-              Culture & Memes
+            <a href="#skills" className="hover:opacity-100 transition-opacity">
+              Skills
             </a>
           </div>
 
@@ -172,13 +182,6 @@ export default function Navbar({ onStartTour }) {
             Work & Projects
           </a>
           <a
-            href="#skills"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 opacity-80 hover:opacity-100"
-          >
-            Tech Superpowers
-          </a>
-          <a
             href="#experience"
             onClick={() => setMobileMenuOpen(false)}
             className="block py-2 opacity-80 hover:opacity-100"
@@ -186,12 +189,22 @@ export default function Navbar({ onStartTour }) {
             Experience & Credentials
           </a>
           <a
-            href="#culture"
+            href="#skills"
             onClick={() => setMobileMenuOpen(false)}
-            className="block py-2"
+            className="block py-2 opacity-80 hover:opacity-100"
+          >
+            Tech Superpowers
+          </a>
+          <a
+            href="https://mhdomer.github.io"
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center gap-1.5 py-2 font-bold"
             style={{ color: 'var(--brand-coral)' }}
           >
-            Dev Culture & Memes
+            <BookOpen className="w-3.5 h-3.5" />
+            <span>Technical Blog (mhdomer.github.io)</span>
           </a>
         </div>
       )}
