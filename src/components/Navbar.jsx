@@ -80,23 +80,9 @@ export default function Navbar({ onStartTour }) {
             </a>
           </div>
 
-          {/* Right: Theme Toggle + Tour + Resume */}
+          {/* Right: Theme Toggle + Resume */}
           <div className="hidden sm:flex items-center gap-2.5">
             <ThemeToggle />
-
-            <button
-              onClick={onStartTour}
-              className="px-3 py-2 rounded-full font-mono text-xs font-bold tracking-wider uppercase transition-all border flex items-center gap-1.5 hover:opacity-80 active:scale-95 shadow-sm"
-              style={{
-                background: 'var(--surface)',
-                borderColor: 'var(--line)',
-                color: 'var(--ink)',
-              }}
-              title="Launch Interactive Site Tour"
-            >
-              <span>Tour</span>
-              <span style={{ color: 'var(--brand-coral)' }}>⚡</span>
-            </button>
 
             <a
               href="/assets/resume/Mohamed_Makhlouf_Resume.pdf"
