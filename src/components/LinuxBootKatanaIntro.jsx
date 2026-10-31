@@ -216,7 +216,7 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
         </div>
         <div className="hidden sm:flex items-center gap-4 text-[11px] text-slate-500 font-mono">
           <span>x86_64 · cachyos 6.13</span>
-          <span>//</span>
+          <span>·</span>
           <span>dual-boot uefi (ntfs /mnt/data)</span>
         </div>
       </div>

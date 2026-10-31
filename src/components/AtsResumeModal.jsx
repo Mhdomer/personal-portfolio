@@ -121,7 +121,7 @@ export default function AtsResumeModal({ isOpen, onClose }) {
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-sm sm:text-base font-bold font-mono uppercase tracking-tight">
-                  Mohamed Makhlouf // Resume
+                  Mohamed Makhlouf · Resume
                 </h3>
                 <span className="hidden sm:inline-block text-[10px] font-mono px-2 py-0.5 rounded-full border opacity-75">
                   1-Page LaTeX PDF

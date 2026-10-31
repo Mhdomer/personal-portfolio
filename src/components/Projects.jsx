@@ -12,8 +12,8 @@ export default function Projects({ onSelectImage }) {
     {
       id: 'secrh-pdms',
       tabLabel: 'SECRH PDMS',
-      kicker: '01 // FINAL YEAR PROJECT · UTM · 2026',
-      title: 'SECRH // SECURE CLOUD PDMS',
+      kicker: '01 · FINAL YEAR PROJECT · UTM · 2026',
+      title: 'SECRH: SECURE CLOUD PDMS',
       subtitle: 'A HIPAA-aligned 3-tier AWS architecture replacing an on-premise clinic server compromised by ransomware.',
       service: 'AWS 3-Tier (ALB + EC2 + RDS) + Terraform',
       metric: '110 Resources · 0 Drift',
@@ -73,8 +73,8 @@ resource "aws_db_instance" "main" {
     {
       id: 'a2-remediation',
       tabLabel: 'A2 Remediation',
-      kicker: '02 // CLOUD DEVSECOPS · AWS COMPLIANCE · 2026',
-      title: 'A2 // AUTONOMOUS CLOUD REMEDIATION',
+      kicker: '02 · CLOUD DEVSECOPS · AWS COMPLIANCE · 2026',
+      title: 'A2: AUTONOMOUS CLOUD REMEDIATION',
       subtitle: 'Serverless event-driven daemon fixing security group drift, weak KMS keys, and open ports on the CloudTrail event.',
       service: 'AWS EventBridge + Lambda',
       metric: '8s MTTR · 352 Tests',
@@ -131,8 +131,8 @@ def lambda_handler(event, context):
     {
       id: 'aegis-2b',
       tabLabel: 'Aegis-2B',
-      kicker: '03 // AI SECURITY & DEFENSE · AWS BEDROCK · 2026',
-      title: 'AEGIS-2B // AI CIRCUIT BREAKER',
+      kicker: '03 · AI SECURITY & DEFENSE · AWS BEDROCK · 2026',
+      title: 'AEGIS-2B: AI CIRCUIT BREAKER',
       subtitle: 'Sub-115ms dual-tier defense for LLMs and Bedrock agents halting prompt injection attacks before model invocation.',
       service: 'Amazon Bedrock + AWS Lambda',
       metric: '115ms p99 · 16x Faster',
@@ -193,8 +193,8 @@ def dispatch_cloud_mutation(action_request: dict) -> AuditReceipt:
     {
       id: 'mindcraft-cicd',
       tabLabel: 'MindCraft CI/CD',
-      kicker: '04 // DEVSECOPS & INFRASTRUCTURE · TERRAFORM · 2026',
-      title: 'MINDCRAFT // THREE-TIER AWS MIGRATION',
+      kicker: '04 · DEVSECOPS & INFRASTRUCTURE · TERRAFORM · 2026',
+      title: 'MINDCRAFT: THREE-TIER AWS MIGRATION',
       subtitle: 'Solo re-architecture of university team coursework from Firebase to self-managed 3-tier AWS with Trivy CVE gating.',
       service: 'Terraform + Docker + GitHub Actions',
       metric: 'Exit Code 1 Gate · 47 Resources',

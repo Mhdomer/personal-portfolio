@@ -36,20 +36,25 @@ export default function Hero({ onStartTour }) {
 
         {/* Action Buttons: Tour CTA, View Projects, and Resume PDF */}
         <div className="mt-9 flex flex-wrap items-center gap-3">
-          {/* 1. Interactive Tour CTA (sharara.me exact cream card with 3D coral shadow) */}
-          <button
-            type="button"
-            onClick={onStartTour}
-            className="tour-cta tour-cta-sharara group relative inline-flex items-center gap-2.5 px-6 py-3.5 text-[12px] font-mono font-bold uppercase tracking-[0.16em] border border-black/10 overflow-hidden"
-            data-testid="button-hero-tour"
-          >
-            <span className="relative z-10 font-bold text-[#151a21]">GIVE ME TOUR !!</span>
-            <span className="animate-mouse-bob relative z-10 text-[#151a21]">
-              <MousePointerClick className="w-4 h-4" />
-            </span>
-            {/* Interactive light sheen on hover */}
-            <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
-          </button>
+          {/* 1. Interactive Tour CTA with zooming red back glow (sharara.me exact aesthetic) */}
+          <div className="tour-cta-wrapper relative inline-flex items-center justify-center">
+            {/* Animated Red Back Glow Layer (zooms out and in behind the card) */}
+            <span className="tour-cta-backglow" aria-hidden="true" />
+
+            <button
+              type="button"
+              onClick={onStartTour}
+              className="tour-cta tour-cta-sharara group relative z-10 inline-flex items-center gap-2.5 px-6 py-3.5 text-[12px] font-mono font-bold uppercase tracking-[0.16em] cursor-pointer"
+              data-testid="button-hero-tour"
+            >
+              <span className="relative z-10 font-bold text-[#151a21]">GIVE ME TOUR !!</span>
+              <span className="animate-mouse-bob relative z-10 text-[#151a21]">
+                <MousePointerClick className="w-4 h-4" />
+              </span>
+              {/* Interactive light sheen on hover */}
+              <span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent pointer-events-none" />
+            </button>
+          </div>
 
           {/* 2. View Projects */}
           <a
