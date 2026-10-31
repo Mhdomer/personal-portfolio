@@ -497,14 +497,14 @@ html.dark .editorial-hero .hero-copy:after {
   justify-content: center;
 }
 
-/* Pulsing Red Back Glow Layer (zooms out and in behind the card) */
+/* Pulsing Red Back Glow Layer (pure soft aura that zooms out and in without box borders) */
 .tour-cta-backglow {
   position: absolute;
-  inset: -1px;
-  border-radius: 2px 22px 2px 22px;
-  background: #3e1b21;
-  border: 1px solid rgba(224, 107, 92, 0.7);
-  box-shadow: 0 0 16px rgba(224, 107, 92, 0.45);
+  inset: -2px;
+  border-radius: 24px;
+  background: radial-gradient(ellipse at center, rgba(224, 107, 92, 0.75) 0%, rgba(224, 107, 92, 0.3) 55%, transparent 78%);
+  filter: blur(12px);
+  box-shadow: 0 0 20px rgba(224, 107, 92, 0.5), 0 0 40px rgba(224, 107, 92, 0.25);
   animation: tour-backglow-zoom 2.4s ease-in-out infinite;
   z-index: 0;
   pointer-events: none;
@@ -513,16 +513,14 @@ html.dark .editorial-hero .hero-copy:after {
 
 @keyframes tour-backglow-zoom {
   0%, 100% {
-    transform: scale(1);
-    opacity: 0.15;
-    box-shadow: 0 0 4px rgba(224, 107, 92, 0.2);
+    transform: scale(0.92);
+    opacity: 0.2;
+    box-shadow: 0 0 8px rgba(224, 107, 92, 0.2);
   }
   50% {
-    transform: scale(1.08, 1.28);
-    opacity: 0.95;
-    background: #3c1920;
-    border-color: rgba(224, 107, 92, 0.9);
-    box-shadow: 0 0 22px rgba(224, 107, 92, 0.6);
+    transform: scale(1.18, 1.35);
+    opacity: 0.85;
+    box-shadow: 0 0 32px rgba(224, 107, 92, 0.65), 0 0 54px rgba(224, 107, 92, 0.35);
   }
 }
 
