@@ -7,6 +7,7 @@ node_modules/
 dist/
 build/
 .amplify/
+remotion/public
 
 # Environment variables & secrets
 .env
