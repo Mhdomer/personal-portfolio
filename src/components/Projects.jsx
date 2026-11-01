@@ -367,9 +367,13 @@ jobs:
               }}
             >
               {innerView === 'preview' && (
-                <div className="relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden flex items-center justify-center bg-black/5">
+                <div 
+                  className="relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden flex items-center justify-center bg-black/5 cursor-pointer"
+                  onClick={() => onSelectImage && onSelectImage(currentSystem.videoSrc || currentSystem.previewImage, currentSystem.title)}
+                >
                   {currentSystem.videoSrc ? (
                     <video
+                      key={currentSystem.videoSrc}
                       autoPlay
                       loop
                       muted={isMuted}
@@ -387,8 +391,11 @@ jobs:
 
                   {/* Audio / Video Status Pill Badge (Sharara aesthetic) */}
                   <button
-                    onClick={() => setIsMuted(!isMuted)}
-                    className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-mono flex items-center gap-1.5 border border-white/10 shadow-lg hover:bg-black/90 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsMuted(!isMuted);
+                    }}
+                    className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-mono flex items-center gap-1.5 border border-white/10 shadow-lg hover:bg-black/90 transition-colors z-10"
                     title={isMuted ? 'Audio muted (Video preview ready)' : 'Audio unmuted'}
                   >
                     {isMuted ? <VolumeX className="w-3.5 h-3.5 text-neutral-300" /> : <Volume2 className="w-3.5 h-3.5 text-emerald-400" />}
@@ -397,8 +404,11 @@ jobs:
 
                   {/* Click to Enlarge / Inspect Trigger */}
                   <button
-                    onClick={() => onSelectImage && onSelectImage(currentSystem.previewImage, currentSystem.title)}
-                    className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-mono flex items-center gap-1.5 border border-white/10 shadow-lg hover:bg-black/90 transition-colors opacity-90 hover:opacity-100"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onSelectImage && onSelectImage(currentSystem.videoSrc || currentSystem.previewImage, currentSystem.title);
+                    }}
+                    className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-mono flex items-center gap-1.5 border border-white/10 shadow-lg hover:bg-black/90 transition-colors opacity-90 hover:opacity-100 z-10"
                   >
                     <Maximize2 className="w-3.5 h-3.5" style={{ color: 'var(--brand-coral)' }} />
                     <span className="hidden sm:inline">Inspect High-Res</span>

@@ -49,13 +49,24 @@ export default function ImageModal({ imageSrc, title, isOpen, onClose }) {
           </div>
         </div>
 
-        {/* Image Display */}
+        {/* Media Display (Image or Video) */}
         <div className="p-4 sm:p-6 overflow-auto flex-1 flex items-center justify-center bg-charcoal-950/60">
-          <img
-            src={imageSrc}
-            alt={title || 'Screenshot'}
-            className="max-h-[75vh] w-auto max-w-full object-contain rounded-lg border border-white/5 shadow-lg"
-          />
+          {imageSrc.endsWith('.mp4') ? (
+            <video
+              src={imageSrc}
+              autoPlay
+              loop
+              controls
+              playsInline
+              className="max-h-[75vh] w-auto max-w-full rounded-lg border border-white/5 shadow-lg"
+            />
+          ) : (
+            <img
+              src={imageSrc}
+              alt={title || 'Screenshot'}
+              className="max-h-[75vh] w-auto max-w-full object-contain rounded-lg border border-white/5 shadow-lg"
+            />
+          )}
         </div>
 
         {/* Footer */}
