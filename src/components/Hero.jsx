@@ -30,7 +30,7 @@ export default function Hero({ onStartTour }) {
             Cloud Security & DevSecOps Engineer
           </strong>
           <span className="mt-4 block font-sans" id="hero-description">
-            Final-year Computer Science student at <strong style={{ color: 'var(--ink)' }}>Universiti Teknologi Malaysia (UTM)</strong> specializing in Networks and Security, currently running clinical IT operations at <strong style={{ color: 'var(--ink)' }}>Al-Ameen Medical Complex in Riyadh</strong>. I build self-healing cloud infrastructure on AWS, event-driven incident remediation in sub-8s MTTR, and sub-115ms AI security guardrails.
+            Final-year Computer Science student at <strong style={{ color: 'var(--ink)' }}>Universiti Teknologi Malaysia (UTM)</strong> specializing in Networks and Security, running clinical IT operations at <strong style={{ color: 'var(--ink)' }}>Al-Ameen Medical Complex in Riyadh</strong>. I help engineering teams ship secure AWS workloads faster by automating IAM least privilege, catching CVEs inside CI/CD gates, and cutting cloud incident remediation time to sub-8s.
           </span>
         </div>
 

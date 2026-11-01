@@ -31,7 +31,7 @@ export default function Footer({ onOpenResume }) {
               </span>
             </div>
             <p className="text-sm leading-relaxed max-w-sm opacity-75">
-              Mohamed Makhlouf. Senior Computer Science student at Universiti Teknologi Malaysia (UTM) undergoing Industrial Training at Al-Ameen Medical Complex IT Dept, Riyadh. Focused on Cloud Security, DevSecOps pipelines, AI guardrails, and Linux systems.
+              Mohamed Makhlouf. Senior Computer Science student at Universiti Teknologi Malaysia (UTM) undergoing Industrial Training at Al-Ameen Medical Complex IT Dept, Riyadh. Helping engineering teams ship secure AWS workloads faster with automated least privilege, CI/CD gates, and sub-8s incident remediation.
             </p>
             <div className="pt-2 flex flex-wrap items-center gap-3">
               {onOpenResume && (
