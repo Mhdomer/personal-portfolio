@@ -22,7 +22,7 @@ export function Root() {
       <Composition
         id="A2Showcase"
         component={A2Showcase}
-        durationInFrames={540}
+        durationInFrames={480}
         fps={30}
         width={1200}
         height={825}
@@ -32,7 +32,7 @@ export function Root() {
       <Composition
         id="AegisShowcase"
         component={AegisShowcase}
-        durationInFrames={540}
+        durationInFrames={480}
         fps={30}
         width={1200}
         height={825}

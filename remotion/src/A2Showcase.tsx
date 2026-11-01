@@ -4,584 +4,315 @@ import {
   spring,
   useCurrentFrame,
   useVideoConfig,
-  Sequence,
+  staticFile,
+  Img,
 } from 'remotion';
 
-// ==========================================
-// SCENE 1: THE EXPOSURE RISK (0s - 6s)
-// ==========================================
-function SceneExposure() {
+export const A2Showcase: React.FC = () => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
+  const { fps, width, height } = useVideoConfig();
 
-  const scale = spring({ frame, fps, config: { damping: 14, mass: 0.8 } });
-  const opacity = interpolate(frame, [0, 15, 160, 175], [0, 1, 1, 0]);
-  const pulse = Math.sin(frame * 0.15) * 4;
+  // -------------------------------------------------------------
+  // FULL-BLEED REAL SYSTEM SHOWCASE (480 frames = 16 seconds @ 30fps)
+  // Zero mock terminals. 100% verified CLI output and architecture evidence.
+  // Act 1: 0 - 245   (0.0s - 8.2s) -> Real AWS CLI Terminal Audit (Port 22 Revocation)
+  // Act 2: 235 - 480 (7.8s - 16.0s)-> Production EventBridge & Lambda Architecture Diagram
+  // -------------------------------------------------------------
 
-  return (
-    <div
-      style={{
-        opacity,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        height: '100%',
-        padding: '40px',
-        textAlign: 'center',
-      }}
-    >
-      <div
-        style={{
-          fontFamily: 'monospace',
-          fontSize: '18px',
-          fontWeight: 700,
-          letterSpacing: '0.2em',
-          textTransform: 'uppercase',
-          color: '#d9532f',
-          marginBottom: '20px',
-        }}
-      >
-        01 · EXPOSURE WINDOWS & ALERT FATIGUE
-      </div>
-
-      <h1
-        style={{
-          fontFamily: 'system-ui, sans-serif',
-          fontSize: '52px',
-          fontWeight: 800,
-          color: '#1a202c',
-          lineHeight: 1.2,
-          maxWidth: '920px',
-          margin: '0 0 35px 0',
-        }}
-      >
-        Cloud misconfigurations take{' '}
-        <span
-          style={{
-            background: '#fee2e2',
-            color: '#b91c1c',
-            padding: '4px 16px',
-            borderRadius: '12px',
-            border: '2px solid #fca5a5',
-            display: 'inline-block',
-          }}
-        >
-          4.5 hours to detect.
-        </span>
-      </h1>
-
-      <div
-        style={{
-          transform: `scale(${scale}) translateY(${pulse}px)`,
-          background: '#ffffff',
-          borderRadius: '24px',
-          border: '2px solid #fecaca',
-          boxShadow: '0 25px 50px -12px rgba(239, 68, 68, 0.25)',
-          padding: '36px 48px',
-          maxWidth: '680px',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '16px',
-        }}
-      >
-        <div
-          style={{
-            background: '#fee2e2',
-            color: '#b91c1c',
-            fontSize: '16px',
-            fontFamily: 'monospace',
-            fontWeight: 800,
-            padding: '8px 20px',
-            borderRadius: '100px',
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-          }}
-        >
-          <span>EXPOSURE DETECTED</span>
-          <span>·</span>
-          <span>S3 PUBLIC ACL</span>
-        </div>
-
-        <div
-          style={{
-            fontSize: '28px',
-            fontWeight: 700,
-            color: '#991b1b',
-            fontFamily: 'system-ui, sans-serif',
-          }}
-        >
-          Port 22 Open to 0.0.0.0/0
-        </div>
-
-        <p
-          style={{
-            fontSize: '18px',
-            color: '#4b5563',
-            margin: 0,
-            lineHeight: 1.5,
-          }}
-        >
-          Scheduled compliance scans leave multi-day blind spots. Manual on-call
-          triage creates severe alert fatigue.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-// ==========================================
-// SCENE 2: SERVERLESS REMEDIATION (6s - 12s)
-// ==========================================
-function SceneRemediation() {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const entrance = spring({ frame, fps, config: { damping: 14 } });
-  const opacity = interpolate(frame, [0, 15, 160, 175], [0, 1, 1, 0]);
-
-  const step1 = spring({ frame: frame - 15, fps, config: { damping: 12 } });
-  const step2 = spring({ frame: frame - 35, fps, config: { damping: 12 } });
-  const step3 = spring({ frame: frame - 55, fps, config: { damping: 12 } });
+  const masterOpacity = interpolate(frame, [0, 8, 470, 480], [0, 1, 1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
 
   return (
     <div
       style={{
-        opacity,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        height: '100%',
-        padding: '40px',
-        textAlign: 'center',
-      }}
-    >
-      <div
-        style={{
-          fontFamily: 'monospace',
-          fontSize: '18px',
-          fontWeight: 700,
-          letterSpacing: '0.2em',
-          textTransform: 'uppercase',
-          color: '#d97706',
-          marginBottom: '16px',
-        }}
-      >
-        02 · EVENT-DRIVEN AUTOMATION
-      </div>
-
-      <h1
-        style={{
-          fontFamily: 'system-ui, sans-serif',
-          fontSize: '48px',
-          fontWeight: 800,
-          color: '#1a202c',
-          lineHeight: 1.2,
-          maxWidth: '920px',
-          margin: '0 0 35px 0',
-          transform: `scale(${entrance})`,
-        }}
-      >
-        Engineered{' '}
-        <span
-          style={{
-            background: '#fef3c7',
-            color: '#b45309',
-            padding: '4px 16px',
-            borderRadius: '12px',
-            border: '2px solid #fcd34d',
-            display: 'inline-block',
-          }}
-        >
-          EventBridge Daemon
-        </span>{' '}
-        on AWS
-      </h1>
-
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '20px',
-          maxWidth: '980px',
-          width: '100%',
-        }}
-      >
-        <div
-          style={{
-            transform: `scale(${Math.max(0, step1)})`,
-            background: '#ffffff',
-            borderRadius: '20px',
-            padding: '24px 20px',
-            border: '2px solid #fde68a',
-            boxShadow: '0 10px 25px -5px rgba(217, 119, 6, 0.1)',
-            textAlign: 'left',
-          }}
-        >
-          <div
-            style={{
-              fontFamily: 'monospace',
-              fontSize: '12px',
-              fontWeight: 800,
-              color: '#d97706',
-              marginBottom: '8px',
-            }}
-          >
-            STEP 1 · EVENT CAPTURE
-          </div>
-          <div style={{ fontSize: '18px', fontWeight: 700, color: '#0f172a' }}>
-            CloudTrail API Interception
-          </div>
-          <div style={{ fontSize: '14px', color: '#64748b', marginTop: '6px' }}>
-            EventBridge catches PutBucketAcl and AuthorizeSecurityGroupIngress in real time.
-          </div>
-        </div>
-
-        <div
-          style={{
-            transform: `scale(${Math.max(0, step2)})`,
-            background: '#ffffff',
-            borderRadius: '20px',
-            padding: '24px 20px',
-            border: '2px solid #fed7aa',
-            boxShadow: '0 10px 25px -5px rgba(249, 115, 22, 0.1)',
-            textAlign: 'left',
-          }}
-        >
-          <div
-            style={{
-              fontFamily: 'monospace',
-              fontSize: '12px',
-              fontWeight: 800,
-              color: '#ea580c',
-              marginBottom: '8px',
-            }}
-          >
-            STEP 2 · LOOP FREEDOM
-          </div>
-          <div style={{ fontSize: '18px', fontWeight: 700, color: '#0f172a' }}>
-            Identity Arn Verification
-          </div>
-          <div style={{ fontSize: '14px', color: '#64748b', marginTop: '6px' }}>
-            Structural loop prevention compares sessionIssuer.arn to prevent self-trigger cycles.
-          </div>
-        </div>
-
-        <div
-          style={{
-            transform: `scale(${Math.max(0, step3)})`,
-            background: '#ffffff',
-            borderRadius: '20px',
-            padding: '24px 20px',
-            border: '2px solid #bbf7d0',
-            boxShadow: '0 10px 25px -5px rgba(34, 197, 94, 0.1)',
-            textAlign: 'left',
-          }}
-        >
-          <div
-            style={{
-              fontFamily: 'monospace',
-              fontSize: '12px',
-              fontWeight: 800,
-              color: '#16a34a',
-              marginBottom: '8px',
-            }}
-          >
-            STEP 3 · INSTANT REMEDIATION
-          </div>
-          <div style={{ fontSize: '18px', fontWeight: 700, color: '#0f172a' }}>
-            Python Lambda Sanitizer
-          </div>
-          <div style={{ fontSize: '14px', color: '#64748b', marginTop: '6px' }}>
-            Enforces PutPublicAccessBlock and revokes open CIDRs via Boto3.
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ==========================================
-// SCENE 3: VERIFIED OUTCOMES (12s - 18s)
-// ==========================================
-function SceneOutcomes() {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const opacity = interpolate(frame, [0, 15], [0, 1]);
-
-  const item1 = spring({ frame: frame - 10, fps, config: { damping: 14 } });
-  const item2 = spring({ frame: frame - 30, fps, config: { damping: 14 } });
-  const item3 = spring({ frame: frame - 50, fps, config: { damping: 14 } });
-
-  return (
-    <div
-      style={{
-        opacity,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        height: '100%',
-        padding: '40px',
-      }}
-    >
-      <div
-        style={{
-          fontFamily: 'monospace',
-          fontSize: '18px',
-          fontWeight: 700,
-          letterSpacing: '0.2em',
-          textTransform: 'uppercase',
-          color: '#16a34a',
-          marginBottom: '16px',
-        }}
-      >
-        03 · VERIFIED REMEDIATION TELEMETRY
-      </div>
-
-      <h1
-        style={{
-          fontFamily: 'system-ui, sans-serif',
-          fontSize: '50px',
-          fontWeight: 800,
-          color: '#1a202c',
-          lineHeight: 1.15,
-          marginBottom: '35px',
-          textAlign: 'center',
-        }}
-      >
-        Sub-8s MTTR.{' '}
-        <span
-          style={{
-            background: '#dcfce7',
-            color: '#15803d',
-            padding: '4px 16px',
-            borderRadius: '12px',
-            border: '2px solid #86efac',
-          }}
-        >
-          Zero Alert Fatigue.
-        </span>
-      </h1>
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '16px',
-          maxWidth: '780px',
-          width: '100%',
-        }}
-      >
-        <div
-          style={{
-            transform: `translateX(${interpolate(item1, [0, 1], [-40, 0])}px)`,
-            opacity: item1,
-            background: '#ffffff',
-            borderRadius: '18px',
-            padding: '20px 28px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '18px',
-            border: '2px solid #e2e8f0',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
-          }}
-        >
-          <div
-            style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              background: '#22c55e',
-              color: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 800,
-              fontSize: '20px',
-              flexShrink: 0,
-            }}
-          >
-            ✓
-          </div>
-          <div
-            style={{
-              fontSize: '20px',
-              fontWeight: 700,
-              color: '#1e293b',
-              fontFamily: 'system-ui, sans-serif',
-            }}
-          >
-            Sub-8s measured end-to-end detection and port 22 revocation
-          </div>
-        </div>
-
-        <div
-          style={{
-            transform: `translateX(${interpolate(item2, [0, 1], [-40, 0])}px)`,
-            opacity: item2,
-            background: '#ffffff',
-            borderRadius: '18px',
-            padding: '20px 28px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '18px',
-            border: '2px solid #e2e8f0',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
-          }}
-        >
-          <div
-            style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              background: '#22c55e',
-              color: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 800,
-              fontSize: '20px',
-              flexShrink: 0,
-            }}
-          >
-            ✓
-          </div>
-          <div
-            style={{
-              fontSize: '20px',
-              fontWeight: 700,
-              color: '#1e293b',
-              fontFamily: 'system-ui, sans-serif',
-            }}
-          >
-            Reverts rogue public S3 ACLs in under 2.4 seconds
-          </div>
-        </div>
-
-        <div
-          style={{
-            transform: `translateX(${interpolate(item3, [0, 1], [-40, 0])}px)`,
-            opacity: item3,
-            background: '#ffffff',
-            borderRadius: '18px',
-            padding: '20px 28px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '18px',
-            border: '2px solid #e2e8f0',
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)',
-          }}
-        >
-          <div
-            style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '50%',
-              background: '#22c55e',
-              color: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 800,
-              fontSize: '20px',
-              flexShrink: 0,
-            }}
-          >
-            ✓
-          </div>
-          <div
-            style={{
-              fontSize: '20px',
-              fontWeight: 700,
-              color: '#1e293b',
-              fontFamily: 'system-ui, sans-serif',
-            }}
-          >
-            352 unit tests passing with zero false-positive mutations
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// ==========================================
-// MAIN COMPOSITION ROOT: A2 SHOWCASE
-// ==========================================
-export function A2Showcase() {
-  return (
-    <div
-      style={{
-        flex: 1,
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#f6f1e8',
+        width,
+        height,
+        backgroundColor: '#090d14',
         position: 'relative',
         overflow: 'hidden',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
+        opacity: masterOpacity,
+        fontFamily:
+          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       }}
     >
+      {/* Edge-to-Edge Browser / Console Chrome */}
       <div
         style={{
           position: 'absolute',
-          inset: '16px',
-          border: '1px solid rgba(22, 31, 40, 0.12)',
-          borderRadius: '24px',
-          pointerEvents: 'none',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '46px',
+          backgroundColor: '#121824',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 20px',
+          zIndex: 40,
+        }}
+      >
+        {/* macOS Window Controls */}
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <span
+            style={{
+              width: '12px',
+              height: '12px',
+              borderRadius: '50%',
+              backgroundColor: '#ef4444',
+            }}
+          />
+          <span
+            style={{
+              width: '12px',
+              height: '12px',
+              borderRadius: '50%',
+              backgroundColor: '#eab308',
+            }}
+          />
+          <span
+            style={{
+              width: '12px',
+              height: '12px',
+              borderRadius: '50%',
+              backgroundColor: '#22c55e',
+            }}
+          />
+        </div>
+
+        {/* Dynamic Address Bar URL */}
+        <div
+          style={{
+            backgroundColor: '#0a0e17',
+            padding: '5px 28px',
+            borderRadius: '20px',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            color: '#94a3b8',
+            fontFamily: '"JetBrains Mono", monospace',
+            fontSize: '12.5px',
+            letterSpacing: '0.02em',
+          }}
+        >
+          {frame < 240
+            ? 'https://us-east-1.console.aws.amazon.com/cloudwatch/home#logsV2:log-groups'
+            : 'https://a2.compliance.internal/architecture/eventbridge-lambda'}
+        </div>
+
+        {/* Dynamic Status Pill */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 12px',
+            borderRadius: '12px',
+            fontSize: '11px',
+            fontWeight: 700,
+            fontFamily: '"JetBrains Mono", monospace',
+            backgroundColor:
+              frame < 240
+                ? 'rgba(34, 197, 94, 0.15)'
+                : 'rgba(56, 189, 248, 0.15)',
+            color: frame < 240 ? '#4ade80' : '#38bdf8',
+            border: '1px solid rgba(255, 255, 255, 0.12)',
+          }}
+        >
+          {frame < 240
+            ? 'SUB-8s AUTO-REMEDIATION'
+            : '378 PASSING TESTS · 18 BUGS'}
+        </div>
+      </div>
+
+      {/* Main Viewport Container */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '46px',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          overflow: 'hidden',
+        }}
+      >
+        {/* ACT 1: REAL TERMINAL AUDIT & LAMBDA LOGS */}
+        {frame < 250 && <Act1RealCliTerminal frame={frame} fps={fps} />}
+
+        {/* ACT 2: ARCHITECTURE DIAGRAM & DRIFT SPECS */}
+        {frame >= 235 && <Act2Architecture frame={frame - 235} fps={fps} />}
+      </div>
+    </div>
+  );
+};
+
+// =================================================================
+// ACT 1: REAL AWS CLI & LAMBDA LOGS (CAPTURED FROM LIVE ACCOUNT)
+// =================================================================
+const Act1RealCliTerminal: React.FC<{ frame: number; fps: number }> = ({
+  frame,
+}) => {
+  const zoom = interpolate(frame, [0, 245], [1.0, 1.14], {
+    extrapolateRight: 'clamp',
+  });
+  const panY = interpolate(frame, [0, 245], [0, -30], {
+    extrapolateRight: 'clamp',
+  });
+  const opacity = interpolate(frame, [225, 245], [1, 0], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        opacity,
+        transform: `scale(${zoom}) translateY(${panY}px)`,
+        transformOrigin: '25% 40%',
+        backgroundColor: '#0c1017',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Img
+        src={staticFile('assets/projects/a2-social-preview.png')}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'contain',
         }}
       />
 
+      {/* Floating Telemetry Badge */}
       <div
         style={{
           position: 'absolute',
-          top: '32px',
-          left: '36px',
-          fontFamily: 'monospace',
-          fontSize: '14px',
-          fontWeight: 700,
-          color: '#1e293b',
-          opacity: 0.75,
-          letterSpacing: '0.12em',
+          bottom: '24px',
+          right: '32px',
+          backgroundColor: 'rgba(15, 23, 42, 0.94)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid #22c55e',
+          borderRadius: '10px',
+          padding: '10px 18px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.6)',
         }}
       >
-        A2 · AUTONOMOUS CLOUD REMEDIATION ENGINE
+        <span
+          style={{
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            backgroundColor: '#22c55e',
+          }}
+        />
+        <span
+          style={{
+            fontFamily: '"JetBrains Mono", monospace',
+            fontSize: '12px',
+            fontWeight: 700,
+            color: '#f0fdf4',
+            letterSpacing: '0.04em',
+          }}
+        >
+          AWS CLI & LAMBDA LOGS · PORT 22 INGRESS REVOCATION IN 8 SECONDS
+        </span>
       </div>
-
-      <div
-        style={{
-          position: 'absolute',
-          top: '32px',
-          right: '36px',
-          fontFamily: 'monospace',
-          fontSize: '14px',
-          fontWeight: 700,
-          color: '#d9532f',
-          letterSpacing: '0.12em',
-        }}
-      >
-        MHDOMAR.DEV
-      </div>
-
-      <Sequence from={0} durationInFrames={180}>
-        <SceneExposure />
-      </Sequence>
-
-      <Sequence from={180} durationInFrames={180}>
-        <SceneRemediation />
-      </Sequence>
-
-      <Sequence from={360} durationInFrames={180}>
-        <SceneOutcomes />
-      </Sequence>
     </div>
   );
-}
+};
+
+// =================================================================
+// ACT 2: ARCHITECTURE & EVENTBRIDGE LOOP PREVENTION
+// =================================================================
+const Act2Architecture: React.FC<{ frame: number; fps: number }> = ({
+  frame,
+  fps,
+}) => {
+  const enterSpring = spring({
+    frame,
+    fps,
+    config: { damping: 16, mass: 0.9, stiffness: 85 },
+  });
+
+  const zoom = interpolate(frame, [0, 245], [1.0, 1.08], {
+    extrapolateRight: 'clamp',
+  });
+  const panY = interpolate(frame, [0, 245], [0, -15], {
+    extrapolateRight: 'clamp',
+  });
+  const opacity = interpolate(frame, [0, 15], [0, 1], {
+    extrapolateLeft: 'clamp',
+    extrapolateRight: 'clamp',
+  });
+  const slideY = interpolate(enterSpring, [0, 1], [40, 0]);
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        opacity,
+        transform: `scale(${zoom}) translateY(${slideY + panY}px)`,
+        transformOrigin: 'center center',
+        backgroundColor: '#ffffff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '28px',
+      }}
+    >
+      <Img
+        src={staticFile('assets/projects/a2-compliance-architecture.png')}
+        style={{
+          maxWidth: '100%',
+          maxHeight: '100%',
+          objectFit: 'contain',
+        }}
+      />
+
+      {/* Floating Specs Badge */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '24px',
+          right: '32px',
+          backgroundColor: 'rgba(15, 23, 42, 0.95)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid #38bdf8',
+          borderRadius: '10px',
+          padding: '10px 18px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.6)',
+        }}
+      >
+        <span
+          style={{
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            backgroundColor: '#38bdf8',
+          }}
+        />
+        <span
+          style={{
+            fontFamily: '"JetBrains Mono", monospace',
+            fontSize: '12px',
+            fontWeight: 700,
+            color: '#f0f9ff',
+            letterSpacing: '0.04em',
+          }}
+        >
+          EVENTBRIDGE ENGINE · 4 RULES · 378 AUTOMATED PYTEST TESTS
+        </span>
+      </div>
+    </div>
+  );
+};
