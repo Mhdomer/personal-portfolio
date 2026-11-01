@@ -311,7 +311,7 @@ jobs:
         {/* Featured Project Showcase: 2-Column Editorial Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Left Column: Visual Media & Device Showcase Card */}
-          <div className="lg:col-span-5 flex flex-col space-y-4">
+          <div className="lg:col-span-6 flex flex-col space-y-4">
             {/* View Sub-Tabs: Preview | Diagram | Code Spec */}
             <div
               className="flex items-center gap-1.5 p-1 rounded-xl border w-fit"
@@ -368,7 +368,7 @@ jobs:
             >
               {innerView === 'preview' && (
                 <div 
-                  className="relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden flex items-center justify-center bg-black/5 cursor-pointer"
+                  className="relative aspect-[16/10] overflow-hidden flex items-center justify-center bg-black/5 cursor-pointer"
                   onClick={() => onSelectImage && onSelectImage(currentSystem.videoSrc || currentSystem.previewImage, currentSystem.title)}
                 >
                   {currentSystem.videoSrc ? (
@@ -418,7 +418,7 @@ jobs:
 
               {innerView === 'diagram' && (
                 <div
-                  className="relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden cursor-pointer flex items-center justify-center p-3 sm:p-4"
+                  className="relative aspect-[16/10] overflow-hidden cursor-pointer flex items-center justify-center p-1 sm:p-2"
                   style={{ background: 'var(--surface-sheet)' }}
                   onClick={() => onSelectImage && onSelectImage(currentSystem.diagramImage, `${currentSystem.title} Architecture Diagram`)}
                 >
@@ -486,7 +486,7 @@ jobs:
           </div>
 
           {/* Right Column: Editorial Narrative & Impact Breakdown */}
-          <div className="lg:col-span-7 space-y-6">
+          <div className="lg:col-span-6 space-y-6">
             {/* Header: Kicker + Title + Summary */}
             <div className="space-y-2">
               <div
