@@ -199,6 +199,7 @@ def dispatch_cloud_mutation(action_request: dict) -> AuditReceipt:
       service: 'Terraform + Docker + GitHub Actions',
       metric: 'Exit Code 1 Gate · 47 Resources',
       github: 'https://github.com/Mhdomer/mindcraft-aws-migration',
+      liveDemo: 'https://mind-craft-k21f.vercel.app/',
       previewImage: '/assets/projects/mindcraft-preview.png',
       diagramImage: '/assets/projects/mindcraft-aws-architecture.png',
       videoSrc: '/assets/projects/mindcraft-showcase.mp4',
@@ -368,7 +369,7 @@ jobs:
             >
               {innerView === 'preview' && (
                 <div 
-                  className="relative aspect-[16/10] overflow-hidden flex items-center justify-center bg-black/5 cursor-pointer"
+                  className="relative aspect-[16/11] overflow-hidden flex items-center justify-center bg-black/5 cursor-pointer"
                   onClick={() => onSelectImage && onSelectImage(currentSystem.videoSrc || currentSystem.previewImage, currentSystem.title)}
                 >
                   {currentSystem.videoSrc ? (
@@ -385,7 +386,7 @@ jobs:
                     <img
                       src={currentSystem.previewImage}
                       alt={currentSystem.title}
-                      className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-[1.02]"
+                      className="w-full h-full object-contain p-2"
                     />
                   )}
 
@@ -418,15 +419,17 @@ jobs:
 
               {innerView === 'diagram' && (
                 <div
-                  className="relative aspect-[16/10] overflow-hidden cursor-pointer flex items-center justify-center p-1 sm:p-2"
+                  className="relative aspect-[16/11] overflow-hidden cursor-pointer flex items-center justify-center p-3 sm:p-5"
                   style={{ background: 'var(--surface-sheet)' }}
                   onClick={() => onSelectImage && onSelectImage(currentSystem.diagramImage, `${currentSystem.title} Architecture Diagram`)}
                 >
-                  <img
-                    src={currentSystem.diagramImage}
-                    alt={`${currentSystem.title} Architecture Diagram`}
-                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]"
-                  />
+                  <div className="w-full h-full rounded-2xl bg-white p-3 sm:p-4 flex items-center justify-center border border-black/10 shadow-sm overflow-hidden">
+                    <img
+                      src={currentSystem.diagramImage}
+                      alt={`${currentSystem.title} Architecture Diagram`}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
                     <span
                       className="px-4 py-2 rounded-full font-mono text-xs font-semibold border shadow-xl flex items-center gap-2 backdrop-blur-md"
@@ -563,6 +566,23 @@ jobs:
               </div>
 
               <div className="flex items-center gap-3 flex-shrink-0">
+                {currentSystem.liveDemo && (
+                  <a
+                    href={currentSystem.liveDemo}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono text-xs font-bold uppercase tracking-wider transition-all border shadow-sm hover:scale-105"
+                    style={{
+                      background: 'var(--brand-coral)',
+                      borderColor: 'var(--brand-coral)',
+                      color: '#ffffff',
+                    }}
+                  >
+                    <span>Live App</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 text-white" />
+                  </a>
+                )}
+
                 <a
                   href={currentSystem.github}
                   target="_blank"

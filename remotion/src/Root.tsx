@@ -42,7 +42,7 @@ export function Root() {
       <Composition
         id="MindcraftShowcase"
         component={MindcraftShowcase}
-        durationInFrames={540}
+        durationInFrames={480}
         fps={30}
         width={1200}
         height={825}
