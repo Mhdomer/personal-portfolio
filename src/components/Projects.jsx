@@ -20,7 +20,7 @@ export default function Projects({ onSelectImage }) {
       github: 'https://github.com/Mhdomer/secure-cloud-pdms',
       previewImage: '/assets/projects/secrh-patient-dashboard.jpg',
       diagramImage: '/assets/projects/secrh-aws-architecture.png',
-      videoSrc: '', // Ready for video clip upload
+      videoSrc: '/assets/projects/secrh-showcase.mp4',
       problem:
         'Alamin Clinic in Riyadh ran patient records on a single on-premise server. In May 2023, a ransomware attack took it down for 5 days with unrecoverable data loss. Legacy records lacked encryption at rest, network access tiers, and offsite disaster recovery.',
       whatIBuilt:
@@ -81,7 +81,7 @@ resource "aws_db_instance" "main" {
       github: 'https://github.com/Mhdomer/aws-compliance-remediation-engine',
       previewImage: '/assets/projects/a2-social-preview.png',
       diagramImage: '/assets/projects/a2-compliance-architecture.png',
-      videoSrc: '', // Ready for video clip upload
+      videoSrc: '/assets/projects/a2-showcase.mp4',
       problem:
         'Periodic compliance audits leave security exposure windows open for days. When developers accidentally make S3 buckets public, open SSH port 22 to 0.0.0.0/0, or launch unencrypted EBS volumes, traditional tools wait for scheduled scans rather than remediating instantly.',
       whatIBuilt:
@@ -139,7 +139,7 @@ def lambda_handler(event, context):
       github: 'https://github.com/Mhdomer/aegis-2b',
       previewImage: '/assets/projects/aegis-hero-banner.png',
       diagramImage: '/assets/projects/aegis-aws-architecture.png',
-      videoSrc: '', // Ready for video clip upload
+      videoSrc: '/assets/projects/aegis-showcase.mp4',
       problem:
         'Enterprise LLM guardrails add 1,800ms+ of roundtrip latency and charge token costs even when evaluating blatant prompt injections. Monolithic cloud guardrails bottleneck real-time agent loops and fail to provide tamper-evident action audit trails.',
       whatIBuilt:
@@ -201,7 +201,7 @@ def dispatch_cloud_mutation(action_request: dict) -> AuditReceipt:
       github: 'https://github.com/Mhdomer/mindcraft-aws-migration',
       previewImage: '/assets/projects/mindcraft-preview.png',
       diagramImage: '/assets/projects/mindcraft-aws-architecture.png',
-      videoSrc: '', // Ready for video clip upload
+      videoSrc: '/assets/projects/mindcraft-showcase.mp4',
       problem:
         'Firebase hides everything below the application layer, giving zero control over database networking, subnets, and container vulnerabilities. Vulnerable dependencies and container CVEs slip into production environments without shift-left security enforcement.',
       whatIBuilt:
