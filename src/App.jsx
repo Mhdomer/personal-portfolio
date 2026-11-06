@@ -12,6 +12,7 @@ import FallingSakuraLeaves from './components/FallingSakuraLeaves';
 import CursorSwordSlash from './components/CursorSwordSlash';
 import DecorativeBranches, { SectionSakuraDivider } from './components/DecorativeBranches';
 import InteractiveTourGuide from './components/InteractiveTourGuide';
+import QuickResumePill from './components/QuickResumePill';
 
 export default function App() {
   const [tourOpen, setTourOpen] = useState(false);
@@ -85,6 +86,9 @@ export default function App() {
 
       {/* Global Footer */}
       <Footer onOpenResume={() => setResumeModalOpen(true)} />
+
+      {/* Floating Quick Resume Access Pill for Recruiters */}
+      <QuickResumePill onOpenResume={() => setResumeModalOpen(true)} />
 
       {/* Interactive Portfolio Tour */}
       <InteractiveTourGuide
