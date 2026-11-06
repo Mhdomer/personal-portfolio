@@ -18,8 +18,6 @@ export default function Projects({ onSelectImage }) {
       service: 'AWS 3-Tier (ALB + EC2 + RDS) + Terraform',
       metric: '110 Resources · 0 Drift',
       github: 'https://github.com/Mhdomer/secure-cloud-pdms',
-      recruiterTakeaway:
-        'Replaced a ransomware-compromised clinic server with a hardened 3-tier AWS architecture across 2 AZs, supporting 100+ daily patient visits with zero downtime.',
       previewImage: '/assets/projects/secrh-patient-dashboard.jpg',
       diagramImage: '/assets/projects/secrh-aws-architecture.png',
       videoSrc: '/assets/projects/secrh-showcase.mp4',
@@ -81,8 +79,6 @@ resource "aws_db_instance" "main" {
       service: 'AWS EventBridge + Lambda',
       metric: '8s MTTR · 352 Tests',
       github: 'https://github.com/Mhdomer/aws-compliance-remediation-engine',
-      recruiterTakeaway:
-        'Autonomous serverless compliance daemon that detects and revokes open security group ports in 8 seconds, backed by 378 passing automated tests.',
       previewImage: '/assets/projects/a2-social-preview.png',
       diagramImage: '/assets/projects/a2-compliance-architecture.png',
       videoSrc: '/assets/projects/a2-showcase.mp4',
@@ -141,8 +137,6 @@ def lambda_handler(event, context):
       service: 'Amazon Bedrock + AWS Lambda',
       metric: '115ms p99 · 16x Faster',
       github: 'https://github.com/Mhdomer/aegis-2b',
-      recruiterTakeaway:
-        'Deterministic AI security circuit breaker that blocks prompt injection attacks in 0.85ms before requests hit Amazon Bedrock, cutting LLM attack costs to zero.',
       previewImage: '/assets/projects/aegis-hero-banner.png',
       diagramImage: '/assets/projects/aegis-aws-architecture.png',
       videoSrc: '/assets/projects/aegis-showcase.mp4',
@@ -206,8 +200,6 @@ def dispatch_cloud_mutation(action_request: dict) -> AuditReceipt:
       metric: 'Exit Code 1 Gate · 47 Resources',
       github: 'https://github.com/Mhdomer/mindcraft-aws-migration',
       liveDemo: 'https://mind-craft-k21f.vercel.app/',
-      recruiterTakeaway:
-        'Solo migrated coursework app from Firebase to 3-tier AWS with 47 Terraform resources and a shift-left CI/CD security gate blocking container CVEs on pull request.',
       previewImage: '/assets/projects/mindcraft-preview.png',
       diagramImage: '/assets/projects/mindcraft-aws-architecture.png',
       videoSrc: '/assets/projects/mindcraft-showcase.mp4',
@@ -513,35 +505,6 @@ jobs:
                 {currentSystem.subtitle}
               </p>
             </div>
-
-            {/* Recruiter Quick Snapshot */}
-            {currentSystem.recruiterTakeaway && (
-              <div
-                className="p-3.5 rounded-2xl border flex items-start gap-3 backdrop-blur-sm"
-                style={{
-                  background: 'rgba(235, 94, 85, 0.06)',
-                  borderColor: 'rgba(235, 94, 85, 0.22)',
-                }}
-              >
-                <div
-                  className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                  style={{ background: 'var(--brand-coral)', color: '#ffffff' }}
-                >
-                  <Check className="w-3 h-3 stroke-[3]" />
-                </div>
-                <div className="text-xs leading-relaxed">
-                  <span
-                    className="font-mono font-bold uppercase tracking-wider block text-[10px] mb-0.5"
-                    style={{ color: 'var(--brand-coral)' }}
-                  >
-                    Recruiter Snapshot
-                  </span>
-                  <span className="font-medium" style={{ color: 'var(--ink)' }}>
-                    {currentSystem.recruiterTakeaway}
-                  </span>
-                </div>
-              </div>
-            )}
 
             {/* The 3 Editorial Rows (Problem, Built, Result) */}
             <div className="space-y-4 pt-2">

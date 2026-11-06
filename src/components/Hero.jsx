@@ -111,59 +111,6 @@ export default function Hero({ onStartTour }) {
         </div>
       </div>
 
-      {/* 30-Second Recruiter Snapshot: 4 High-Signal Value Tiles */}
-      <div
-        className="col-span-full pt-8 mt-2 border-t grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4"
-        style={{ borderColor: 'var(--line)' }}
-      >
-        <div
-          className="p-4 rounded-2xl border transition-all hover:-translate-y-0.5"
-          style={{ background: 'var(--surface)', borderColor: 'var(--line)' }}
-        >
-          <div className="text-[11px] font-mono uppercase tracking-wider opacity-60 mb-1 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full" style={{ background: 'var(--brand-coral)' }} />
-            <span>Cloud Infrastructure</span>
-          </div>
-          <div className="font-mono font-bold text-base sm:text-lg text-[var(--ink)]">150+ AWS Resources</div>
-          <div className="text-xs opacity-75 mt-0.5 font-sans">Terraform IaC · Multi-AZ VPC · ALB</div>
-        </div>
-
-        <div
-          className="p-4 rounded-2xl border transition-all hover:-translate-y-0.5"
-          style={{ background: 'var(--surface)', borderColor: 'var(--line)' }}
-        >
-          <div className="text-[11px] font-mono uppercase tracking-wider opacity-60 mb-1 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span>Incident Response</span>
-          </div>
-          <div className="font-mono font-bold text-base sm:text-lg text-[var(--ink)]">Sub-8s Auto-Remediation</div>
-          <div className="text-xs opacity-75 mt-0.5 font-sans">EventBridge + Lambda Boto3 · 378 Tests</div>
-        </div>
-
-        <div
-          className="p-4 rounded-2xl border transition-all hover:-translate-y-0.5"
-          style={{ background: 'var(--surface)', borderColor: 'var(--line)' }}
-        >
-          <div className="text-[11px] font-mono uppercase tracking-wider opacity-60 mb-1 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-400" />
-            <span>Shift-Left CI/CD</span>
-          </div>
-          <div className="font-mono font-bold text-base sm:text-lg text-[var(--ink)]">Exit Code 1 CVE Gate</div>
-          <div className="text-xs opacity-75 mt-0.5 font-sans">Trivy + SonarQube · GitHub Actions</div>
-        </div>
-
-        <div
-          className="p-4 rounded-2xl border transition-all hover:-translate-y-0.5"
-          style={{ background: 'var(--surface)', borderColor: 'var(--line)' }}
-        >
-          <div className="text-[11px] font-mono uppercase tracking-wider opacity-60 mb-1 flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-            <span>Production IT Ops</span>
-          </div>
-          <div className="font-mono font-bold text-base sm:text-lg text-[var(--ink)]">Al-Ameen Medical IT</div>
-          <div className="text-xs opacity-75 mt-0.5 font-sans">Riyadh Outpatient Clinic · PACS & VLANs</div>
-        </div>
-      </div>
     </section>
   );
 }
