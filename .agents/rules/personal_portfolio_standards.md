@@ -17,10 +17,10 @@ Every modification made to this repository must preserve the engineering craft, 
 ---
 
 ## 2. Production Static Deployment
-- **Deployment Platform:** AWS Amplify Hosting via root `amplify.yml`.
+- **Deployment Platform:** Cloudflare Pages (`https://mhdomar.pages.dev`) auto-building `main` from GitHub (`Mhdomer/personal-portfolio`), with root `amplify.yml` preserved for optional AWS Amplify compatibility.
 - **Static Artifacts:** Build output must stay within `dist/` and remain 100% static client-side single page application (SPA). Never introduce Express/Node server runtime dependencies inside `src/`.
-- **Edge Caching:** Assets must be compatible with Amazon CloudFront distribution and S3 storage headers.
-- **Availability:** Ensure the production build has zero build warnings, missing imports, or runtime crashes.
+- **Edge Caching:** Assets must be compatible with Cloudflare global edge caching (`HTTP/2` + `HTTP/3`) and root-relative `/assets/*` paths.
+- **Availability:** Ensure the production build has zero build warnings, missing imports, Safari `< 16.4` regex lookbehind crashes, or runtime errors.
 
 ---
 
