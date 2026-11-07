@@ -1,7 +1,7 @@
 import React from 'react';
-import { ExternalLink, Shield, FileText, BookOpen, Mail, Phone, ArrowUpRight } from 'lucide-react';
+import { ExternalLink, FileText, BookOpen, ArrowUpRight, Terminal } from 'lucide-react';
 
-export default function Footer({ onOpenResume }) {
+export default function Footer({ onOpenResume, onReplayIntro }) {
   return (
     <footer
       className="border-t py-16 relative z-20 transition-colors duration-300"
@@ -15,18 +15,8 @@ export default function Footer({ onOpenResume }) {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
           {/* Column 1: Identity & Bio */}
           <div className="md:col-span-5 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div
-                className="w-8 h-8 rounded-lg border flex items-center justify-center"
-                style={{
-                  background: 'var(--surface)',
-                  borderColor: 'var(--line)',
-                  color: 'var(--brand-coral)',
-                }}
-              >
-                <Shield className="w-4 h-4" />
-              </div>
-              <span className="font-bold font-mono text-base">
+            <div>
+              <span className="font-bold font-mono text-base tracking-tight">
                 MHDOMAR<span style={{ color: 'var(--brand-coral)' }}>.DEV</span>
               </span>
             </div>
@@ -192,7 +182,23 @@ export default function Footer({ onOpenResume }) {
             <span style={{ color: 'var(--brand-coral)' }}>Cloud Security & DevSecOps Engineer</span>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            {onReplayIntro && (
+              <>
+                <button
+                  type="button"
+                  onClick={onReplayIntro}
+                  data-testid="button-replay-intro"
+                  className="hover:opacity-100 transition-opacity flex items-center gap-1.5 cursor-pointer"
+                  style={{ color: 'var(--brand-coral)' }}
+                  title="Replay terminal & katana boot sequence"
+                >
+                  <Terminal className="w-3 h-3" />
+                  <span>Replay Intro</span>
+                </button>
+                <span>•</span>
+              </>
+            )}
             <a
               href="https://github.com/Mhdomer/personal-portfolio"
               target="_blank"

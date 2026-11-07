@@ -1,12 +1,123 @@
-import React, { useState } from 'react';
-import { Maximize2, ArrowUpRight, Code2, Image as ImageIcon, Copy, Check, Play, Volume2, VolumeX, Eye } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, MotionConfig, useReducedMotion } from 'framer-motion';
+import { Maximize2, ArrowUpRight, Code2, GitBranch, Volume2, VolumeX, Eye, X } from 'lucide-react';
 import { SectionSakuraHeader } from './DecorativeBranches';
+import InteractiveArchitectureTrace from './InteractiveArchitectureTrace';
+import AnnotatedCodeSpec from './AnnotatedCodeSpec';
 
-export default function Projects({ onSelectImage }) {
+const EDITORIAL_EASE = [0.22, 1, 0.36, 1];
+
+function SpringHeightFrame({ children }) {
+  const prefersReducedMotion = useReducedMotion();
+  const contentRef = useRef(null);
+  const [height, setHeight] = useState(null);
+
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return undefined;
+
+    const measure = (entries) => {
+      const boxHeight =
+        entries?.[0]?.borderBoxSize?.[0]?.blockSize ?? el.getBoundingClientRect().height;
+      const next = Math.round(boxHeight);
+      if (next > 0) {
+        setHeight((prev) => (prev === next ? prev : next));
+      }
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <motion.div
+      initial={false}
+      animate={prefersReducedMotion || height === null ? { height: 'auto' } : { height }}
+      transition={{ type: 'spring', stiffness: 380, damping: 36, mass: 0.7 }}
+      className="overflow-hidden"
+    >
+      <div ref={contentRef}>{children}</div>
+    </motion.div>
+  );
+}
+
+function ViewportVideo({ src, poster, isMuted }) {
+  const videoRef = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') {
+      setInView(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setInView(Boolean(entry?.isIntersecting));
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [src]);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    if (inView) {
+      el.play()?.catch(() => {});
+    } else {
+      el.pause();
+    }
+  }, [inView, src]);
+
+  return (
+    <video
+      ref={videoRef}
+      loop
+      muted={isMuted}
+      playsInline
+      preload="metadata"
+      poster={poster}
+      src={src}
+      className="w-full h-full object-cover"
+    />
+  );
+}
+
+export default function Projects({ onSelectImage, proofRequest }) {
+  const prefersReducedMotion = useReducedMotion();
+  const workbenchRef = useRef(null);
   const [activeId, setActiveId] = useState('secrh-pdms');
   const [innerView, setInnerView] = useState('preview'); // 'preview' | 'diagram' | 'code'
   const [isMuted, setIsMuted] = useState(true);
-  const [copied, setCopied] = useState(false);
+  const [codePinId, setCodePinId] = useState(null);
+  const [activeProof, setActiveProof] = useState(null);
+
+  useEffect(() => {
+    if (!proofRequest || proofRequest.type !== 'project') return;
+
+    setActiveId(proofRequest.systemId);
+    setInnerView(proofRequest.innerView || 'diagram');
+    setCodePinId(proofRequest.pinId || null);
+    setActiveProof(proofRequest);
+
+    requestAnimationFrame(() => {
+      const el = workbenchRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const targetY = Math.max(0, Math.round(rect.top + window.scrollY - 88));
+      window.scrollTo({
+        top: targetY,
+        behavior: prefersReducedMotion ? 'instant' : 'smooth',
+      });
+    });
+  }, [proofRequest?.token, prefersReducedMotion]);
 
   const systems = [
     {
@@ -18,8 +129,8 @@ export default function Projects({ onSelectImage }) {
       service: 'AWS 3-Tier (ALB + EC2 + RDS) + Terraform',
       metric: '110 Resources · 0 Drift',
       github: 'https://github.com/Mhdomer/secure-cloud-pdms',
-      previewImage: '/assets/projects/secrh-patient-dashboard.jpg',
-      diagramImage: '/assets/projects/secrh-aws-architecture.png',
+      previewImage: '/assets/projects/secrh-patient-dashboard.webp',
+      diagramImage: '/assets/projects/secrh-aws-architecture.webp',
       videoSrc: '/assets/projects/secrh-showcase.mp4',
       problem:
         'Alamin Clinic in Riyadh ran patient records on a single on-premise server. In May 2023, a ransomware attack took it down for 5 days with unrecoverable data loss. Legacy records lacked encryption at rest, network access tiers, and offsite disaster recovery.',
@@ -79,8 +190,8 @@ resource "aws_db_instance" "main" {
       service: 'AWS EventBridge + Lambda',
       metric: '8s MTTR · 352 Tests',
       github: 'https://github.com/Mhdomer/aws-compliance-remediation-engine',
-      previewImage: '/assets/projects/a2-social-preview.png',
-      diagramImage: '/assets/projects/a2-compliance-architecture.png',
+      previewImage: '/assets/projects/a2-social-preview.webp',
+      diagramImage: '/assets/projects/a2-compliance-architecture.webp',
       videoSrc: '/assets/projects/a2-showcase.mp4',
       problem:
         'Periodic compliance audits leave security exposure windows open for days. When developers accidentally make S3 buckets public, open SSH port 22 to 0.0.0.0/0, or launch unencrypted EBS volumes, traditional tools wait for scheduled scans rather than remediating instantly.',
@@ -137,8 +248,8 @@ def lambda_handler(event, context):
       service: 'Amazon Bedrock + AWS Lambda',
       metric: '115ms p99 · 16x Faster',
       github: 'https://github.com/Mhdomer/aegis-2b',
-      previewImage: '/assets/projects/aegis-hero-banner.png',
-      diagramImage: '/assets/projects/aegis-aws-architecture.png',
+      previewImage: '/assets/projects/aegis-hero-banner.webp',
+      diagramImage: '/assets/projects/aegis-aws-architecture.webp',
       videoSrc: '/assets/projects/aegis-showcase.mp4',
       problem:
         'Enterprise LLM guardrails add 1,800ms+ of roundtrip latency and charge token costs even when evaluating blatant prompt injections. Monolithic cloud guardrails bottleneck real-time agent loops and fail to provide tamper-evident action audit trails.',
@@ -200,8 +311,8 @@ def dispatch_cloud_mutation(action_request: dict) -> AuditReceipt:
       metric: 'Exit Code 1 Gate · 47 Resources',
       github: 'https://github.com/Mhdomer/mindcraft-aws-migration',
       liveDemo: 'https://mind-craft-k21f.vercel.app/',
-      previewImage: '/assets/projects/mindcraft-preview.png',
-      diagramImage: '/assets/projects/mindcraft-aws-architecture.png',
+      previewImage: '/assets/projects/mindcraft-preview.webp',
+      diagramImage: '/assets/projects/mindcraft-aws-architecture.webp',
       videoSrc: '/assets/projects/mindcraft-showcase.mp4',
       problem:
         'Firebase hides everything below the application layer, giving zero control over database networking, subnets, and container vulnerabilities. Vulnerable dependencies and container CVEs slip into production environments without shift-left security enforcement.',
@@ -248,410 +359,506 @@ jobs:
 
   const currentSystem = systems.find((s) => s.id === activeId) || systems[0];
 
-  const handleCopy = (code) => {
-    if (navigator?.clipboard?.writeText) {
-      navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+  const selectSystem = (id) => {
+    setActiveId(id);
+    setCodePinId(null);
+    setActiveProof(null);
   };
 
+  const subTabs = [
+    { id: 'preview', label: 'Preview', Icon: Eye },
+    { id: 'diagram', label: 'Architecture', Icon: GitBranch, isLive: true },
+    { id: 'code', label: 'Code Spec', Icon: Code2 },
+  ];
+
   return (
-    <section
-      id="work"
-      className="py-24 transition-colors duration-300 relative"
-    >
-      <div id="projects" className="absolute -top-20" />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header with Horizontal Project Navigation Tabs */}
-        <div className="mb-12 flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-8 border-b" style={{ borderColor: 'var(--line)' }}>
-          <div>
-            <SectionSakuraHeader category="Production Implementations" />
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight uppercase leading-[1.18] display">
-              Selected Systems &<br />
-              <span style={{ color: 'var(--brand-coral)' }}>Architectures.</span>
-            </h2>
-            <p className="text-sm mt-3 max-w-xl opacity-75">
-              Production cloud architectures, automated remediation engines, and AI security guardrails running across live workloads.
-            </p>
+    <MotionConfig reducedMotion="user">
+      <section
+        id="work"
+        className="py-24 scroll-mt-20 transition-colors duration-300 relative"
+      >
+        <div id="projects" className="absolute -top-20" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header with Horizontal Project Navigation Tabs */}
+          <div className="mb-12 flex flex-col lg:flex-row lg:items-end justify-between gap-8 pb-8 border-b" style={{ borderColor: 'var(--line)' }}>
+            <div>
+              <SectionSakuraHeader category="Production Implementations" />
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight uppercase leading-[1.18] display">
+                <span className="block overflow-hidden pb-1 -mb-1">
+                  <motion.span
+                    className="block"
+                    initial={prefersReducedMotion ? false : { y: '105%' }}
+                    whileInView={{ y: '0%' }}
+                    viewport={{ once: true, margin: '-50px' }}
+                    transition={{ duration: 0.54, ease: EDITORIAL_EASE }}
+                  >
+                    Selected Systems &
+                  </motion.span>
+                </span>
+                <span className="block overflow-hidden pb-1 -mb-1">
+                  <motion.span
+                    className="block"
+                    style={{ color: 'var(--brand-coral)' }}
+                    initial={prefersReducedMotion ? false : { y: '105%' }}
+                    whileInView={{ y: '0%' }}
+                    viewport={{ once: true, margin: '-50px' }}
+                    transition={{ duration: 0.54, delay: 0.07, ease: EDITORIAL_EASE }}
+                  >
+                    Architectures.
+                  </motion.span>
+                </span>
+              </h2>
+              <motion.p
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+                whileInView={{ opacity: 0.75, y: 0 }}
+                viewport={{ once: true, margin: '-50px' }}
+                transition={{ duration: 0.48, delay: 0.14, ease: EDITORIAL_EASE }}
+                className="text-sm mt-3 max-w-xl opacity-75"
+              >
+                Production cloud architectures, automated remediation engines, and AI security guardrails running across live workloads.
+              </motion.p>
+            </div>
+
+            {/* Project Switcher Tabs (Ziad Sharara pattern with spring continuity) */}
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-mono">
+              {systems.map((s, index) => {
+                const isActive = activeId === s.id;
+                return (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => selectSystem(s.id)}
+                    className="group inline-flex items-center gap-2 pb-2 transition-colors relative cursor-pointer"
+                    style={{
+                      color: isActive ? 'var(--brand-coral)' : 'var(--ink)',
+                      opacity: isActive ? 1 : 0.65,
+                    }}
+                  >
+                    <span className="font-mono text-[11px] opacity-75">0{index + 1}</span>
+                    <span className={`tracking-wider uppercase ${isActive ? 'font-bold' : 'font-medium'}`}>
+                      {s.tabLabel}
+                    </span>
+                    {isActive && (
+                      <motion.span
+                        layoutId="project-tab-underline"
+                        transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                        className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full"
+                        style={{ background: 'var(--brand-coral)' }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Project Switcher Tabs (Ziad Sharara pattern) */}
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-xs font-mono">
+          {/* Featured Project Showcase: 2-Column Editorial Grid */}
+          <div
+            ref={workbenchRef}
+            id="work-workbench"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start scroll-mt-24"
+          >
+            {/* Left Column: Visual Media & Device Showcase Card */}
+            <div className="lg:col-span-6 flex flex-col space-y-4">
+              {/* View Sub-Tabs + Optional Active Proof Breadcrumb */}
+              <div className="flex flex-wrap items-center justify-between gap-2.5">
+                <div
+                  className="flex items-center gap-1 p-1 rounded-xl border w-fit"
+                  style={{
+                    background: 'var(--surface)',
+                    borderColor: 'var(--line)',
+                  }}
+                >
+                  {subTabs.map(({ id, label, Icon, isLive }) => {
+                    const isSelected = innerView === id;
+                    return (
+                      <button
+                        key={id}
+                        type="button"
+                        onClick={() => {
+                          setInnerView(id);
+                          setActiveProof(null);
+                        }}
+                        className="relative px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-mono transition-colors flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+                        style={{
+                          color: isSelected ? 'var(--button-fg)' : 'var(--ink)',
+                          fontWeight: isSelected ? 700 : 500,
+                        }}
+                      >
+                        {isSelected && (
+                          <motion.span
+                            layoutId="project-subtab-pill"
+                            transition={{ type: 'spring', stiffness: 450, damping: 34 }}
+                            className="absolute inset-0 rounded-lg shadow-sm"
+                            style={{ background: 'var(--button-bg)' }}
+                          />
+                        )}
+                        <Icon className="w-3.5 h-3.5 relative z-10" />
+                        <span className="relative z-10">{label}</span>
+                        {isLive && !isSelected && (
+                          <span
+                            className="relative z-10 w-1.5 h-1.5 rounded-full"
+                            style={{ background: 'var(--brand-coral)' }}
+                            title="Interactive live packet trace"
+                          />
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <AnimatePresence initial={false}>
+                  {activeProof && activeProof.systemId === currentSystem.id && (
+                    <motion.div
+                      key={activeProof.token}
+                      initial={prefersReducedMotion ? false : { opacity: 0, y: 4 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -3 }}
+                      transition={{ duration: 0.2, ease: EDITORIAL_EASE }}
+                      data-testid="active-proof-pill"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-mono max-w-full"
+                      style={{
+                        background: 'var(--surface-soft)',
+                        borderColor: 'var(--brand-coral)',
+                        color: 'var(--ink)',
+                      }}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ background: 'var(--brand-coral)' }}
+                      />
+                      <span className="opacity-65">Proof:</span>
+                      <span className="font-semibold truncate max-w-[180px] sm:max-w-[220px]">
+                        {activeProof.skillName}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setActiveProof(null)}
+                        aria-label="Clear proof highlight"
+                        className="ml-0.5 p-0.5 rounded opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Media Frame Container (sharara.me device frame style) */}
+              <div
+                className="rounded-3xl border overflow-hidden shadow-2xl relative group transition-colors"
+                style={{
+                  background: 'var(--paper-deep)',
+                  borderColor: 'var(--line)',
+                }}
+              >
+                <SpringHeightFrame>
+                  <AnimatePresence mode="wait" initial={false}>
+                    {innerView === 'preview' && (
+                      <motion.div
+                        key={`${currentSystem.id}-preview`}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                        className="relative aspect-[16/11] overflow-hidden flex items-center justify-center bg-black/5 cursor-pointer"
+                        onClick={() => onSelectImage && onSelectImage(currentSystem.videoSrc || currentSystem.previewImage, currentSystem.title)}
+                      >
+                        {currentSystem.videoSrc ? (
+                          <ViewportVideo
+                            key={currentSystem.videoSrc}
+                            src={currentSystem.videoSrc}
+                            poster={currentSystem.previewImage}
+                            isMuted={isMuted}
+                          />
+                        ) : (
+                          <img
+                            src={currentSystem.previewImage}
+                            alt={currentSystem.title}
+                            loading="lazy"
+                            decoding="async"
+                            className="w-full h-full object-contain p-2"
+                          />
+                        )}
+
+                        {/* Audio / Video Status Pill Badge (Sharara aesthetic) */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsMuted(!isMuted);
+                          }}
+                          className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-mono flex items-center gap-1.5 border border-white/10 shadow-lg hover:bg-black/90 transition-colors z-10"
+                          title={isMuted ? 'Audio muted (Video preview ready)' : 'Audio unmuted'}
+                        >
+                          {isMuted ? <VolumeX className="w-3.5 h-3.5 text-neutral-300" /> : <Volume2 className="w-3.5 h-3.5 text-emerald-400" />}
+                          <span>{isMuted ? 'Sound off' : 'Sound on'}</span>
+                        </button>
+
+                        {/* Click to Enlarge / Inspect Trigger */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onSelectImage && onSelectImage(currentSystem.videoSrc || currentSystem.previewImage, currentSystem.title);
+                          }}
+                          className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-mono flex items-center gap-1.5 border border-white/10 shadow-lg hover:bg-black/90 transition-colors opacity-90 hover:opacity-100 z-10"
+                        >
+                          <Maximize2 className="w-3.5 h-3.5" style={{ color: 'var(--brand-coral)' }} />
+                          <span className="hidden sm:inline">Inspect High-Res</span>
+                        </button>
+                      </motion.div>
+                    )}
+
+                    {innerView === 'diagram' && (
+                      <motion.div
+                        key={`${currentSystem.id}-diagram`}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        <InteractiveArchitectureTrace
+                          systemId={currentSystem.id}
+                          systemTitle={currentSystem.title}
+                          diagramImage={currentSystem.diagramImage}
+                          onOpenFullDiagram={onSelectImage}
+                          externalFocus={
+                            activeProof && activeProof.systemId === currentSystem.id
+                              ? {
+                                  systemId: activeProof.systemId,
+                                  mode: activeProof.traceMode,
+                                  nodeId: activeProof.nodeId,
+                                  token: activeProof.token,
+                                }
+                              : null
+                          }
+                          onJumpToCode={(pinId) => {
+                            setCodePinId(pinId || null);
+                            setInnerView('code');
+                          }}
+                        />
+                      </motion.div>
+                    )}
+
+                    {innerView === 'code' && (
+                      <motion.div
+                        key={`${currentSystem.id}-code`}
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        <AnnotatedCodeSpec
+                          systemId={currentSystem.id}
+                          codeFile={currentSystem.codeFile}
+                          codeLang={currentSystem.codeLang}
+                          code={currentSystem.code}
+                          initialPinId={codePinId}
+                          pinToken={activeProof?.token}
+                          onJumpToArchitecture={() => setInnerView('diagram')}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </SpringHeightFrame>
+              </div>
+
+              {/* Sub-label under visual frame */}
+              <div className="flex items-center justify-between text-xs font-mono opacity-70 px-1">
+                <span>{currentSystem.service}</span>
+                <span className="font-bold" style={{ color: 'var(--brand-coral)' }}>
+                  {currentSystem.metric}
+                </span>
+              </div>
+            </div>
+
+            {/* Right Column: Editorial Narrative & Impact Breakdown */}
+            <div className="lg:col-span-6">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={currentSystem.id}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.19, ease: [0.22, 1, 0.36, 1] }}
+                  className="space-y-6"
+                >
+                  {/* Header: Kicker + Title + Summary */}
+                  <div className="space-y-2">
+                    <div
+                      className="text-xs font-mono uppercase tracking-[0.18em] font-semibold"
+                      style={{ color: 'var(--brand-coral)' }}
+                    >
+                      {currentSystem.kicker}
+                    </div>
+                    <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight uppercase leading-tight display">
+                      {currentSystem.title}
+                    </h3>
+                    <p className="text-sm sm:text-base opacity-80 leading-relaxed font-sans pt-1">
+                      {currentSystem.subtitle}
+                    </p>
+                  </div>
+
+                  {/* The 3 Editorial Rows (Problem, Built, Result) */}
+                  <div className="space-y-4 pt-2">
+                    {/* Row 1: The Problem */}
+                    <div
+                      className="pt-4 border-t flex flex-col sm:flex-row gap-2 sm:gap-6"
+                      style={{ borderColor: 'var(--line)' }}
+                    >
+                      <div className="w-28 sm:w-32 flex-shrink-0 text-xs font-mono uppercase tracking-wider opacity-60 pt-0.5">
+                        THE PROBLEM
+                      </div>
+                      <div className="flex-1 text-xs sm:text-sm leading-relaxed opacity-85">
+                        {currentSystem.problem}
+                      </div>
+                    </div>
+
+                    {/* Row 2: What I Built */}
+                    <div
+                      className="pt-4 border-t flex flex-col sm:flex-row gap-2 sm:gap-6"
+                      style={{ borderColor: 'var(--line)' }}
+                    >
+                      <div className="w-28 sm:w-32 flex-shrink-0 text-xs font-mono uppercase tracking-wider opacity-60 pt-0.5">
+                        WHAT I BUILT
+                      </div>
+                      <div className="flex-1 text-xs sm:text-sm leading-relaxed opacity-85">
+                        {currentSystem.whatIBuilt}
+                      </div>
+                    </div>
+
+                    {/* Row 3: The Result */}
+                    <div
+                      className="pt-4 border-t flex flex-col sm:flex-row gap-2 sm:gap-6"
+                      style={{ borderColor: 'var(--line)' }}
+                    >
+                      <div
+                        className="w-28 sm:w-32 flex-shrink-0 text-xs font-mono uppercase tracking-wider font-bold pt-0.5"
+                        style={{ color: 'var(--brand-coral)' }}
+                      >
+                        THE RESULT
+                      </div>
+                      <div className="flex-1 text-xs sm:text-sm leading-relaxed font-semibold" style={{ color: 'var(--ink)' }}>
+                        {currentSystem.result}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Tech Stack Tags & External Links */}
+                  <div
+                    className="pt-6 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                    style={{ borderColor: 'var(--line)' }}
+                  >
+                    <div className="text-xs font-mono opacity-75 flex flex-wrap gap-x-2 gap-y-1">
+                      {currentSystem.tags.map((tag, idx) => (
+                        <span key={idx} className="inline-flex items-center">
+                          {tag}
+                          {idx < currentSystem.tags.length - 1 && <span className="opacity-40 ml-2">·</span>}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 flex-shrink-0">
+                      {currentSystem.liveDemo && (
+                        <a
+                          href={currentSystem.liveDemo}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono text-xs font-bold uppercase tracking-wider transition-all border shadow-sm hover:scale-105 whitespace-nowrap"
+                          style={{
+                            background: 'var(--brand-coral)',
+                            borderColor: 'var(--brand-coral)',
+                            color: '#ffffff',
+                          }}
+                        >
+                          <span>Live App</span>
+                          <ArrowUpRight className="w-3.5 h-3.5 text-white" />
+                        </a>
+                      )}
+
+                      <a
+                        href={currentSystem.github}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono text-xs font-bold uppercase tracking-wider transition-all border shadow-sm hover:scale-105 whitespace-nowrap"
+                        style={{
+                          background: 'var(--surface)',
+                          borderColor: 'var(--line-strong)',
+                          color: 'var(--ink)',
+                        }}
+                      >
+                        <span>GitHub</span>
+                        <ArrowUpRight className="w-3.5 h-3.5" style={{ color: 'var(--brand-coral)' }} />
+                      </a>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (innerView === 'diagram') {
+                            onSelectImage && onSelectImage(currentSystem.diagramImage, `${currentSystem.title} Architecture Diagram`);
+                          } else {
+                            setInnerView('diagram');
+                          }
+                        }}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono text-xs font-semibold uppercase tracking-wider transition-all border hover:opacity-85 cursor-pointer whitespace-nowrap"
+                        style={{
+                          background: innerView === 'diagram' ? 'var(--surface-soft)' : 'transparent',
+                          borderColor: innerView === 'diagram' ? 'var(--brand-coral)' : 'var(--line)',
+                          color: 'var(--ink)',
+                        }}
+                      >
+                        <GitBranch className="w-3.5 h-3.5" style={{ color: 'var(--brand-coral)' }} />
+                        <span>{innerView === 'diagram' ? 'Full PNG' : 'Live Trace'}</span>
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Minimal Bottom Quick Selector Strip for all 4 Projects */}
+          <div className="mt-16 pt-8 border-t grid grid-cols-2 md:grid-cols-4 gap-4" style={{ borderColor: 'var(--line)' }}>
             {systems.map((s, index) => {
               const isActive = activeId === s.id;
               return (
                 <button
                   key={s.id}
-                  onClick={() => {
-                    setActiveId(s.id);
-                    setInnerView('preview');
-                  }}
-                  className="group inline-flex items-center gap-2 pb-2 transition-all relative"
+                  type="button"
+                  onClick={() => selectSystem(s.id)}
+                  className="relative p-3.5 rounded-2xl border text-left transition-all hover:-translate-y-0.5 group cursor-pointer"
                   style={{
-                    color: isActive ? 'var(--brand-coral)' : 'var(--ink)',
-                    opacity: isActive ? 1 : 0.65,
+                    background: isActive ? 'var(--surface-soft)' : 'var(--surface)',
+                    borderColor: isActive ? 'transparent' : 'var(--line)',
                   }}
                 >
-                  <span className="font-mono text-[11px] opacity-75">0{index + 1}</span>
-                  <span className={`tracking-wider uppercase ${isActive ? 'font-bold' : 'font-medium'}`}>
-                    {s.tabLabel}
-                  </span>
                   {isActive && (
-                    <span
-                      className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full"
-                      style={{ background: 'var(--brand-coral)' }}
+                    <motion.span
+                      layoutId="project-bottom-card-ring"
+                      transition={{ type: 'spring', stiffness: 420, damping: 32 }}
+                      className="absolute inset-0 rounded-2xl border pointer-events-none"
+                      style={{ borderColor: 'var(--brand-coral)' }}
                     />
                   )}
+                  <div className="flex items-center justify-between text-[11px] font-mono mb-1.5 opacity-60 relative z-10">
+                    <span>0{index + 1}</span>
+                    <span className="text-[10px] font-bold" style={{ color: isActive ? 'var(--brand-coral)' : 'inherit' }}>
+                      {isActive ? 'ACTIVE' : 'VIEW'}
+                    </span>
+                  </div>
+                  <div className="font-bold text-xs font-mono uppercase tracking-tight truncate group-hover:opacity-80 relative z-10">
+                    {s.tabLabel}
+                  </div>
+                  <div className="text-[11px] opacity-70 truncate mt-1 relative z-10">
+                    {s.metric}
+                  </div>
                 </button>
               );
             })}
           </div>
         </div>
-
-        {/* Featured Project Showcase: 2-Column Editorial Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Left Column: Visual Media & Device Showcase Card */}
-          <div className="lg:col-span-6 flex flex-col space-y-4">
-            {/* View Sub-Tabs: Preview | Diagram | Code Spec */}
-            <div
-              className="flex items-center gap-1.5 p-1 rounded-xl border w-fit"
-              style={{
-                background: 'var(--surface)',
-                borderColor: 'var(--line)',
-              }}
-            >
-              <button
-                onClick={() => setInnerView('preview')}
-                className="px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5"
-                style={{
-                  background: innerView === 'preview' ? 'var(--button-bg)' : 'transparent',
-                  color: innerView === 'preview' ? 'var(--button-fg)' : 'var(--ink)',
-                  fontWeight: innerView === 'preview' ? 700 : 500,
-                }}
-              >
-                <Eye className="w-3.5 h-3.5" />
-                <span>Preview</span>
-              </button>
-              <button
-                onClick={() => setInnerView('diagram')}
-                className="px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5"
-                style={{
-                  background: innerView === 'diagram' ? 'var(--button-bg)' : 'transparent',
-                  color: innerView === 'diagram' ? 'var(--button-fg)' : 'var(--ink)',
-                  fontWeight: innerView === 'diagram' ? 700 : 500,
-                }}
-              >
-                <ImageIcon className="w-3.5 h-3.5" />
-                <span>Diagram</span>
-              </button>
-              <button
-                onClick={() => setInnerView('code')}
-                className="px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5"
-                style={{
-                  background: innerView === 'code' ? 'var(--button-bg)' : 'transparent',
-                  color: innerView === 'code' ? 'var(--button-fg)' : 'var(--ink)',
-                  fontWeight: innerView === 'code' ? 700 : 500,
-                }}
-              >
-                <Code2 className="w-3.5 h-3.5" />
-                <span>Code Spec</span>
-              </button>
-            </div>
-
-            {/* Media Frame Container (sharara.me device frame style) */}
-            <div
-              className="rounded-3xl border overflow-hidden shadow-2xl relative group transition-all"
-              style={{
-                background: 'var(--paper-deep)',
-                borderColor: 'var(--line)',
-              }}
-            >
-              {innerView === 'preview' && (
-                <div 
-                  className="relative aspect-[16/11] overflow-hidden flex items-center justify-center bg-black/5 cursor-pointer"
-                  onClick={() => onSelectImage && onSelectImage(currentSystem.videoSrc || currentSystem.previewImage, currentSystem.title)}
-                >
-                  {currentSystem.videoSrc ? (
-                    <video
-                      key={currentSystem.videoSrc}
-                      autoPlay
-                      loop
-                      muted={isMuted}
-                      playsInline
-                      src={currentSystem.videoSrc}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <img
-                      src={currentSystem.previewImage}
-                      alt={currentSystem.title}
-                      className="w-full h-full object-contain p-2"
-                    />
-                  )}
-
-                  {/* Audio / Video Status Pill Badge (Sharara aesthetic) */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setIsMuted(!isMuted);
-                    }}
-                    className="absolute bottom-4 left-4 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-mono flex items-center gap-1.5 border border-white/10 shadow-lg hover:bg-black/90 transition-colors z-10"
-                    title={isMuted ? 'Audio muted (Video preview ready)' : 'Audio unmuted'}
-                  >
-                    {isMuted ? <VolumeX className="w-3.5 h-3.5 text-neutral-300" /> : <Volume2 className="w-3.5 h-3.5 text-emerald-400" />}
-                    <span>{isMuted ? 'Sound off' : 'Sound on'}</span>
-                  </button>
-
-                  {/* Click to Enlarge / Inspect Trigger */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onSelectImage && onSelectImage(currentSystem.videoSrc || currentSystem.previewImage, currentSystem.title);
-                    }}
-                    className="absolute bottom-4 right-4 px-3 py-1.5 rounded-full bg-black/75 backdrop-blur-md text-white text-[11px] font-mono flex items-center gap-1.5 border border-white/10 shadow-lg hover:bg-black/90 transition-colors opacity-90 hover:opacity-100 z-10"
-                  >
-                    <Maximize2 className="w-3.5 h-3.5" style={{ color: 'var(--brand-coral)' }} />
-                    <span className="hidden sm:inline">Inspect High-Res</span>
-                  </button>
-                </div>
-              )}
-
-              {innerView === 'diagram' && (
-                <div
-                  className="relative aspect-[16/11] overflow-hidden cursor-pointer flex items-center justify-center p-3 sm:p-5"
-                  style={{ background: 'var(--surface-sheet)' }}
-                  onClick={() => onSelectImage && onSelectImage(currentSystem.diagramImage, `${currentSystem.title} Architecture Diagram`)}
-                >
-                  <div className="w-full h-full rounded-2xl bg-white p-3 sm:p-4 flex items-center justify-center border border-black/10 shadow-sm overflow-hidden">
-                    <img
-                      src={currentSystem.diagramImage}
-                      alt={`${currentSystem.title} Architecture Diagram`}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center pointer-events-none">
-                    <span
-                      className="px-4 py-2 rounded-full font-mono text-xs font-semibold border shadow-xl flex items-center gap-2 backdrop-blur-md"
-                      style={{
-                        background: 'var(--button-bg)',
-                        color: 'var(--button-fg)',
-                        borderColor: 'var(--line)',
-                      }}
-                    >
-                      <Maximize2 className="w-4 h-4" style={{ color: 'var(--brand-coral)' }} />
-                      <span>Click to Inspect Architecture Diagram</span>
-                    </span>
-                  </div>
-                </div>
-              )}
-
-              {innerView === 'code' && (
-                <div className="flex flex-col h-[340px] sm:h-[380px]" style={{ background: '#0b0f17' }}>
-                  {/* Code File Header */}
-                  <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/10 bg-black/40 text-xs font-mono text-slate-300">
-                    <div className="flex items-center gap-2 truncate">
-                      <Code2 className="w-3.5 h-3.5 text-cyan-400" />
-                      <span className="truncate">{currentSystem.codeFile}</span>
-                    </div>
-                    <button
-                      onClick={() => handleCopy(currentSystem.code)}
-                      className="px-2.5 py-1 rounded text-[11px] font-mono border border-white/10 flex items-center gap-1.5 transition-all hover:bg-white/10"
-                    >
-                      {copied ? (
-                        <>
-                          <Check className="w-3 h-3 text-emerald-400" />
-                          <span className="text-emerald-400">Copied</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3 h-3" />
-                          <span>Copy</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                  {/* Code Block Content */}
-                  <pre className="p-4 text-xs font-mono text-slate-200 overflow-y-auto overflow-x-auto leading-relaxed flex-1">
-                    <code>{currentSystem.code}</code>
-                  </pre>
-                </div>
-              )}
-            </div>
-
-            {/* Sub-label under visual frame */}
-            <div className="flex items-center justify-between text-xs font-mono opacity-70 px-1">
-              <span>{currentSystem.service}</span>
-              <span className="font-bold" style={{ color: 'var(--brand-coral)' }}>
-                {currentSystem.metric}
-              </span>
-            </div>
-          </div>
-
-          {/* Right Column: Editorial Narrative & Impact Breakdown */}
-          <div className="lg:col-span-6 space-y-6">
-            {/* Header: Kicker + Title + Summary */}
-            <div className="space-y-2">
-              <div
-                className="text-xs font-mono uppercase tracking-[0.18em] font-semibold"
-                style={{ color: 'var(--brand-coral)' }}
-              >
-                {currentSystem.kicker}
-              </div>
-              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight uppercase leading-tight display">
-                {currentSystem.title}
-              </h3>
-              <p className="text-sm sm:text-base opacity-80 leading-relaxed font-sans pt-1">
-                {currentSystem.subtitle}
-              </p>
-            </div>
-
-            {/* The 3 Editorial Rows (Problem, Built, Result) */}
-            <div className="space-y-4 pt-2">
-              {/* Row 1: The Problem */}
-              <div
-                className="pt-4 border-t flex flex-col sm:flex-row gap-2 sm:gap-6"
-                style={{ borderColor: 'var(--line)' }}
-              >
-                <div className="w-28 sm:w-32 flex-shrink-0 text-xs font-mono uppercase tracking-wider opacity-60 pt-0.5">
-                  THE PROBLEM
-                </div>
-                <div className="flex-1 text-xs sm:text-sm leading-relaxed opacity-85">
-                  {currentSystem.problem}
-                </div>
-              </div>
-
-              {/* Row 2: What I Built */}
-              <div
-                className="pt-4 border-t flex flex-col sm:flex-row gap-2 sm:gap-6"
-                style={{ borderColor: 'var(--line)' }}
-              >
-                <div className="w-28 sm:w-32 flex-shrink-0 text-xs font-mono uppercase tracking-wider opacity-60 pt-0.5">
-                  WHAT I BUILT
-                </div>
-                <div className="flex-1 text-xs sm:text-sm leading-relaxed opacity-85">
-                  {currentSystem.whatIBuilt}
-                </div>
-              </div>
-
-              {/* Row 3: The Result */}
-              <div
-                className="pt-4 border-t flex flex-col sm:flex-row gap-2 sm:gap-6"
-                style={{ borderColor: 'var(--line)' }}
-              >
-                <div
-                  className="w-28 sm:w-32 flex-shrink-0 text-xs font-mono uppercase tracking-wider font-bold pt-0.5"
-                  style={{ color: 'var(--brand-coral)' }}
-                >
-                  THE RESULT
-                </div>
-                <div className="flex-1 text-xs sm:text-sm leading-relaxed font-semibold" style={{ color: 'var(--ink)' }}>
-                  {currentSystem.result}
-                </div>
-              </div>
-            </div>
-
-            {/* Tech Stack Tags & External Links */}
-            <div
-              className="pt-6 border-t flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-              style={{ borderColor: 'var(--line)' }}
-            >
-              <div className="text-xs font-mono opacity-75 flex flex-wrap gap-x-2 gap-y-1">
-                {currentSystem.tags.map((tag, idx) => (
-                  <span key={idx} className="inline-flex items-center">
-                    {tag}
-                    {idx < currentSystem.tags.length - 1 && <span className="opacity-40 ml-2">·</span>}
-                  </span>
-                ))}
-              </div>
-
-              <div className="flex items-center gap-3 flex-shrink-0">
-                {currentSystem.liveDemo && (
-                  <a
-                    href={currentSystem.liveDemo}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono text-xs font-bold uppercase tracking-wider transition-all border shadow-sm hover:scale-105"
-                    style={{
-                      background: 'var(--brand-coral)',
-                      borderColor: 'var(--brand-coral)',
-                      color: '#ffffff',
-                    }}
-                  >
-                    <span>Live App</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-white" />
-                  </a>
-                )}
-
-                <a
-                  href={currentSystem.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono text-xs font-bold uppercase tracking-wider transition-all border shadow-sm hover:scale-105"
-                  style={{
-                    background: 'var(--surface)',
-                    borderColor: 'var(--line-strong)',
-                    color: 'var(--ink)',
-                  }}
-                >
-                  <span>GitHub</span>
-                  <ArrowUpRight className="w-3.5 h-3.5" style={{ color: 'var(--brand-coral)' }} />
-                </a>
-
-                <button
-                  onClick={() => {
-                    setInnerView('diagram');
-                    onSelectImage && onSelectImage(currentSystem.diagramImage, `${currentSystem.title} Architecture Diagram`);
-                  }}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono text-xs font-semibold uppercase tracking-wider transition-all border hover:opacity-80"
-                  style={{
-                    background: 'transparent',
-                    borderColor: 'var(--line)',
-                    color: 'var(--ink)',
-                  }}
-                >
-                  <ImageIcon className="w-3.5 h-3.5" />
-                  <span>Diagram</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Minimal Bottom Quick Selector Strip for all 4 Projects */}
-        <div className="mt-16 pt-8 border-t grid grid-cols-2 md:grid-cols-4 gap-4" style={{ borderColor: 'var(--line)' }}>
-          {systems.map((s, index) => {
-            const isActive = activeId === s.id;
-            return (
-              <button
-                key={s.id}
-                onClick={() => {
-                  setActiveId(s.id);
-                  setInnerView('preview');
-                }}
-                className="p-3.5 rounded-2xl border text-left transition-all hover:-translate-y-0.5 group"
-                style={{
-                  background: isActive ? 'var(--surface-soft)' : 'var(--surface)',
-                  borderColor: isActive ? 'var(--brand-coral)' : 'var(--line)',
-                }}
-              >
-                <div className="flex items-center justify-between text-[11px] font-mono mb-1.5 opacity-60">
-                  <span>0{index + 1}</span>
-                  <span className="text-[10px] font-bold" style={{ color: isActive ? 'var(--brand-coral)' : 'inherit' }}>
-                    {isActive ? 'ACTIVE' : 'VIEW'}
-                  </span>
-                </div>
-                <div className="font-bold text-xs font-mono uppercase tracking-tight truncate group-hover:opacity-80">
-                  {s.tabLabel}
-                </div>
-                <div className="text-[11px] opacity-70 truncate mt-1">
-                  {s.metric}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    </section>
+      </section>
+    </MotionConfig>
   );
 }

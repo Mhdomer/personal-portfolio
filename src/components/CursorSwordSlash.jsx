@@ -8,7 +8,13 @@ export default function CursorSwordSlash() {
   const slashLayerRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia?.('(pointer: fine)').matches) return;
+    if (
+      typeof window === 'undefined' ||
+      !window.matchMedia?.('(pointer: fine)').matches ||
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return;
+    }
     const layer = slashLayerRef.current;
     if (!layer) return;
 

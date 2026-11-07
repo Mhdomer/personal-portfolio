@@ -1,28 +1,41 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FastForward, Terminal } from 'lucide-react';
+import { FastForward } from 'lucide-react';
 
 /**
- * Epic Linux Boot & Katana Slice Intro
- * Reproduces the authentic sharara.me physics:
+ * Epic Linux Boot & Pixel-Art Katana Unsheath Intro
  * 1. Monospace DevSecOps terminal output with animated progress bar
- * 2. Razor-sharp Katana blade sweep with synthesized metallic audio
- * 3. Jagged split along polygon cut line (Panel A falls left, Panel B falls right)
- * 4. 22 geometric debris shards bursting and tumbling with gravity
+ * 2. Sheathed two-piece pixel-art katana + black saya ready stance on ./unsheath_blade.sh
+ * 3. Throat-occluded metallic blade draw out of the crimson koiguchi mouth
+ * 4. Center katana sweep + jagged polygon split (Panel A left, Panel B right) + 22 debris shards
  */
 
 const SHARD_COUNT = 22;
 
 // Jagged polygon cut lines matching sharara.me geometry
-const CLIP_PANEL_A = 'polygon(0 0, 50.8% 0, 51.4% 18%, 50.2% 34%, 51.6% 52%, 50.3% 70%, 51.3% 86%, 50.8% 100%, 0 100%)';
-const CLIP_PANEL_B = 'polygon(100% 0, 50% 0, 50.6% 18%, 49.4% 34%, 50.8% 52%, 49.5% 70%, 50.5% 86%, 50% 100%, 100% 100%)';
+const CLIP_PANEL_A =
+  'polygon(0 0, 50.8% 0, 51.4% 18%, 50.2% 34%, 51.6% 52%, 50.3% 70%, 51.3% 86%, 50.8% 100%, 0 100%)';
+const CLIP_PANEL_B =
+  'polygon(100% 0, 50% 0, 50.6% 18%, 49.4% 34%, 50.8% 52%, 49.5% 70%, 50.5% 86%, 50% 100%, 100% 100%)';
+
+// Plane tucked 3.5% inside the opaque black saya collar (z-20) so zero throat gap appears during draw
+const KOIGUCHI_OCCLUSION_CLIP =
+  'polygon(18% -55%, 165% -55%, 165% 86%, 70% 32%, 63.5% 25.5%)';
 
 export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
-  // Stages: 'typing' -> 'slashing' -> 'falling' -> 'done'
+  // Stages: 'typing' -> 'unsheathing' -> 'slashing' -> 'falling' -> 'done'
   const [stage, setStage] = useState('typing');
   const [progress, setProgress] = useState(0);
   const [visibleLines, setVisibleLines] = useState(1);
 
-  // Synthesize realistic metallic katana blade draw & whoosh sound
+  // Preload both pixel-art katana sprites immediately on mount so zero network decode lag occurs
+  useEffect(() => {
+    ['/assets/decorations/katana-pixel-blade.png', '/assets/decorations/katana-pixel-saya.png'].forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  // Synthesize realistic metallic katana blade draw & slash whoosh sound
   const playKatanaAudio = () => {
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -30,22 +43,22 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
       const ctx = new AudioCtx();
       const now = ctx.currentTime;
 
-      // 1. Blade metallic draw resonance
+      // 1. Metallic koiguchi blade draw ring
       const osc1 = ctx.createOscillator();
       const osc2 = ctx.createOscillator();
       const gain = ctx.createGain();
 
       osc1.type = 'sine';
       osc1.frequency.setValueAtTime(3200, now);
-      osc1.frequency.exponentialRampToValueAtTime(1400, now + 0.35);
+      osc1.frequency.exponentialRampToValueAtTime(1400, now + 0.42);
 
       osc2.type = 'triangle';
       osc2.frequency.setValueAtTime(4800, now);
-      osc2.frequency.exponentialRampToValueAtTime(1900, now + 0.3);
+      osc2.frequency.exponentialRampToValueAtTime(1900, now + 0.36);
 
       gain.gain.setValueAtTime(0.001, now);
-      gain.gain.linearRampToValueAtTime(0.28, now + 0.05);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+      gain.gain.linearRampToValueAtTime(0.26, now + 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.58);
 
       osc1.connect(gain);
       osc2.connect(gain);
@@ -53,11 +66,12 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
 
       osc1.start(now);
       osc2.start(now);
-      osc1.stop(now + 0.55);
-      osc2.stop(now + 0.55);
+      osc1.stop(now + 0.6);
+      osc2.stop(now + 0.6);
 
-      // 2. High-speed whoosh / air displacement
-      const bufferSize = ctx.sampleRate * 0.45;
+      // 2. Delayed high-speed slash air displacement (+0.32s when blade sweeps center)
+      const slashTime = now + 0.32;
+      const bufferSize = Math.floor(ctx.sampleRate * 0.42);
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
@@ -69,37 +83,42 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
 
       const filter = ctx.createBiquadFilter();
       filter.type = 'bandpass';
-      filter.frequency.setValueAtTime(450, now);
-      filter.frequency.exponentialRampToValueAtTime(2800, now + 0.14);
-      filter.frequency.exponentialRampToValueAtTime(300, now + 0.4);
-      filter.Q.setValueAtTime(4, now);
+      filter.frequency.setValueAtTime(480, slashTime);
+      filter.frequency.exponentialRampToValueAtTime(2900, slashTime + 0.12);
+      filter.frequency.exponentialRampToValueAtTime(320, slashTime + 0.38);
+      filter.Q.setValueAtTime(4, slashTime);
 
       const noiseGain = ctx.createGain();
-      noiseGain.gain.setValueAtTime(0.01, now);
-      noiseGain.gain.linearRampToValueAtTime(0.35, now + 0.12);
-      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.42);
+      noiseGain.gain.setValueAtTime(0.01, slashTime);
+      noiseGain.gain.linearRampToValueAtTime(0.35, slashTime + 0.1);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, slashTime + 0.4);
 
       noise.connect(filter);
       filter.connect(noiseGain);
       noiseGain.connect(ctx.destination);
 
-      noise.start(now);
-      noise.stop(now + 0.45);
+      noise.start(slashTime);
+      noise.stop(slashTime + 0.42);
+      window.setTimeout(() => {
+        ctx.close?.()?.catch(() => {});
+      }, 950);
     } catch {
       // Audio autoplay policy fallback
     }
   };
 
-  // Keyboard shortcut: ESC or Space skips immediately
+  // Keyboard shortcut: ESC or Space skips immediately only while boot intro is open
   useEffect(() => {
+    if (!isOpen) return undefined;
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' || e.key === ' ') {
+        e.preventDefault();
         onClose();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onClose]);
+  }, [isOpen, onClose]);
 
   // Terminal Typing & Progress sequence
   useEffect(() => {
@@ -107,20 +126,18 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
       setStage('typing');
       setProgress(0);
       setVisibleLines(1);
-      return;
+      return undefined;
     }
 
     if (stage === 'typing') {
-      // Progressively reveal command lines
       const lineTimer = setInterval(() => {
         setVisibleLines((prev) => {
           if (prev < 6) return prev + 1;
           clearInterval(lineTimer);
           return prev;
         });
-      }, 260);
+      }, 250);
 
-      // Animate progress bar to 100%
       const progTimer = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 100) {
@@ -130,29 +147,38 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
           const increment = Math.floor(Math.random() * 12) + 8;
           return Math.min(100, prev + increment);
         });
-      }, 120);
+      }, 115);
 
       return () => {
         clearInterval(lineTimer);
         clearInterval(progTimer);
       };
     }
+
+    return undefined;
   }, [isOpen, stage]);
 
-  // Trigger Katana Slice when Progress Hits 100%
+  // Orchestrate Unsheath -> Center Slash -> Panel Split
   useEffect(() => {
-    if (stage === 'typing' && progress >= 100) {
-      const slashTimer = setTimeout(() => {
+    if (stage === 'typing' && progress >= 100 && visibleLines >= 6) {
+      const drawTimer = setTimeout(() => {
         playKatanaAudio();
+        setStage('unsheathing');
+      }, 240);
+      return () => clearTimeout(drawTimer);
+    }
+
+    if (stage === 'unsheathing') {
+      const slashTimer = setTimeout(() => {
         setStage('slashing');
-      }, 350);
+      }, 380);
       return () => clearTimeout(slashTimer);
     }
 
     if (stage === 'slashing') {
       const fallTimer = setTimeout(() => {
         setStage('falling');
-      }, 180);
+      }, 270);
       return () => clearTimeout(fallTimer);
     }
 
@@ -160,19 +186,21 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
       const doneTimer = setTimeout(() => {
         setStage('done');
         onClose();
-      }, 1050);
+      }, 1020);
       return () => clearTimeout(doneTimer);
     }
-  }, [progress, stage, onClose]);
+
+    return undefined;
+  }, [progress, visibleLines, stage, onClose]);
 
   // Deterministic Shards for Falling Debris
   const shards = useMemo(() => {
     return Array.from({ length: SHARD_COUNT }).map((_, idx) => {
-      const topPct = 6 + (idx * 4.2);
+      const topPct = 6 + idx * 4.2;
       const isLeft = idx % 2 === 0;
-      const targetX = (isLeft ? -1 : 1) * (40 + (idx * 8));
-      const targetY = 220 + (idx * 24);
-      const targetRotate = (isLeft ? -1 : 1) * (180 + (idx * 25));
+      const targetX = (isLeft ? -1 : 1) * (40 + idx * 8);
+      const targetY = 220 + idx * 24;
+      const targetRotate = (isLeft ? -1 : 1) * (180 + idx * 25);
       const sizeW = 8 + (idx % 5) * 2.5;
       const sizeH = 10 + ((idx + 2) % 4) * 3;
       return {
@@ -188,6 +216,11 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
   }, []);
 
   if (!isOpen || stage === 'done') return null;
+
+  const showKatanaRig = visibleLines >= 5 || stage !== 'typing';
+  const isUnsheathing = stage === 'unsheathing';
+  const isSlashing = stage === 'slashing';
+  const isFalling = stage === 'falling';
 
   // Reusable Full Terminal Content (rendered identically in both Panel A and Panel B)
   const renderTerminalContent = () => (
@@ -294,7 +327,7 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
               <span className="text-emerald-400">mhdomar@cachyos:~$</span>
               <span className="text-slate-100">./unsheath_blade.sh</span>
             </div>
-            <div className="pl-4 text-[#e06b5c] font-bold border-l-2 border-[#e06b5c]/60 text-xs animate-pulse">
+            <div className="pl-4 text-[#f472b6] font-bold border-l-2 border-[#f472b6]/60 text-xs animate-pulse">
               ✓ perimeter hardened · unsheathing cyber katana...
             </div>
           </div>
@@ -310,11 +343,11 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
           <div className="flex items-center gap-3 w-full sm:w-auto">
             <div className="w-48 sm:w-64 h-1.5 bg-slate-800 rounded-full overflow-hidden border border-white/10">
               <div
-                className="h-full bg-gradient-to-r from-emerald-500 to-[#e06b5c] transition-all duration-150"
+                className="h-full bg-gradient-to-r from-emerald-500 via-[#e06b5c] to-[#f472b6] transition-all duration-150"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <span className="text-[#e06b5c] font-bold font-mono min-w-[40px] text-right">
+            <span className="text-[#f472b6] font-bold font-mono min-w-[40px] text-right">
               {progress}%
             </span>
           </div>
@@ -330,72 +363,69 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
   );
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden select-none bg-black">
+    <div
+      className={`fixed inset-0 z-50 overflow-hidden select-none ${
+        isFalling ? 'bg-transparent pointer-events-none' : 'bg-[#080b10]'
+      }`}
+    >
       {/* Top Right Skip Button */}
       <button
+        type="button"
         onClick={onClose}
-        className="absolute top-5 right-5 z-50 px-3 py-1.5 rounded-lg bg-black/60 hover:bg-black/90 text-slate-300 hover:text-white border border-white/10 flex items-center gap-1.5 transition-all text-xs font-mono shadow-xl backdrop-blur-md"
+        className={`absolute top-5 right-5 z-50 px-3 py-1.5 rounded-lg bg-black/60 hover:bg-black/90 text-slate-300 hover:text-white border border-white/10 flex items-center gap-1.5 transition-all text-xs font-mono shadow-xl backdrop-blur-md cursor-pointer ${
+          isFalling ? 'opacity-0 pointer-events-none' : 'opacity-100'
+        }`}
       >
-        <FastForward className="w-3.5 h-3.5 text-[#e06b5c]" />
+        <FastForward className="w-3.5 h-3.5 text-[#f472b6]" />
         <span>Skip [ESC]</span>
       </button>
 
-      {/* -------------------------------------------------------------
-          PANEL A: LEFT HALF (Cut along jagged polygon, falls down-left)
-          ------------------------------------------------------------- */}
+      {/* PANEL A: LEFT HALF (Cut along jagged polygon, falls down-left) */}
       <div
         className="intro-panel intro-panel-a absolute inset-0 z-20 pointer-events-none"
         style={{
           clipPath: CLIP_PANEL_A,
-          transform:
-            stage === 'falling'
-              ? 'translate(-38vw, 65vh) rotate(-11deg)'
-              : stage === 'slashing'
-              ? 'translate(-6px, 4px) rotate(-0.5deg)'
-              : 'translate(0, 0)',
-          opacity: stage === 'falling' ? 0 : 1,
-          transition:
-            stage === 'falling'
-              ? 'transform 920ms cubic-bezier(0.55, 0, 1, 0.45), opacity 850ms ease-in'
-              : stage === 'slashing'
-              ? 'transform 120ms ease-out'
-              : 'none',
+          transform: isFalling
+            ? 'translate(-38vw, 65vh) rotate(-11deg)'
+            : isSlashing
+            ? 'translate(-6px, 4px) rotate(-0.5deg)'
+            : 'translate(0, 0)',
+          opacity: isFalling ? 0 : 1,
+          transition: isFalling
+            ? 'transform 920ms cubic-bezier(0.55, 0, 1, 0.45), opacity 850ms ease-in'
+            : isSlashing
+            ? 'transform 120ms ease-out'
+            : 'none',
           willChange: 'transform, opacity',
         }}
       >
         {renderTerminalContent()}
       </div>
 
-      {/* -------------------------------------------------------------
-          PANEL B: RIGHT HALF (Cut along jagged polygon, falls down-right)
-          ------------------------------------------------------------- */}
+      {/* PANEL B: RIGHT HALF (Cut along jagged polygon, falls down-right) */}
       <div
         className="intro-panel intro-panel-b absolute inset-0 z-10 pointer-events-none"
         style={{
           clipPath: CLIP_PANEL_B,
-          transform:
-            stage === 'falling'
-              ? 'translate(38vw, 75vh) rotate(11deg)'
-              : stage === 'slashing'
-              ? 'translate(6px, 4px) rotate(0.5deg)'
-              : 'translate(0, 0)',
-          opacity: stage === 'falling' ? 0 : 1,
-          transition:
-            stage === 'falling'
-              ? 'transform 960ms cubic-bezier(0.55, 0, 1, 0.45), opacity 880ms ease-in'
-              : stage === 'slashing'
-              ? 'transform 120ms ease-out'
-              : 'none',
+          transform: isFalling
+            ? 'translate(38vw, 75vh) rotate(11deg)'
+            : isSlashing
+            ? 'translate(6px, 4px) rotate(0.5deg)'
+            : 'translate(0, 0)',
+          opacity: isFalling ? 0 : 1,
+          transition: isFalling
+            ? 'transform 960ms cubic-bezier(0.55, 0, 1, 0.45), opacity 880ms ease-in'
+            : isSlashing
+            ? 'transform 120ms ease-out'
+            : 'none',
           willChange: 'transform, opacity',
         }}
       >
         {renderTerminalContent()}
       </div>
 
-      {/* -------------------------------------------------------------
-          22 GEOMETRIC DEBRIS SHARDS (sharara.me exact falling polygons)
-          ------------------------------------------------------------- */}
-      {(stage === 'slashing' || stage === 'falling') && (
+      {/* 22 GEOMETRIC DEBRIS SHARDS */}
+      {(isSlashing || isFalling) && (
         <div className="absolute inset-0 z-30 pointer-events-none overflow-hidden">
           {shards.map((shard) => (
             <div
@@ -407,11 +437,10 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
                 width: `${shard.sizeW}px`,
                 height: `${shard.sizeH}px`,
                 clipPath: 'polygon(50% 0, 100% 55%, 62% 100%, 0 72%)',
-                transform:
-                  stage === 'falling'
-                    ? `translate(${shard.targetX}px, ${shard.targetY}px) rotate(${shard.targetRotate}deg)`
-                    : 'translate(0, 0) scale(1)',
-                opacity: stage === 'falling' ? 0 : 0.95,
+                transform: isFalling
+                  ? `translate(${shard.targetX}px, ${shard.targetY}px) rotate(${shard.targetRotate}deg)`
+                  : 'translate(0, 0) scale(1)',
+                opacity: isFalling ? 0 : 0.95,
                 transition: `transform ${750 + shard.id * 18}ms cubic-bezier(0.55, 0, 1, 0.45), opacity ${700 + shard.id * 15}ms ease-in`,
               }}
             />
@@ -419,51 +448,115 @@ export default function LinuxBootKatanaIntro({ isOpen, onClose }) {
         </div>
       )}
 
-      {/* -------------------------------------------------------------
-          THE KATANA BLADE SLASH & LUMINESCENT STREAK
-          ------------------------------------------------------------- */}
-      {(stage === 'slashing' || stage === 'falling') && (
-        <div className="absolute inset-0 z-40 pointer-events-none overflow-hidden">
-          {/* Katana Blade Sweeping Across Center Slice Line */}
+      {/* TWO-PIECE PIXEL-ART KATANA + BLACK SCABBARD (SAYA) RIG */}
+      <div
+        aria-hidden="true"
+        data-testid="boot-katana-rig"
+        data-stage={stage}
+        className="absolute inset-0 z-40 pointer-events-none overflow-hidden flex items-center justify-center"
+      >
+        {/* Shared Coordinate Rig (620:740 aspect ratio) */}
+        <div
+          className="relative w-[300px] sm:w-[400px] md:w-[450px] aspect-[620/740]"
+          style={{
+            opacity: !showKatanaRig ? 0 : isFalling ? 0 : 1,
+            transform: !showKatanaRig
+              ? 'translate(10vw, 6vh) scale(0.94)'
+              : isUnsheathing
+              ? 'translate(4.5vw, 4.5vh) scale(1)'
+              : isSlashing
+              ? 'translate(0vw, 0vh) scale(1.06)'
+              : isFalling
+              ? 'translate(-5vw, 9vh) scale(1.04)'
+              : 'translate(7vw, 3vh) scale(0.98)',
+            transition: isFalling
+              ? 'transform 420ms ease-out, opacity 300ms ease-out'
+              : 'transform 340ms cubic-bezier(0.22, 1, 0.36, 1), opacity 260ms ease-out',
+            willChange: 'transform, opacity',
+          }}
+        >
+          {/* Blade Layer: clipped at the koiguchi throat plane until fully drawn in 'slashing' */}
           <div
-            className="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
+            className="absolute inset-0 z-10"
             style={{
-              opacity: stage === 'falling' ? 0 : 1,
+              clipPath: isSlashing || isFalling ? 'none' : KOIGUCHI_OCCLUSION_CLIP,
             }}
           >
             <img
-              src="/assets/decorations/katana-ink.webp"
-              alt="Katana Blade"
-              className="w-[520px] sm:w-[740px] h-auto object-contain drop-shadow-[0_0_50px_rgba(224,107,92,1)]"
+              src="/assets/decorations/katana-pixel-blade.png"
+              alt=""
+              draggable={false}
+              className="w-full h-full object-contain pixel-crisp"
               style={{
-                transform: 'rotate(-24deg) translateY(-20px)',
-                filter: 'invert(91%) sepia(9%) saturate(416%) hue-rotate(352deg) brightness(110%)',
+                transform: isFalling
+                  ? 'translate(-12%, 22%) rotate(-32deg)'
+                  : isSlashing
+                  ? 'translate(-4%, 4%) rotate(-26deg)'
+                  : isUnsheathing
+                  ? 'translate(36%, -40%) rotate(1.5deg)'
+                  : 'translate(0%, 0%) rotate(0deg)',
+                filter:
+                  isSlashing || isUnsheathing
+                    ? 'drop-shadow(0 0 26px rgba(244, 114, 182, 0.78)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.55))'
+                    : 'drop-shadow(0 8px 20px rgba(0, 0, 0, 0.65))',
+                transition: isSlashing
+                  ? 'transform 240ms cubic-bezier(0.16, 1, 0.3, 1), filter 200ms ease-out'
+                  : isUnsheathing
+                  ? 'transform 360ms cubic-bezier(0.2, 0.9, 0.28, 1), filter 220ms ease-out'
+                  : 'transform 320ms ease-out',
+                willChange: 'transform',
               }}
             />
           </div>
 
-          {/* Electric Slash Line cutting straight down the screen */}
-          <div
-            className="absolute w-[4px] bg-gradient-to-b from-transparent via-white via-[#e06b5c] to-transparent shadow-[0_0_35px_12px_rgba(224,107,92,0.9),0_0_15px_4px_rgba(255,255,255,1)]"
+          {/* Black Scabbard (Saya) Layer: stays locked to koiguchi clip plane during draw, drops away on slash */}
+          <img
+            src="/assets/decorations/katana-pixel-saya.png"
+            alt=""
+            draggable={false}
+            className="absolute inset-0 z-20 w-full h-full object-contain pixel-crisp"
             style={{
-              left: '50.5%',
-              top: '-10%',
-              bottom: '-10%',
-              transform: 'translateX(-50%)',
-              opacity: stage === 'falling' ? 0 : 1,
-              transition: 'opacity 300ms ease-out',
+              opacity: isSlashing || isFalling ? 0 : 1,
+              transform:
+                isSlashing || isFalling
+                  ? 'translate(-28%, 32%) rotate(-10deg)'
+                  : 'translate(0%, 0%) rotate(0deg)',
+              filter: 'drop-shadow(0 10px 24px rgba(0, 0, 0, 0.8))',
+              transition:
+                isSlashing || isFalling
+                  ? 'transform 260ms ease-in, opacity 200ms ease-out'
+                  : 'transform 340ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease-out',
+              willChange: 'transform, opacity',
             }}
           />
 
-          {/* Central Flash of Impact */}
+          {/* Metallic Koiguchi Spark right at the scabbard throat (70%, 25%) during draw */}
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-white/40 blur-3xl pointer-events-none transition-opacity duration-300"
+            className="absolute z-30 w-16 h-16 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
             style={{
-              opacity: stage === 'falling' ? 0 : 0.8,
+              left: '70%',
+              top: '25%',
+              background:
+                'radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(244,114,182,0.75) 38%, rgba(224,107,92,0) 72%)',
+              opacity: isUnsheathing ? 1 : showKatanaRig && stage === 'typing' ? 0.35 : 0,
+              transform: isUnsheathing
+                ? 'translate(-50%, -50%) scale(1.35)'
+                : 'translate(-50%, -50%) scale(0.55)',
+              transition: 'opacity 180ms ease-out, transform 260ms ease-out',
             }}
           />
         </div>
-      )}
+
+        {/* Subtle Impact Flash on Cleave */}
+        {(isSlashing || isFalling) && (
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full bg-white/20 blur-3xl pointer-events-none transition-opacity duration-300"
+            style={{
+              opacity: isFalling ? 0 : 0.7,
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }

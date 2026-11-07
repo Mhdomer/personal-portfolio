@@ -25,6 +25,20 @@
   --band-bg: #202a36;
   --band-fg: #ece4d3;
   --editorial-shadow: rgba(32, 42, 54, 0.14);
+  --trace-pass: #157347;
+  --trace-pass-soft: rgba(21, 115, 71, 0.12);
+  --trace-block: #c84d3d;
+  --trace-block-soft: rgba(200, 77, 61, 0.13);
+  --trace-dot-grid: rgba(32, 42, 54, 0.13);
+  --syn-bg: #f4eede;
+  --syn-gutter: rgba(32, 42, 54, 0.42);
+  --syn-comment: #6e7782;
+  --syn-keyword: #b93d2e;
+  --syn-string: #157347;
+  --syn-type: #1d5d7a;
+  --syn-number: #9a5113;
+  --syn-highlight: rgba(200, 77, 61, 0.11);
+  --syn-pin-active: #f0ae78;
 }
 
 html.dark,
@@ -46,6 +60,20 @@ html.dark .theme-editorial {
   --band-bg: #0d1218;
   --band-fg: #eee6d7;
   --editorial-shadow: rgba(0, 0, 0, 0.45);
+  --trace-pass: #34d399;
+  --trace-pass-soft: rgba(52, 211, 153, 0.14);
+  --trace-block: #e87667;
+  --trace-block-soft: rgba(224, 107, 92, 0.16);
+  --trace-dot-grid: rgba(238, 230, 215, 0.11);
+  --syn-bg: #121820;
+  --syn-gutter: rgba(238, 230, 215, 0.36);
+  --syn-comment: #7d8896;
+  --syn-keyword: #e87667;
+  --syn-string: #34d399;
+  --syn-type: #67c4f3;
+  --syn-number: #f2b77d;
+  --syn-highlight: rgba(224, 107, 92, 0.15);
+  --syn-pin-active: #b93d2e;
 }
 
 @layer base {
@@ -66,15 +94,16 @@ html.dark .theme-editorial {
   content: "";
   z-index: 10;
   pointer-events: none;
-  opacity: 0.055;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  opacity: 0.22;
+  background-image: url("/assets/decorations/paper-grain.png");
+  background-size: 96px 96px;
+  background-repeat: repeat;
   position: fixed;
   inset: 0;
 }
 
 html.dark .paper-noise:before {
-  opacity: 0.09;
-  mix-blend-mode: soft-light;
+  opacity: 0.16;
 }
 
 /* Precision scrollbar */
@@ -194,7 +223,13 @@ html.dark .paper-noise:before {
   height: 165px;
   position: absolute;
   top: 100%;
-  right: clamp(-42px, -2vw, -24px);
+  right: 14px;
+}
+
+@media (min-width: 1360px) {
+  .nav-katana {
+    right: -24px;
+  }
 }
 
 .nav-katana-swing {
@@ -383,6 +418,32 @@ html.dark .theme-toggle-thumb {
   font-family: 'JetBrains Mono', monospace;
 }
 
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+html.theme-transitioning,
+html.theme-transitioning *,
+html.theme-transitioning *::before,
+html.theme-transitioning *::after {
+  transition: none !important;
+}
+
+.pixel-crisp {
+  image-rendering: -moz-crisp-edges;
+  image-rendering: pixelated;
+}
+
 /* ==========================================================================
    Editorial Hero & Sun Aura (sharara.me exact layout)
    ========================================================================== */
@@ -514,13 +575,11 @@ html.dark .editorial-hero .hero-copy:after {
 @keyframes tour-backglow-zoom {
   0%, 100% {
     transform: scale(0.96);
-    opacity: 0.2;
-    box-shadow: 0 0 4px rgba(224, 107, 92, 0.2);
+    opacity: 0.22;
   }
   50% {
     transform: scale(1.06, 1.15);
-    opacity: 0.8;
-    box-shadow: 0 0 14px rgba(224, 107, 92, 0.55), 0 0 22px rgba(224, 107, 92, 0.2);
+    opacity: 0.82;
   }
 }
 
@@ -676,4 +735,16 @@ body.tour-active ::selection {
 
 body.tour-active * {
   user-select: text !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+  .falling-leaf,
+  .nav-katana-swing,
+  .tour-cta-backglow,
+  .animate-mouse-bob {
+    animation: none !important;
+  }
 }

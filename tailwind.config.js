@@ -36,7 +36,7 @@ export default {
         },
       },
       fontFamily: {
-        display: ['Syne', 'Plus Jakarta Sans', 'sans-serif'],
+        display: ['Plus Jakarta Sans', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
         sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
       },

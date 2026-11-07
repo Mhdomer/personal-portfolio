@@ -1,4 +1,7 @@
 import React from 'react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+
+const EDITORIAL_EASE = [0.22, 1, 0.36, 1];
 
 /**
  * Japanese Ink Sakura Branch SVG Component
@@ -53,24 +56,44 @@ export function BranchSvg({ flip = false, sparse = false, className = '' }) {
  * - Mid-left and bottom-right across content sections
  */
 export default function DecorativeBranches() {
+  const prefersReducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+
+  const yTopLeft = useTransform(scrollYProgress, [0, 1], [0, -28]);
+  const yTopRight = useTransform(scrollYProgress, [0, 1], [0, -36]);
+  const yMidLeft = useTransform(scrollYProgress, [0, 1], [18, -26]);
+  const yBottomRight = useTransform(scrollYProgress, [0, 1], [28, -20]);
+
   return (
     <div
       className="deco-branches"
       aria-hidden="true"
       data-testid="decorative-branches"
     >
-      <div className="deco-branch-tl">
+      <motion.div
+        className="deco-branch-tl"
+        style={prefersReducedMotion ? undefined : { y: yTopLeft }}
+      >
         <BranchSvg />
-      </div>
-      <div className="deco-branch-tr">
+      </motion.div>
+      <motion.div
+        className="deco-branch-tr"
+        style={prefersReducedMotion ? undefined : { y: yTopRight }}
+      >
         <BranchSvg flip sparse />
-      </div>
-      <div className="deco-branch-bl">
+      </motion.div>
+      <motion.div
+        className="deco-branch-bl"
+        style={prefersReducedMotion ? undefined : { y: yMidLeft }}
+      >
         <BranchSvg flip />
-      </div>
-      <div className="deco-branch-br">
+      </motion.div>
+      <motion.div
+        className="deco-branch-br"
+        style={prefersReducedMotion ? undefined : { y: yBottomRight }}
+      >
         <BranchSvg />
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -78,26 +101,53 @@ export default function DecorativeBranches() {
 /**
  * Compact Sakura Leaf & Branch Flourish for section headers
  */
-export function SectionSakuraHeader({ title, category, className = '' }) {
+export function SectionSakuraHeader({ category, className = '' }) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <div className={`relative mb-8 ${className}`}>
       <div className="flex items-center gap-3">
         <div className="w-10 h-7 opacity-75 shrink-0" style={{ color: 'var(--brand-coral)' }}>
           <svg viewBox="0 0 100 50" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
-            <path d="M4,42 C30,30 50,22 92,10" />
-            <path d="M35,28 C45,22 55,18 65,10" />
-            <ellipse cx="48" cy="22" rx="4.5" ry="2.8" fill="currentColor" transform="rotate(-20 48 22)" />
-            <ellipse cx="54" cy="25" rx="3.8" ry="2.2" fill="currentColor" transform="rotate(18 54 25)" />
-            <ellipse cx="80" cy="14" rx="4.5" ry="2.8" fill="currentColor" transform="rotate(-20 80 14)" />
-            <circle cx="43" cy="26" r="1.5" fill="currentColor" />
-            <circle cx="75" cy="17" r="1.5" fill="currentColor" />
+            <motion.path
+              d="M4,42 C30,30 50,22 92,10"
+              initial={prefersReducedMotion ? false : { pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.62, ease: EDITORIAL_EASE }}
+            />
+            <motion.path
+              d="M35,28 C45,22 55,18 65,10"
+              initial={prefersReducedMotion ? false : { pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.5, delay: 0.12, ease: EDITORIAL_EASE }}
+            />
+            <motion.g
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.4, delay: 0.22, ease: EDITORIAL_EASE }}
+            >
+              <ellipse cx="48" cy="22" rx="4.5" ry="2.8" fill="currentColor" transform="rotate(-20 48 22)" />
+              <ellipse cx="54" cy="25" rx="3.8" ry="2.2" fill="currentColor" transform="rotate(18 54 25)" />
+              <ellipse cx="80" cy="14" rx="4.5" ry="2.8" fill="currentColor" transform="rotate(-20 80 14)" />
+              <circle cx="43" cy="26" r="1.5" fill="currentColor" />
+              <circle cx="75" cy="17" r="1.5" fill="currentColor" />
+            </motion.g>
           </svg>
         </div>
         <div>
           {category && (
-            <div className="text-xs font-mono font-bold uppercase tracking-widest opacity-60">
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 5 }}
+              whileInView={{ opacity: 0.6, y: 0 }}
+              viewport={{ once: true, margin: '-40px' }}
+              transition={{ duration: 0.45, delay: 0.08, ease: EDITORIAL_EASE }}
+              className="text-xs font-mono font-bold uppercase tracking-widest opacity-60"
+            >
               {category}
-            </div>
+            </motion.div>
           )}
         </div>
       </div>
@@ -109,21 +159,38 @@ export function SectionSakuraHeader({ title, category, className = '' }) {
  * Section Sakura Divider Flourish (bridges horizontal section borders)
  */
 export function SectionSakuraDivider({ flip = false, className = '' }) {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
     <div
       className={`relative w-full overflow-hidden py-4 pointer-events-none select-none flex items-center justify-center ${className}`}
       aria-hidden="true"
     >
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-4 opacity-40">
-        <div className="h-px flex-1" style={{ background: 'var(--line)' }} />
-        <div
+        <motion.div
+          initial={prefersReducedMotion ? false : { scaleX: 0, opacity: 0 }}
+          whileInView={{ scaleX: 1, opacity: 1 }}
+          viewport={{ once: true, margin: '-30px' }}
+          transition={{ duration: 0.68, ease: EDITORIAL_EASE }}
+          className="h-px flex-1 origin-right"
+          style={{ background: 'var(--line)' }}
+        />
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.92 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true, margin: '-30px' }}
+          transition={{ duration: 0.5, delay: 0.08, ease: EDITORIAL_EASE }}
           className="w-16 h-8 shrink-0 transition-colors"
-          style={{
-            color: 'var(--ink)',
-            transform: flip ? 'scaleX(-1)' : 'none',
-          }}
+          style={{ color: 'var(--ink)' }}
         >
-          <svg viewBox="0 0 120 40" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+          <svg
+            viewBox="0 0 120 40"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            style={{ transform: flip ? 'scaleX(-1)' : 'none' }}
+          >
             <path d="M5,22 C35,18 70,20 115,12" />
             <path d="M45,20 C60,14 75,10 85,6" />
             <path d="M25,21 C35,26 48,28 58,32" />
@@ -134,8 +201,15 @@ export function SectionSakuraDivider({ flip = false, className = '' }) {
             <circle cx="55" cy="16" r="1.5" fill="currentColor" />
             <circle cx="82" cy="10" r="1.5" fill="currentColor" />
           </svg>
-        </div>
-        <div className="h-px flex-1" style={{ background: 'var(--line)' }} />
+        </motion.div>
+        <motion.div
+          initial={prefersReducedMotion ? false : { scaleX: 0, opacity: 0 }}
+          whileInView={{ scaleX: 1, opacity: 1 }}
+          viewport={{ once: true, margin: '-30px' }}
+          transition={{ duration: 0.68, ease: EDITORIAL_EASE }}
+          className="h-px flex-1 origin-left"
+          style={{ background: 'var(--line)' }}
+        />
       </div>
     </div>
   );
