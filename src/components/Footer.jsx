@@ -209,7 +209,7 @@ export default function Footer({ onOpenResume, onReplayIntro }) {
               <ExternalLink className="w-3 h-3" />
             </a>
             <span>•</span>
-            <span>Hosted on AWS Amplify</span>
+            <span>Hosted on Cloudflare Pages</span>
           </div>
         </div>
       </div>
